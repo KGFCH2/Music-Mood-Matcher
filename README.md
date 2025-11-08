@@ -1,60 +1,10 @@
 # 🎵 Music Mood Matcher
 
-<<<<<<< HEAD
 A React-based web application that helps users find songs based on their current mood. Built with modern web technologies, featuring a beautiful UI with animations and support for multiple languages.
 
 ---
 
 ## 📁 Project Structure
-=======
-## 👋 Welcome!
-
-You've just received a friendly, emoji-rich, production-ready React web application. Below you'll find quick links, setup steps, and helpful notes — all sprinkled with emojis for easier scanning. ✨
-
----
-
-## 📁 Documentation Files
-
-### 🚀 START HERE → `QUICK_START.md`
-Best for: Getting up and running in 2 minutes
-- ⚡ Install dependencies
-- ▶️ Start dev server
-- 📘 Basic usage guide
-- 🔁 Common commands
-
-### 📋 Complete Guide → `DEPLOYMENT_GUIDE.md`
-Best for: Deep dive and full setup
-- 🧭 Full project structure
-- 🎵 Song database details
-- 🚢 Deployment instructions
-- 🛠️ Customization examples
-- 🐞 Troubleshooting
-
-### ✨ Feature Tour → `FEATURE_SHOWCASE.md`
-Best for: Visual walkthrough and UI highlights
-- 🎨 UI/UX mockups
-- 🔁 Interactive elements
-- ✨ Design highlights
-- ✅ Testing checklist
-
-### 📊 Project Summary → `PROJECT_SUMMARY.md`
-Best for: High-level overview and metrics
-- 📈 Project stats (240+ songs, 3 languages, 6 moods)
-- 🏗️ Implementation details
-- ⚡ Performance metrics
-- 🧩 Architecture overview
-
-### 📱 Frontend README → `frontend/README.md`
-Best for: React-specific guidance
-- 🛠️ Tech stack details
-- 🚀 Deployment options
-- 🌐 Browser support
-- 📜 License info
-
----
-
-## 🗂️ Quick Navigation (project layout)
->>>>>>> 4574e137cf81e5cfefe7b80513ea947a31be9687
 
 ```
 Music Mood Matcher/
@@ -323,26 +273,3 @@ This project is provided as-is for educational and personal use.
 ---
 
 Last Updated: November 8, 2025
-<<<<<<< HEAD
-=======
-Version: 1.0.0
-Status: Production Ready ✅
-
-## 👥 Contributors
-
-- Babin Bid — Lead Developer
-- Debasmita Bose — Developer and Idea Provider
-
-Both contributors collaborated on the design, implementation, and testing of the Music Mood Matcher web application. Babin led development, build and integration efforts; Debasmita conceived the idea, curated content and contributed to feature design and testing.
-
-## 📜 License
-
-This project is released under the MIT License. See the bundled `LICENSE` file for full terms. In short: you are free to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software under the conditions described in the license.
-
-For copyright purposes, the original contributors are:
-
-- Babin Bid
-- Debasmita Bose
-
-If you'd like a different license or additional contributor attributions (e.g., company name or organization), tell me and I will update the files.
->>>>>>> 4574e137cf81e5cfefe7b80513ea947a31be9687
