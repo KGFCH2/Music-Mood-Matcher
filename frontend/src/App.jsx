@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { songs, moods } from './data/songs'
+import Loader from './components/Loader'
 import './App.css'
 
 function App() {
+  const [showLoader, setShowLoader] = useState(true)
   const [currentMood, setCurrentMood] = useState(null)
   const [activeTab, setActiveTab] = useState('home')
   const [selectedLanguage, setSelectedLanguage] = useState('all')
@@ -85,9 +87,11 @@ function App() {
   }, [currentMood])
 
   return (
-    <div className="app-root">
-      {/* Background animated elements */}
-      <div className="music-background">
+    <>
+      {showLoader && <Loader onDone={() => setShowLoader(false)} introDuration={1200} />}
+      <div className="app-root">
+        {/* Background animated elements */}
+        <div className="music-background">
         <div className="note note1">♪</div>
         <div className="note note2">♫</div>
         <div className="note note3">🎵</div>
@@ -348,7 +352,8 @@ function App() {
           <p className="footer-creators">Created with 💜 by <strong>Babin Bid</strong> & <strong>Debasmita Bose</strong></p>
         </div>
       </footer>
-    </div>
+      </div>
+    </>
   )
 }
 
