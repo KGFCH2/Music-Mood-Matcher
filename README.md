@@ -80,6 +80,8 @@ npm run lint     # Run ESLint
 
 ---
 
+- ![Loader](https://img.shields.io/badge/Loader-Animated%20Intro-lightgrey) **Loader Page** - A short animated loader appears before the homepage (visual-only by default)
+
 ## 📊 Data Overview
 
 ### Songs Database (`frontend/src/data/songs.js`)
@@ -297,4 +299,8 @@ This project is provided as-is for educational and personal use.
 
 ---
 
-Last Updated: November 8, 2025
+## 🛠 Recent updates
+
+- **2025-11-15** — Inserted a new animated loader page shown before the homepage. The loader is visual-only by default (no autoplaying music). Files added/updated: `frontend/src/components/Loader.jsx`, `frontend/src/components/loader.css`. Audio experiments were performed earlier and then removed per request.
+
+Last Updated: November 15, 2025
