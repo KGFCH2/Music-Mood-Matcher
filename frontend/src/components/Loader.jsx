@@ -1,26 +1,31 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
+import PropTypes from 'prop-types'
 import './loader.css'
 
 // Silent loader with musical visuals (no audio)
-export default function Loader({ onDone }) {
+export default function Loader({ onDone, introDuration = 1200 }) {
+  const timeoutRef = useRef(null)
   useEffect(() => {
     // show loader for a short intro then call onDone to reveal the homepage
-    const introDuration = 1200
-    const t = setTimeout(() => {
-      try { if (typeof onDone === 'function') onDone() } catch {}
+    timeoutRef.current = setTimeout(() => {
+      try {
+        if (typeof onDone === 'function') onDone()
+      } catch (err) {
+        // swallow errors from caller to avoid crashing the loader
+      }
     }, introDuration)
-    return () => clearTimeout(t)
+    return () => clearTimeout(timeoutRef.current)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
-    <div className="mm-loader" role="status" aria-label="Loading Music Mood Matcher">
+    <div className="mm-loader" role="status" aria-label="Loading Music Mood Matcher" aria-busy="true">
       <div className="loader-card">
         <div className="loader-visual">
           <div className="circle c1"></div>
           <div className="circle c2"></div>
 
-          <div className="equalizer" aria-hidden>
+          <div className="equalizer" aria-hidden="true">
             <div className="eq-bar"></div>
             <div className="eq-bar"></div>
             <div className="eq-bar"></div>
@@ -41,3 +46,14 @@ export default function Loader({ onDone }) {
     </div>
   )
 }
+
+  Loader.propTypes = {
+    onDone: PropTypes.func,
+    // duration before calling onDone (ms)
+    introDuration: PropTypes.number,
+  }
+
+  Loader.defaultProps = {
+    onDone: undefined,
+    introDuration: 1200,
+  }
