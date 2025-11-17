@@ -156,6 +156,70 @@
     gap: 1.2rem;
 }
 
+/* Auth Tabs for Register/Sign-In Toggle */
+.auth-tabs {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    background: rgba(255, 255, 255, 0.03);
+    padding: 0.4rem;
+    border-radius: 12px;
+    border: 1px solid rgba(124, 77, 255, 0.2);
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 0.8rem 1rem;
+    border: none;
+    border-radius: 10px;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    letter-spacing: 0.3px;
+}
+
+.tab-emoji {
+    font-size: 1.1rem;
+}
+
+.tab-name {
+    color: inherit;
+}
+
+.tab-btn:hover {
+    background: rgba(124, 77, 255, 0.1);
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.tab-btn.active {
+    background: linear-gradient(135deg, #7c4dff 0%, #00e5ff 100%);
+    color: #ffffff;
+    box-shadow: 0 4px 15px rgba(124, 77, 255, 0.3);
+}
+
+/* Forms Container for Sliding Animation */
+.forms-container {
+    position: relative;
+    width: 100%;
+    min-height: 320px;
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    position: absolute;
+    width: 100%;
+}
+
 .form-group {
     display: flex;
     flex-direction: column;
@@ -290,7 +354,7 @@
 .login-info {
     text-align: center;
     font-size: 0.85rem;
-    margin-top: 1rem;
+    margin-top: 2rem;
     letter-spacing: 0.3px;
     display: flex;
     align-items: center;
@@ -304,6 +368,18 @@
 
 .info-text {
     color: rgba(255, 255, 255, 0.6);
+}
+
+/* Sign-In Info Message */
+.signin-info {
+    text-align: center;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin: -0.8rem 0 0.4rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
 }
 
 /* Responsive Design */
