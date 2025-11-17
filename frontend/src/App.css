@@ -508,14 +508,25 @@ body {
 .mood-title {
   font-size: 1.8rem;
   margin-bottom: 1.5rem;
-  background: linear-gradient(135deg, #FFD700, #00e5ff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
   transition: var(--transition);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1px;
+}
+
+.mood-emoji-header {
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+
+.mood-text {
+  background: linear-gradient(135deg, #FFD700, #00e5ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 /* Songs Grid */
@@ -896,7 +907,7 @@ body.mood-happy .music-background {
     radial-gradient(circle at 80% 80%, rgba(255, 165, 0, 0.15) 0%, transparent 50%) !important;
 }
 
-body.mood-happy .mood-title,
+body.mood-happy .mood-text,
 body.mood-happy .tab-content h2 .tab-text {
   background: linear-gradient(135deg, #FFD700, #FFA500);
   -webkit-background-clip: text;
@@ -914,7 +925,7 @@ body.mood-sad .music-background {
     radial-gradient(circle at 80% 80%, rgba(135, 206, 235, 0.15) 0%, transparent 50%) !important;
 }
 
-body.mood-sad .mood-title,
+body.mood-sad .mood-text,
 body.mood-sad .tab-content h2 .tab-text {
   background: linear-gradient(135deg, #4a90e2, #87CEEB);
   -webkit-background-clip: text;
@@ -932,7 +943,7 @@ body.mood-energetic .music-background {
     radial-gradient(circle at 80% 80%, rgba(255, 99, 71, 0.15) 0%, transparent 50%) !important;
 }
 
-body.mood-energetic .mood-title,
+body.mood-energetic .mood-text,
 body.mood-energetic .tab-content h2 .tab-text {
   background: linear-gradient(135deg, #FF6B6B, #FF4500);
   -webkit-background-clip: text;
@@ -952,9 +963,9 @@ body.mood-calm .music-background {
     radial-gradient(circle at 80% 80%, rgba(72, 209, 204, 0.15) 0%, transparent 50%) !important;
 }
 
-body.mood-chill .mood-title,
+body.mood-chill .mood-text,
 body.mood-chill .tab-content h2 .tab-text,
-body.mood-calm .mood-title,
+body.mood-calm .mood-text,
 body.mood-calm .tab-content h2 .tab-text {
   background: linear-gradient(135deg, #20B2AA, #48D1CC);
   -webkit-background-clip: text;
@@ -972,7 +983,7 @@ body.mood-romantic .music-background {
     radial-gradient(circle at 80% 80%, rgba(255, 182, 193, 0.15) 0%, transparent 50%) !important;
 }
 
-body.mood-romantic .mood-title,
+body.mood-romantic .mood-text,
 body.mood-romantic .tab-content h2 .tab-text {
   background: linear-gradient(135deg, #FF1493, #FFB6C1);
   -webkit-background-clip: text;
@@ -990,7 +1001,7 @@ body.mood-angry .music-background {
     radial-gradient(circle at 80% 80%, rgba(255, 69, 0, 0.15) 0%, transparent 50%) !important;
 }
 
-body.mood-angry .mood-title,
+body.mood-angry .mood-text,
 body.mood-angry .tab-content h2 .tab-text {
   background: linear-gradient(135deg, #DC143C, #FF0000);
   -webkit-background-clip: text;
