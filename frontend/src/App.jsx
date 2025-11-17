@@ -12,35 +12,54 @@ function App() {
   const [currentMood, setCurrentMood] = useState(null)
   const [activeTab, setActiveTab] = useState('home')
   const [selectedLanguage, setSelectedLanguage] = useState('all')
-  const [favorites, setFavorites] = useState(() => {
-    try {
-      return JSON.parse(localStorage.getItem('musicMoodFavorites') || '[]')
-    } catch {
-      return []
-    }
-  })
-  const [moodHistory, setMoodHistory] = useState(() => {
-    try {
-      return JSON.parse(localStorage.getItem('musicMoodHistory') || '[]')
-    } catch {
-      return []
-    }
-  })
+  const [favorites, setFavorites] = useState([])
+  const [moodHistory, setMoodHistory] = useState([])
 
+  // Load user-specific favorites when user changes
   useEffect(() => {
-    localStorage.setItem('musicMoodFavorites', JSON.stringify(favorites))
-  }, [favorites])
+    if (user?.userId) {
+      try {
+        const userFavorites = JSON.parse(localStorage.getItem(`musicMoodFavorites-${user.userId}`) || '[]')
+        setFavorites(userFavorites)
+      } catch {
+        setFavorites([])
+      }
+      // Reset to home tab when user changes
+      setActiveTab('home')
+      setCurrentMood(null)
+    }
+  }, [user?.userId])
 
+  // Load user-specific history when user changes
   useEffect(() => {
-    localStorage.setItem('musicMoodHistory', JSON.stringify(moodHistory))
-  }, [moodHistory])
+    if (user?.userId) {
+      try {
+        const userHistory = JSON.parse(localStorage.getItem(`musicMoodHistory-${user.userId}`) || '[]')
+        setMoodHistory(userHistory)
+      } catch {
+        setMoodHistory([])
+      }
+    }
+  }, [user?.userId])
+
+  // Save user-specific favorites
+  useEffect(() => {
+    if (user?.userId) {
+      localStorage.setItem(`musicMoodFavorites-${user.userId}`, JSON.stringify(favorites))
+    }
+  }, [favorites, user?.userId])
+
+  // Save user-specific history
+  useEffect(() => {
+    if (user?.userId) {
+      localStorage.setItem(`musicMoodHistory-${user.userId}`, JSON.stringify(moodHistory))
+    }
+  }, [moodHistory, user?.userId])
 
   function toggleFavorite(id, song) {
     setFavorites(prev => {
       const exists = prev.some(f => f.id === id)
-      if (exists) {
-        return prev.filter(f => f.id !== id)
-      }
+      if (exists) return prev.filter(f => f.id !== id)
       return [...prev, { id, ...song }]
     })
   }
@@ -95,28 +114,20 @@ function App() {
     <>
       {showLoader && <Loader onDone={() => setShowLoader(false)} introDuration={1200} />}
       {!user ? (
-        <Login onLoginSuccess={login} />
+        <Login onLoginSuccess={(userData) => {
+          login(userData)
+          setActiveTab('home')
+          setCurrentMood(null)
+        }} />
       ) : (
         <div className="app-root">
-          {/* Background animated elements */}
+          {/* Background animated elements - Only music notes */}
           <div className="music-background">
             <div className="note note1">♪</div>
             <div className="note note2">♫</div>
             <div className="note note3">🎵</div>
             <div className="note note4">♪</div>
             <div className="note note5">♫</div>
-
-            {/* Sound waves */}
-            <div className="sound-wave wave1"></div>
-            <div className="sound-wave wave2"></div>
-            <div className="sound-wave wave3"></div>
-
-            {/* Frequency bars */}
-            <div className="frequency-bar bar1"></div>
-            <div className="frequency-bar bar2"></div>
-            <div className="frequency-bar bar3"></div>
-            <div className="frequency-bar bar4"></div>
-            <div className="frequency-bar bar5"></div>
           </div>
 
           {/* Navbar */}
@@ -214,7 +225,7 @@ function App() {
                     </h2>
                     <div className="songs-grid">
                       {getSongsByMood(currentMood).map((s, i) => {
-                        const id = `${currentMood}-${s.title}-${s.artist}-${s.language}`.toLowerCase().replace(/\s+/g, '-')
+                        const id = `${currentMood}-${i}`
                         const isFav = favorites.some(f => f.id === id)
                         return (
                           <motion.div

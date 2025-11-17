@@ -56,52 +56,7 @@ body {
     radial-gradient(circle at 80% 80%, rgba(0, 229, 255, 0.1) 0%, transparent 50%);
 }
 
-/* Animated sound waves */
-.sound-wave {
-  position: absolute;
-  border: 2px solid;
-  border-radius: 50%;
-  opacity: 0.3;
-}
-
-.wave1 {
-  width: 100px;
-  height: 100px;
-  border-color: rgba(124, 77, 255, 0.5);
-  top: 50%;
-  left: 10%;
-  animation: pulse-wave 3s ease-out infinite;
-}
-
-.wave2 {
-  width: 150px;
-  height: 150px;
-  border-color: rgba(0, 229, 255, 0.4);
-  top: 50%;
-  right: 10%;
-  animation: pulse-wave 4s ease-out infinite 1s;
-}
-
-.wave3 {
-  width: 80px;
-  height: 80px;
-  border-color: rgba(255, 105, 180, 0.4);
-  bottom: 20%;
-  left: 50%;
-  animation: pulse-wave 2.5s ease-out infinite 0.5s;
-}
-
-@keyframes pulse-wave {
-  0% {
-    transform: scale(1);
-    opacity: 0.5;
-  }
-
-  100% {
-    transform: scale(2.5);
-    opacity: 0;
-  }
-}
+/* Animated sound waves - REMOVED */
 
 /* Floating music notes */
 .note {
@@ -157,64 +112,7 @@ body {
   opacity: 0.3;
 }
 
-/* Floating frequency bars */
-.frequency-bar {
-  position: absolute;
-  width: 4px;
-  background: linear-gradient(180deg, transparent, rgba(124, 77, 255, 0.8), transparent);
-  animation: frequency-pulse 0.8s ease-in-out infinite;
-}
-
-.bar1 {
-  left: 20%;
-  top: 30%;
-  height: 40px;
-  animation-delay: 0s;
-}
-
-.bar2 {
-  left: 25%;
-  top: 50%;
-  height: 60px;
-  animation-delay: 0.1s;
-}
-
-.bar3 {
-  left: 30%;
-  top: 40%;
-  height: 50px;
-  animation-delay: 0.2s;
-}
-
-.bar4 {
-  right: 20%;
-  top: 60%;
-  height: 70px;
-  background: linear-gradient(180deg, transparent, rgba(0, 229, 255, 0.8), transparent);
-  animation-delay: 0.3s;
-}
-
-.bar5 {
-  right: 15%;
-  top: 45%;
-  height: 55px;
-  background: linear-gradient(180deg, transparent, rgba(0, 229, 255, 0.8), transparent);
-  animation-delay: 0.15s;
-}
-
-@keyframes frequency-pulse {
-
-  0%,
-  100% {
-    height: 20px;
-    opacity: 0.3;
-  }
-
-  50% {
-    height: 80px;
-    opacity: 0.8;
-  }
-}
+/* Floating frequency bars - REMOVED */
 
 @keyframes float-notes {
 
@@ -610,24 +508,14 @@ body {
 .mood-title {
   font-size: 1.8rem;
   margin-bottom: 1.5rem;
-  transition: var(--transition);
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.mood-emoji-header {
-  font-size: 2rem;
-}
-
-.mood-text {
   background: linear-gradient(135deg, #FFD700, #00e5ff);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  transition: var(--transition);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 /* Songs Grid */
@@ -789,91 +677,14 @@ body {
 .tab-content h2 {
   font-size: 1.8rem;
   margin-bottom: 1rem;
+  background: linear-gradient(135deg, #FFD700, #00e5ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   transition: var(--transition);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1px;
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-}
-
-.tab-emoji {
-  font-size: 2rem;
-}
-
-.tab-text {
-  background: linear-gradient(135deg, #FFD700, #00e5ff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.header-emoji {
-  font-size: 1.5rem;
-}
-
-.header-text {
-  background: linear-gradient(135deg, #FFD700, #00e5ff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.app-header h2 {
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-}
-
-.feature-emoji {
-  font-size: 1.2rem;
-  min-width: 1.5rem;
-}
-
-.feature-text {
-  color: rgba(255, 255, 255, 0.85);
-}
-
-.made-emoji {
-  font-size: 1.1rem;
-  margin: 0 0.3rem;
-}
-
-.made-text {
-  color: rgba(255, 255, 255, 0.85);
-}
-
-.heart-emoji {
-  font-size: 1.1rem;
-  margin: 0 0.3rem;
-}
-
-.footer-emoji {
-  font-size: 1.3rem;
-  margin-right: 0.5rem;
-}
-
-.footer-text {
-  color: rgba(255, 255, 255, 0.8);
-}
-
-.footer-heart {
-  font-size: 1.2rem;
-  margin: 0 0.4rem;
-}
-
-.footer-main {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.footer-creators {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.3rem;
 }
 
 .tab-subtitle {
@@ -1074,9 +885,8 @@ body.mood-happy .music-background {
     radial-gradient(circle at 80% 80%, rgba(255, 165, 0, 0.15) 0%, transparent 50%) !important;
 }
 
-body.mood-happy .mood-text,
-body.mood-happy .tab-content h2 .tab-text,
-body.mood-happy .tab-text {
+body.mood-happy .mood-title,
+body.mood-happy .tab-content h2 {
   color: #FFD700;
 }
 
@@ -1090,9 +900,8 @@ body.mood-sad .music-background {
     radial-gradient(circle at 80% 80%, rgba(135, 206, 235, 0.15) 0%, transparent 50%) !important;
 }
 
-body.mood-sad .mood-text,
-body.mood-sad .tab-content h2 .tab-text,
-body.mood-sad .tab-text {
+body.mood-sad .mood-title,
+body.mood-sad .tab-content h2 {
   color: #4a90e2;
 }
 
@@ -1106,9 +915,8 @@ body.mood-energetic .music-background {
     radial-gradient(circle at 80% 80%, rgba(255, 99, 71, 0.15) 0%, transparent 50%) !important;
 }
 
-body.mood-energetic .mood-text,
-body.mood-energetic .tab-content h2 .tab-text,
-body.mood-energetic .tab-text {
+body.mood-energetic .mood-title,
+body.mood-energetic .tab-content h2 {
   color: #FF6B6B;
 }
 
@@ -1124,12 +932,10 @@ body.mood-calm .music-background {
     radial-gradient(circle at 80% 80%, rgba(72, 209, 204, 0.15) 0%, transparent 50%) !important;
 }
 
-body.mood-chill .mood-text,
-body.mood-chill .tab-content h2 .tab-text,
-body.mood-chill .tab-text,
-body.mood-calm .mood-text,
-body.mood-calm .tab-content h2 .tab-text,
-body.mood-calm .tab-text {
+body.mood-chill .mood-title,
+body.mood-chill .tab-content h2,
+body.mood-calm .mood-title,
+body.mood-calm .tab-content h2 {
   color: #20B2AA;
 }
 
@@ -1143,9 +949,8 @@ body.mood-romantic .music-background {
     radial-gradient(circle at 80% 80%, rgba(255, 182, 193, 0.15) 0%, transparent 50%) !important;
 }
 
-body.mood-romantic .mood-text,
-body.mood-romantic .tab-content h2 .tab-text,
-body.mood-romantic .tab-text {
+body.mood-romantic .mood-title,
+body.mood-romantic .tab-content h2 {
   color: #FF1493;
 }
 
@@ -1159,9 +964,8 @@ body.mood-angry .music-background {
     radial-gradient(circle at 80% 80%, rgba(255, 69, 0, 0.15) 0%, transparent 50%) !important;
 }
 
-body.mood-angry .mood-text,
-body.mood-angry .tab-content h2 .tab-text,
-body.mood-angry .tab-text {
+body.mood-angry .mood-title,
+body.mood-angry .tab-content h2 {
   color: #DC143C;
 }
 
