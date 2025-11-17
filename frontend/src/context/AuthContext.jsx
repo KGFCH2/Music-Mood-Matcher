@@ -7,18 +7,10 @@ export function AuthProvider({ children }) {
     const [user, setUser] = useState(null)
     const [isLoading, setIsLoading] = useState(true)
 
-    // Initialize user from localStorage
+    // Initialize - do NOT load from localStorage on mount
+    // User must login each time the server/page is refreshed
     useEffect(() => {
-        try {
-            const savedUser = localStorage.getItem('musicMoodUser')
-            if (savedUser) {
-                setUser(JSON.parse(savedUser))
-            }
-        } catch (err) {
-            console.error('Error loading user from localStorage:', err)
-        } finally {
-            setIsLoading(false)
-        }
+        setIsLoading(false)
     }, [])
 
     const login = (userData) => {
