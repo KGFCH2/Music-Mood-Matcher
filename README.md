@@ -227,12 +227,12 @@ vercel deploy
 
 | File | Purpose | Size | Type |
 |------|---------|------|------|
-| `App.jsx` | Main React component with mood selection, favorites, and history logic | 428 lines | Component |
+| `App.jsx` | Main React component with mood selection, favorites, and history logic | 416 lines | Component |
 | `Login.jsx` | Register/Sign-In authentication component with sliding transitions | 486 lines | Component |
 | `Loader.jsx` | Animated intro loader page | 356 lines | Component |
 | `AuthContext.jsx` | Authentication state management with useAuth hook | ~50 lines | Context |
-| `App.css` | All styling and animations (moods, cards, navbar, etc.) | ~1100 lines | Styles |
-| `login.css` | Authentication forms styling with animations | ~350 lines | Styles |
+| `App.css` | All styling and animations (moods, cards, navbar, emoji separation) | ~1113 lines | Styles |
+| `login.css` | Authentication forms styling with animations and optimizations | ~426 lines | Styles |
 | `loader.css` | Loader animation styles | ~250 lines | Styles |
 | `songs.js` | Song database for all moods and languages | 277 lines | Data |
 | `index.css` | Global styles | ~50 lines | Styles |
@@ -333,15 +333,25 @@ This project is provided as-is for educational and personal use.
 
 ## 🛠 Recent Updates
 
-- **2025-11-17** — Major authentication overhaul:
-  - Implemented Register/Sign-In dual system with sliding transitions
+- **2025-11-18** — UI Polish: Emoji/Text Separation
+  - Separated emojis from mood-specific text colors throughout all sections
+  - Updated `.mood-title` to use flexbox layout with `.mood-emoji-header` and `.mood-text` spans
+  - Applied mood-specific color gradients only to `.mood-text` spans (not emojis)
+  - Ensured emojis display in natural emoji colors, completely independent from text coloring
+  - Consistent emoji separation applied to: Home mood titles, Favorites tab, History tab, About tab
+  - Files updated: `frontend/src/App.css` (mood title styling and all 6 mood color rules)
+  - Build optimized: 2.69s build time, 432 modules
+
+- **2025-11-17** — Login Optimization & Authentication:
+  - Optimized login form to fit properly on screen (reduced padding, margins, heights)
+  - Major authentication overhaul with Register/Sign-In dual system and sliding transitions
   - Added email verification on registration (code logged to console)
   - User-specific favorites and history storage (isolated by userId)
   - Auto-redirect to Home on login/user switch
   - Session security: Auto-logout on server restart
   - Cleaned up background: removed circles and frequency bars, kept only floating music icons
-  - Files added/updated: `frontend/src/components/Login.jsx`, `frontend/src/components/login.css`, `frontend/src/context/AuthContext.jsx`, `frontend/src/App.jsx`
+  - Files added/updated: `frontend/src/components/Login.jsx`, `frontend/src/components/login.css`, `frontend/src/context/AuthContext.jsx`, `frontend/src/App.jsx`, `frontend/src/App.css`
 
 - **2025-11-15** — Inserted a new animated loader page shown before the homepage. The loader is visual-only by default (no autoplaying music). Files added/updated: `frontend/src/components/Loader.jsx`, `frontend/src/components/loader.css`. Audio experiments were performed earlier and then removed per request.
 
-Last Updated: November 17, 2025
+Last Updated: November 18, 2025
