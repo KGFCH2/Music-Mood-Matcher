@@ -5,7 +5,7 @@ import './login.css'
 
 export default function Login({ onLoginSuccess }) {
     const [isSignIn, setIsSignIn] = useState(false)
-    const [registerData, setRegisterData] = useState({ email: '', userName: '' })
+    const [registerData, setRegisterData] = useState({ email: '', userName: '', gender: 'other' })
     const [signInEmail, setSignInEmail] = useState('')
     const [registeredUsers, setRegisteredUsers] = useState([])
     const [error, setError] = useState('')
@@ -109,6 +109,11 @@ export default function Login({ onLoginSuccess }) {
             return
         }
 
+        if (!registerData.gender) {
+            setError('Please select your gender')
+            return
+        }
+
         // Check if email already registered
         if (registeredUsers.some(u => u.email === registerData.email)) {
             setError('This email is already registered. Please sign in instead.')
@@ -126,6 +131,7 @@ export default function Login({ onLoginSuccess }) {
             const userData = {
                 email: registerData.email,
                 userName: registerData.userName,
+                gender: registerData.gender,
                 userId: Math.random().toString(36).substr(2, 9),
                 registeredAt: new Date().toISOString(),
                 loginHistory: [new Date().toISOString()],
@@ -352,6 +358,54 @@ export default function Login({ onLoginSuccess }) {
                                         disabled={isLoading}
                                         className="form-input"
                                     />
+                                </motion.div>
+
+                                {/* Gender Selection */}
+                                <motion.div
+                                    className="form-group"
+                                    initial={{ opacity: 0, x: -20 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    transition={{ delay: 0.25, duration: 0.4 }}
+                                >
+                                    <label className="gender-label">
+                                        <span className="label-icon">✨</span>
+                                        <span className="label-text">Select Gender</span>
+                                    </label>
+                                    <div className="gender-options">
+                                        <motion.button
+                                            type="button"
+                                            className={`gender-btn ${registerData.gender === 'male' ? 'active' : ''}`}
+                                            onClick={() => setRegisterData({ ...registerData, gender: 'male' })}
+                                            disabled={isLoading}
+                                            whileHover={{ scale: 1.05 }}
+                                            whileTap={{ scale: 0.95 }}
+                                        >
+                                            <span className="gender-icon">👨</span>
+                                            <span className="gender-text">Male</span>
+                                        </motion.button>
+                                        <motion.button
+                                            type="button"
+                                            className={`gender-btn ${registerData.gender === 'female' ? 'active' : ''}`}
+                                            onClick={() => setRegisterData({ ...registerData, gender: 'female' })}
+                                            disabled={isLoading}
+                                            whileHover={{ scale: 1.05 }}
+                                            whileTap={{ scale: 0.95 }}
+                                        >
+                                            <span className="gender-icon">👩</span>
+                                            <span className="gender-text">Female</span>
+                                        </motion.button>
+                                        <motion.button
+                                            type="button"
+                                            className={`gender-btn ${registerData.gender === 'other' ? 'active' : ''}`}
+                                            onClick={() => setRegisterData({ ...registerData, gender: 'other' })}
+                                            disabled={isLoading}
+                                            whileHover={{ scale: 1.05 }}
+                                            whileTap={{ scale: 0.95 }}
+                                        >
+                                            <span className="gender-icon">👤</span>
+                                            <span className="gender-text">Other</span>
+                                        </motion.button>
+                                    </div>
                                 </motion.div>
 
                                 {/* Submit Button */}
