@@ -250,7 +250,7 @@ body {
 .nav-user-section {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0.8rem;
   padding: 0.5rem 1rem;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(124, 77, 255, 0.2);
@@ -258,8 +258,42 @@ body {
   backdrop-filter: blur(10px);
 }
 
-.user-icon {
-  font-size: 1.1rem;
+.user-avatar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  background: linear-gradient(135deg, #7c4dff 0%, #00e5ff 100%);
+  border-radius: 50%;
+  box-shadow: 0 4px 15px rgba(124, 77, 255, 0.3);
+  animation: avatar-pulse 2s ease-in-out infinite;
+}
+
+.avatar-icon {
+  font-size: 1.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  width: 1.2rem;
+  height: 1.2rem;
+  background: linear-gradient(135deg, #FF6B6B, #FF4500);
+  border-radius: 50%;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #0f0c29;
+  box-shadow: 0 2px 8px rgba(255, 107, 107, 0.4);
 }
 
 .user-name {
@@ -270,6 +304,18 @@ body {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+@keyframes avatar-pulse {
+
+  0%,
+  100% {
+    box-shadow: 0 4px 15px rgba(124, 77, 255, 0.3);
+  }
+
+  50% {
+    box-shadow: 0 4px 25px rgba(124, 77, 255, 0.5);
+  }
 }
 
 .logout-btn {
@@ -1025,6 +1071,32 @@ body.mood-angry .tab-content h2 .tab-text {
     width: 100%;
     justify-content: center;
     flex-wrap: wrap;
+  }
+
+  .nav-user-section {
+    gap: 0.6rem;
+    padding: 0.4rem 0.8rem;
+  }
+
+  .user-avatar {
+    width: 2.2rem;
+    height: 2.2rem;
+  }
+
+  .avatar-icon {
+    font-size: 1.1rem;
+  }
+
+  .user-badge {
+    width: 1rem;
+    height: 1rem;
+    font-size: 0.6rem;
+    top: -3px;
+    right: -3px;
+  }
+
+  .user-name {
+    font-size: 0.8rem;
   }
 
   .app-header h2 {
