@@ -15,21 +15,30 @@ A React-based web application that helps users find songs based on their current
 
 ```
 Music Mood Matcher/
-├── README.md                      ← You are here
+├── README.md                      ← Project documentation
+├── LICENSE                        ← MIT License
 └── frontend/                      ← Main React application
     ├── src/
-    │   ├── App.jsx               ← Main React component (356 lines)
-    │   ├── App.css               ← All styling and animations
-    │   ├── index.css             ← Global styles
-    │   ├── main.jsx              ← Entry point
+    │   ├── App.jsx               ← Main React component (416 lines)
+    │   ├── App.css               ← Main styles with mood themes & animations (~1113 lines)
+    │   ├── index.css             ← Global styles (~50 lines)
+    │   ├── main.jsx              ← React entry point (~10 lines)
     │   ├── assets/               ← Static assets
+    │   ├── components/
+    │   │   ├── Login.jsx         ← Register/Sign-In component (486 lines)
+    │   │   ├── login.css         ← Auth forms styling (~426 lines)
+    │   │   ├── Loader.jsx        ← Animated intro loader (356 lines)
+    │   │   └── loader.css        ← Loader animations (~250 lines)
+    │   ├── context/
+    │   │   └── AuthContext.jsx   ← Auth state & useAuth hook (~50 lines)
     │   └── data/
     │       └── songs.js          ← Song database (277 lines, 240+ songs)
     ├── public/                   ← Static files
+    ├── index.html                ← HTML template
     ├── package.json              ← Dependencies and scripts
     ├── vite.config.js            ← Vite configuration
-    ├── index.html                ← HTML template
-    └── eslint.config.js          ← ESLint configuration
+    ├── eslint.config.js          ← ESLint rules
+    └── .gitignore                ← Git ignore file
 ```
 
 ---
@@ -324,10 +333,11 @@ This project is provided as-is for educational and personal use.
 
 ## 📈 Quick Stats
 
-![Code Size](https://img.shields.io/badge/Code%20Size-~1100%20Lines-blue?style=flat-square)
+![Code Size](https://img.shields.io/badge/Code%20Size-~2500%20Lines-blue?style=flat-square)
+![Components](https://img.shields.io/badge/Components-4-purple?style=flat-square)
 ![Build Size](https://img.shields.io/badge/Build%20Size-~70%20KB-green?style=flat-square)
-![Performance](https://img.shields.io/badge/Performance-95%2B%20Lighthouse-brightgreen?style=flat-square)
-![Dev Server](https://img.shields.io/badge/Dev%20Server-%3C2s-informational?style=flat-square)
+![Build Time](https://img.shields.io/badge/Build%20Time-2.7s-informational?style=flat-square)
+![Modules](https://img.shields.io/badge/Modules-432-orange?style=flat-square)
 
 ---
 
