@@ -7,7 +7,7 @@ import { useAuth } from './context/AuthContext'
 import './App.css'
 
 function App() {
-  const { user, login, logout } = useAuth()
+  const { user, login, logout, isLoading: authLoading } = useAuth()
   const [showLoader, setShowLoader] = useState(true)
   const [currentMood, setCurrentMood] = useState(null)
   const [activeTab, setActiveTab] = useState('home')
@@ -125,15 +125,20 @@ function App() {
 
   return (
     <>
-      {showLoader && <Loader onDone={() => setShowLoader(false)} introDuration={1200} />}
-      {!user ? (
-        <Login onLoginSuccess={(userData) => {
-          login(userData)
-          setActiveTab('home')
-          setCurrentMood(null)
-        }} />
-      ) : (
-        <div className="app-root">
+      {(showLoader || authLoading) && <Loader onDone={() => {
+        console.log('Loader done, hiding loader')
+        setShowLoader(false)
+      }} introDuration={800} />}
+      {!showLoader && !authLoading ? (
+        <>
+          {!user ? (
+            <Login onLoginSuccess={(userData) => {
+              login(userData)
+              setActiveTab('home')
+              setCurrentMood(null)
+            }} />
+          ) : (
+            <div className="app-root">
           {/* Background animated elements - Only music notes */}
           <div className="music-background">
             <div className="note note1">♪</div>
@@ -150,15 +155,15 @@ function App() {
                 className="nav-brand"
                 role="button"
                 tabIndex={0}
-                onClick={() => { setActiveTab('home'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { setActiveTab('home'); window.scrollTo({ top: 0, behavior: 'smooth' }); } }}
+                onClick={() => { setActiveTab('home'); setCurrentMood(null); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { setActiveTab('home'); setCurrentMood(null); window.scrollTo({ top: 0, behavior: 'smooth' }); } }}
                 aria-label="Go to Home"
               >
                 <span className="brand-icon">🎵</span>
                 <h1>Music Mood Matcher</h1>
               </div>
               <div className="nav-menu">
-                <button className={`nav-btn ${activeTab === 'home' ? 'active' : ''}`} onClick={() => setActiveTab('home')}>
+                <button className={`nav-btn ${activeTab === 'home' ? 'active' : ''}`} onClick={() => { setActiveTab('home'); setCurrentMood(null); }}>
                   🏠 Home
                 </button>
                 <button className={`nav-btn ${activeTab === 'favorites' ? 'active' : ''}`} onClick={() => setActiveTab('favorites')}>
@@ -171,17 +176,18 @@ function App() {
                   ℹ️ About
                 </button>
               </div>
-              <div className="nav-user-section">
-                <div className="user-avatar">
-                  <span className="avatar-icon">{getGenderAvatar(user?.gender)}</span>
-                  <span className="user-badge">{user?.gender.charAt(0).toUpperCase()}</span>
+              <div className="user-profile-btn">
+                <div className="profile-avatar">
+                  <span className="profile-icon">{getGenderAvatar(user?.gender)}</span>
                 </div>
-                <span className="user-name">{user?.userName}</span>
+                <div className="profile-info">
+                  <span className="profile-name">{user?.userName}</span>
+                  <span className="profile-email">{user?.email}</span>
+                </div>
+                <button className="logout-btn" onClick={logout} title="Logout">
+                  <span className="logout-icon">👋</span>
+                </button>
               </div>
-              <button className="logout-btn" onClick={logout} title="Logout">
-                <span className="logout-icon">🚪</span>
-                <span className="logout-text">Logout</span>
-              </button>
             </div>
           </nav>
 
@@ -402,7 +408,7 @@ function App() {
                   <span className="made-emoji">🎶</span>
                   <span className="made-text">Made with</span>
                   <span className="heart-emoji">❤️</span>
-                  <span className="made-text">by Debasmita</span>
+                  <span className="made-text">by Babin & Debasmita</span>
                 </p>
               </div>
             </motion.div>
@@ -422,6 +428,22 @@ function App() {
               </p>
             </div>
           </footer>
+            </div>
+          )}
+        </>
+      ) : (
+        <div style={{
+          position: 'fixed',
+          inset: 0,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          background: 'linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%)',
+          color: '#fff',
+          fontSize: '1.5rem',
+          zIndex: 1
+        }}>
+          Loading...
         </div>
       )}
     </>
