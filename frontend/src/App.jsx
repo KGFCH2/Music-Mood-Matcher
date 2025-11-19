@@ -177,11 +177,11 @@ function App() {
                   <span className="user-badge">{user?.gender.charAt(0).toUpperCase()}</span>
                 </div>
                 <span className="user-name">{user?.userName}</span>
-                <button className="logout-btn" onClick={logout} title="Logout">
-                  <span className="logout-icon">🚪</span>
-                  <span className="logout-text">Logout</span>
-                </button>
               </div>
+              <button className="logout-btn" onClick={logout} title="Logout">
+                <span className="logout-icon">🚪</span>
+                <span className="logout-text">Logout</span>
+              </button>
             </div>
           </nav>
 
