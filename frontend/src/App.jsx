@@ -6,6 +6,7 @@ import Login from './components/Login'
 import { useAuth } from './context/AuthContext'
 import './App.css'
 import CrushMode from './components/CrushMode'
+import MoodWebcam from './components/MoodWebcam'
 
 function App() {
   const { user, login, logout, isLoading: authLoading } = useAuth()
@@ -418,7 +419,7 @@ function App() {
                     <span className="tab-text">AI Mood Detection</span>
                   </h2>
                   <p className="tab-subtitle">Let your webcam detect your mood and generate a playlist! (No images are stored)</p>
-                  {/* TODO: Render <MoodWebcam /> component here */}
+                  <MoodWebcam />
                 </div>
               )}
 
