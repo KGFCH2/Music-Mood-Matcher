@@ -5,6 +5,7 @@ import Loader from './components/Loader'
 import Login from './components/Login'
 import { useAuth } from './context/AuthContext'
 import './App.css'
+import CrushMode from './components/CrushMode'
 
 function App() {
   const { user, login, logout, isLoading: authLoading } = useAuth()
@@ -204,6 +205,12 @@ function App() {
                     <button className={`nav-btn ${activeTab === 'history' ? 'active' : ''}`} onClick={() => setActiveTab('history')}>
                       📊 History
                     </button>
+                    <button className={`nav-btn ${activeTab === 'ai-mood' ? 'active' : ''}`} onClick={() => setActiveTab('ai-mood')}>
+                      🤖 AI Mood
+                    </button>
+                    <button className={`nav-btn ${activeTab === 'crush' ? 'active' : ''}`} onClick={() => setActiveTab('crush')}>
+                      🕵️‍♂️ Crush Mode
+                    </button>
                     <button className={`nav-btn ${activeTab === 'about' ? 'active' : ''}`} onClick={() => setActiveTab('about')}>
                       ℹ️ About
                     </button>
@@ -401,6 +408,30 @@ function App() {
                     </>
                   )}
                 </motion.div>
+              )}
+
+              {/* AI Mood Tab */}
+              {activeTab === 'ai-mood' && (
+                <div className="tab-content">
+                  <h2>
+                    <span className="tab-emoji">🤖</span>
+                    <span className="tab-text">AI Mood Detection</span>
+                  </h2>
+                  <p className="tab-subtitle">Let your webcam detect your mood and generate a playlist! (No images are stored)</p>
+                  {/* TODO: Render <MoodWebcam /> component here */}
+                </div>
+              )}
+
+              {/* Crush Mode Tab */}
+              {activeTab === 'crush' && (
+                <div className="tab-content">
+                  <h2>
+                    <span className="tab-emoji">🕵️‍♂️</span>
+                    <span className="tab-text">Crush Mode</span>
+                  </h2>
+                  <p className="tab-subtitle">Secret feature: Generate a playlist for your crush!</p>
+                  <CrushMode />
+                </div>
               )}
 
               {/* About Tab */}
