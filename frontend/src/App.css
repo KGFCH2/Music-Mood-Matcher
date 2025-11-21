@@ -1005,7 +1005,7 @@ body {
 }
 
 .footer-main {
-  font-size: 1.1rem;
+  font-size: 0.85rem;
   font-weight: 700;
   background: linear-gradient(135deg, #FFD700, #00e5ff);
   -webkit-background-clip: text;
