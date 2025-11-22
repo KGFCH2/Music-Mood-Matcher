@@ -1,0 +1,96 @@
+.moodwebcam-root {
+  max-width: 480px;
+  margin: 2rem auto;
+  background: linear-gradient(135deg, rgba(124,77,255,0.08), rgba(0,229,255,0.04));
+  border-radius: 1.5rem;
+  box-shadow: 0 4px 24px rgba(124,77,255,0.12);
+  padding: 2rem;
+  text-align: center;
+  font-family: 'Quicksand', 'Segoe UI', sans-serif;
+  border: 1px solid rgba(124,77,255,0.12);
+}
+.moodwebcam-privacy {
+  color: #00e5ff;
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+.moodwebcam-cam {
+  margin-bottom: 1.2rem;
+  display: flex;
+  justify-content: center;
+}
+.moodwebcam-btn {
+  margin: 1rem 0;
+  padding: 0.8rem 1.2rem;
+  background: linear-gradient(135deg, #FFD700, #FF1493, #00e5ff, #7c4dff);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  box-shadow: 0 8px 25px rgba(124,77,255,0.18);
+  transition: all 0.3s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+}
+.moodwebcam-btn:disabled {
+  background: #ffe4ee;
+  color: #aaa;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+.moodwebcam-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #00e5ff 0%, #7c4dff 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 35px rgba(124,77,255,0.22);
+}
+.moodwebcam-result {
+  margin-top: 2rem;
+}
+.moodwebcam-mood {
+  font-weight: bold;
+  color: #7c4dff;
+  font-size: 1.2rem;
+}
+.moodwebcam-playlist {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0;
+}
+.moodwebcam-song {
+  background: #fff;
+  border-radius: 1rem;
+  margin: 0.5rem 0;
+  padding: 0.7rem 1rem;
+  box-shadow: 0 2px 8px rgba(124,77,255,0.07);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.moodwebcam-song-title {
+  font-weight: bold;
+  color: #7c4dff;
+}
+.moodwebcam-song-artist {
+  color: #888;
+  margin-left: 0.5rem;
+}
+.moodwebcam-play-btn {
+  margin-left: 1rem;
+  background: #FFD700;
+  color: #7c4dff;
+  border-radius: 0.7rem;
+  padding: 0.3rem 0.8rem;
+  text-decoration: none;
+  font-size: 1rem;
+  transition: background 0.2s;
+}
+.moodwebcam-play-btn:hover {
+  background: #FF1493;
+  color: #fff;
+}
