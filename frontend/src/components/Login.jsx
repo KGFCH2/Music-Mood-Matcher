@@ -20,7 +20,7 @@ export default function Login({ onLoginSuccess }) {
 
     // Initialize EmailJS
     useEffect(() => {
-        emailjs.init('DXAsSF0A0vz2XPyFm') // Public key
+        emailjs.init('yvSwGRuksv7zAychI') // Public key
     }, [])
 
     // Load registered users from localStorage on mount
@@ -42,64 +42,52 @@ export default function Login({ onLoginSuccess }) {
 
     const sendVerificationEmail = async (email, userName, verificationCode) => {
         try {
-            // ============================================
-            // EMAILJS CONFIGURATION - UPDATE THESE VALUES
-            // ============================================
-            const SERVICE_ID = 'service_musicmood'      // Your EmailJS Service ID
-            const TEMPLATE_ID = 'template_verification' // Your EmailJS Template ID
-            // PUBLIC_KEY is already initialized above
+            // EmailJS Configuration with Security
+            const SERVICE_ID = 'service_zfess1e'
+            const TEMPLATE_ID = 'template_hz19s08'
+            const PUBLIC_KEY = 'yvSwGRuksv7zAychI'
 
-            // Email template variables that will be used in EmailJS template
-            const templateParams = {
-                to_email: email,
-                user_name: userName,
-                verification_code: verificationCode,
-                app_url: window.location.origin
+            // Verify email format before sending
+            if (!validateEmail(email)) {
+                console.error('Invalid email format:', email)
+                return false
             }
 
-            console.log('📧 Attempting to send verification email...')
-            console.log('Email to:', email)
-            console.log('Service ID:', SERVICE_ID)
-            console.log('Template ID:', TEMPLATE_ID)
+            // Template variables - must match your EmailJS template
+            const templateParams = {
+                to_email: email,           // Recipient's registered email
+                user_name: userName,       // User's name
+                verification_code: verificationCode  // 6-digit code
+            }
+
+            console.log('📧 Sending verification email')
+            console.log('To:', email)
+            console.log('User:', userName)
+            console.log('Code:', verificationCode)
 
             const response = await emailjs.send(
                 SERVICE_ID,
                 TEMPLATE_ID,
-                templateParams
+                templateParams,
+                PUBLIC_KEY
             )
 
-            console.log('✅ Email sent successfully!')
-            console.log('EmailJS Response:', response)
+            console.log('✅ Verification email sent successfully to:', email)
+            console.log('Response Status:', response.status)
             return true
 
         } catch (error) {
-            console.error('❌ Error sending email:', error)
+            console.error('❌ Failed to send verification email:', error.message)
             
-            // Check if it's a configuration error
-            if (error.status === 400 || error.text?.includes('Invalid service ID') || error.text?.includes('Invalid template ID')) {
-                console.error('\n🔧 SETUP REQUIRED:')
-                console.error('Your EmailJS service or template is not configured correctly.')
-                console.error('Please follow the EMAIL_SETUP.md guide in the frontend folder.')
-                console.error('\nQuick steps:')
-                console.error('1. Visit https://www.emailjs.com/')
-                console.error('2. Create a service with ID: service_musicmood')
-                console.error('3. Create a template with ID: template_verification')
-                console.error('4. Add these template variables: {{to_email}}, {{user_name}}, {{verification_code}}')
-                console.error('\nThe verification code is: ' + verificationCode)
-                alert(
-                    '❌ Email service not configured.\n\n' +
-                    'To enable real email verification:\n\n' +
-                    '1. Go to emailjs.com and create a free account\n' +
-                    '2. Add your email service (Gmail, Outlook, etc.)\n' +
-                    '3. Create a template named "template_verification"\n' +
-                    '4. Use variables: {{to_email}}, {{user_name}}, {{verification_code}}\n' +
-                    '5. Check EMAIL_SETUP.md in the frontend folder for detailed steps\n\n' +
-                    'For now, your verification code is: ' + verificationCode
-                )
+            // Log specific error codes for debugging
+            if (error.status === 400) {
+                console.error('Error 400: Invalid request - Check template variables match: to_email, user_name, verification_code')
+            } else if (error.status === 401) {
+                console.error('Error 401: Unauthorized - Check EmailJS public key')
+            } else if (error.status === 404) {
+                console.error('Error 404: Not found - Check Service ID and Template ID in EmailJS dashboard')
             } else {
-                // Other network or unexpected errors
-                console.error('Unexpected error:', error.message)
-                alert('Error sending email. Please try again.')
+                console.error('Error:', error.status, error.text)
             }
             
             return false
@@ -150,39 +138,50 @@ export default function Login({ onLoginSuccess }) {
         setIsLoading(true)
 
         setTimeout(async () => {
-            // Generate verification code first
+            // Generate secure verification code
             const verificationCode = generateVerificationCode()
+            
+            // Store the email being registered to prevent accidental email changes
+            const registrationEmail = registerData.email
+            const registrationName = registerData.userName
 
-            // Try to send email
-            await sendVerificationEmail(
-                registerData.email,
-                registerData.userName,
-                verificationCode
-            )
-
+            // Create user data object
             const userData = {
-                email: registerData.email,
-                userName: registerData.userName,
+                email: registrationEmail,
+                userName: registrationName,
                 gender: registerData.gender,
                 userId: Math.random().toString(36).substr(2, 9),
                 registeredAt: new Date().toISOString(),
                 loginHistory: [new Date().toISOString()],
                 isVerified: false,
-                verificationCode: verificationCode
+                verificationCode: verificationCode,
+                emailVerified: false  // Track if this specific email was verified
             }
 
-            // Save new user to registered users list
+            // Save new user to registered users list BEFORE sending email
             const updatedUsers = [...registeredUsers, userData]
             setRegisteredUsers(updatedUsers)
             localStorage.setItem('musicMoodUsers', JSON.stringify(updatedUsers))
 
+            // Now send verification email to the registered email
+            const emailSent = await sendVerificationEmail(
+                registrationEmail,
+                registrationName,
+                verificationCode
+            )
+
             setIsLoading(false)
-            // Show verification dialog instead of logging in directly
-            setVerificationDialogEmail(registerData.email)
+            
+            // Show verification dialog with the registered email
+            setVerificationDialogEmail(registrationEmail)
             setShowVerificationDialog(true)
             setVerificationInputCode('')
             setVerificationError('')
             setRegisterData({ email: '', userName: '', gender: 'other' })
+            
+            // Log registration info
+            console.log('User registered with email:', registrationEmail)
+            console.log('Verification code sent:', emailSent)
         }, 1000)
     }
 
@@ -439,7 +438,7 @@ export default function Login({ onLoginSuccess }) {
                                             whileHover={{ scale: 1.05 }}
                                             whileTap={{ scale: 0.95 }}
                                         >
-                                            <motion.span 
+                                            <motion.span
                                                 key={`male-icon-${registerData.gender === 'male'}`}
                                                 className="gender-icon"
                                                 animate={{ scale: registerData.gender === 'male' ? 1.3 : 1 }}
@@ -458,7 +457,7 @@ export default function Login({ onLoginSuccess }) {
                                             whileHover={{ scale: 1.05 }}
                                             whileTap={{ scale: 0.95 }}
                                         >
-                                            <motion.span 
+                                            <motion.span
                                                 key={`female-icon-${registerData.gender === 'female'}`}
                                                 className="gender-icon"
                                                 animate={{ scale: registerData.gender === 'female' ? 1.3 : 1 }}
@@ -477,7 +476,7 @@ export default function Login({ onLoginSuccess }) {
                                             whileHover={{ scale: 1.05 }}
                                             whileTap={{ scale: 0.95 }}
                                         >
-                                            <motion.span 
+                                            <motion.span
                                                 key={`other-icon-${registerData.gender === 'other'}`}
                                                 className="gender-icon"
                                                 animate={{ scale: registerData.gender === 'other' ? 1.3 : 1 }}
@@ -720,43 +719,38 @@ export default function Login({ onLoginSuccess }) {
                                     <span className="dialog-icon">📧</span>
                                     <h3>Verify Your Email</h3>
                                     <p>A verification code has been sent to <strong>{verificationDialogEmail}</strong></p>
-                                    <p style={{ fontSize: '0.9rem', marginTop: '0.5rem', color: '#b0b0b0' }}>Please enter the code from your email to complete registration.</p>
+                                    <p style={{ fontSize: '0.9rem', marginTop: '0.5rem', color: '#b0b0b0' }}>
+                                        📨 Check your email inbox for the verification code.<br />
+                                        💡 If you don't see it, check your <strong>spam/junk</strong> folder first.
+                                    </p>
 
-                                    {/* Verification Code Display */}
+                                    {/* Verification Code Backup Display */}
                                     {registeredUsers.find(u => u.email === verificationDialogEmail) && (
                                         <div style={{
-                                            background: 'rgba(0, 229, 255, 0.08)',
-                                            border: '2px solid rgba(0, 229, 255, 0.3)',
+                                            background: 'rgba(255, 193, 7, 0.08)',
+                                            border: '2px solid rgba(255, 193, 7, 0.3)',
                                             padding: '1.2rem',
                                             borderRadius: '10px',
                                             marginTop: '1rem',
                                             textAlign: 'center'
                                         }}>
-                                            <p style={{ margin: '0 0 0.8rem', fontSize: '0.85rem', color: '#b0b0b0', fontWeight: '500' }}>📧 Your Verification Code:</p>
+                                            <p style={{ margin: '0 0 0.8rem', fontSize: '0.85rem', color: '#ffc107', fontWeight: '500' }}>⚠️ Backup Code (if email doesn't arrive):</p>
                                             <p style={{
                                                 margin: 0,
                                                 fontSize: '1.8rem',
                                                 fontWeight: 'bold',
-                                                color: '#00e5ff',
+                                                color: '#ffc107',
                                                 fontFamily: 'monospace',
                                                 letterSpacing: '6px',
                                                 padding: '0.8rem',
-                                                background: 'rgba(0, 229, 255, 0.05)',
+                                                background: 'rgba(255, 193, 7, 0.05)',
                                                 borderRadius: '6px',
-                                                border: '1px solid rgba(0, 229, 255, 0.2)'
+                                                border: '1px solid rgba(255, 193, 7, 0.2)'
                                             }}>
                                                 {registeredUsers.find(u => u.email === verificationDialogEmail)?.verificationCode}
                                             </p>
-                                            <p style={{ margin: '1rem 0 0', fontSize: '0.8rem', color: '#888', lineHeight: '1.8', textAlign: 'left' }}>
-                                                <strong>💡 Setup Instructions:</strong><br />
-                                                Real emails are not sent yet because EmailJS is not configured.<br />
-                                                <br />
-                                                <strong>To enable real email sending:</strong><br />
-                                                1. Read <code style={{ background: '#222', padding: '2px 6px', borderRadius: '3px' }}>EMAIL_SETUP.md</code> in frontend folder<br />
-                                                2. Visit <a href="https://www.emailjs.com/" target="_blank" rel="noopener noreferrer" style={{ color: '#00e5ff', textDecoration: 'none' }}>emailjs.com</a> (free)<br />
-                                                3. Create service: <code style={{ background: '#222', padding: '2px 6px', borderRadius: '3px' }}>service_musicmood</code><br />
-                                                4. Create template: <code style={{ background: '#222', padding: '2px 6px', borderRadius: '3px' }}>template_verification</code><br />
-                                                5. Use code above when ready ✅
+                                            <p style={{ margin: '0.8rem 0 0', fontSize: '0.75rem', color: '#888' }}>
+                                                📧 Primary code is being sent to your email (check spam folder if needed)
                                             </p>
                                         </div>
                                     )}
