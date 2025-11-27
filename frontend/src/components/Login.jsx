@@ -804,7 +804,7 @@ export default function Login({ onLoginSuccess }) {
                                             </p>
                                         </div>
 
-                                        <form onSubmit={handleVerifyEmail} style={{ padding: '2rem' }}>
+                                        <form onSubmit={handleVerifyEmail} style={{ padding: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                                             {verificationError && (
                                                 <motion.div
                                                     className="error-message"
@@ -847,11 +847,10 @@ export default function Login({ onLoginSuccess }) {
                                                 initial={{ opacity: 0, y: 20 }}
                                                 animate={{ opacity: 1, y: 0 }}
                                                 transition={{ delay: 0.2, duration: 0.4 }}
+                                                style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}
                                             >
-                                                <div style={{ display: 'flex', justifyContent: 'center' }}>
-                                                    <span className="btn-icon">✅</span>
-                                                    <span className="btn-text">Verify Email</span>
-                                                </div>
+                                                <span className="btn-icon">✅</span>
+                                                <span className="btn-text">Verify Email</span>
                                             </motion.button>
 
                                             <motion.button
