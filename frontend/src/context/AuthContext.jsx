@@ -27,13 +27,30 @@ export function AuthProvider({ children }) {
         localStorage.setItem('musicMoodUser', JSON.stringify(userData))
     }
 
+    const updateUser = (updatedData) => {
+        const updated = { ...user, ...updatedData }
+        setUser(updated)
+        localStorage.setItem('musicMoodUser', JSON.stringify(updated))
+        // Also update in the users list if email matches
+        try {
+            const savedUsers = localStorage.getItem('musicMoodUsers')
+            if (savedUsers) {
+                const users = JSON.parse(savedUsers)
+                const updatedUsers = users.map(u => u.email === user.email ? updated : u)
+                localStorage.setItem('musicMoodUsers', JSON.stringify(updatedUsers))
+            }
+        } catch (error) {
+            console.error('Error updating users list:', error)
+        }
+    }
+
     const logout = () => {
         setUser(null)
         localStorage.removeItem('musicMoodUser')
     }
 
     return (
-        <AuthContext.Provider value={{ user, login, logout, isLoading }}>
+        <AuthContext.Provider value={{ user, login, logout, updateUser, isLoading }}>
             {children}
         </AuthContext.Provider>
     )

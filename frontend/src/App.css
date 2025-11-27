@@ -280,27 +280,83 @@ body {
 }
 
 /* User Section Styles */
-/* User Profile Button Styles */
+/* Removed user-profile-btn from navbar */
 .user-profile-btn {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 0.8rem 1.2rem;
-  background: linear-gradient(135deg, rgba(124, 77, 255, 0.1), rgba(0, 229, 255, 0.05));
-  border: 2px solid rgba(124, 77, 255, 0.4);
-  border-radius: 50px;
-  backdrop-filter: blur(15px);
-  box-shadow: 0 8px 32px rgba(124, 77, 255, 0.1), inset 0 1px 1px rgba(255, 255, 255, 0.1);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  cursor: pointer;
+  display: none;
 }
 
-.user-profile-btn:hover {
-  background: linear-gradient(135deg, rgba(124, 77, 255, 0.2), rgba(0, 229, 255, 0.1));
-  border-color: rgba(124, 77, 255, 0.6);
-  box-shadow: 0 12px 48px rgba(124, 77, 255, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.15);
-  transform: translateY(-3px);
+.profile-nav-btn {
+  display: none;
+}
+
+/* Floating Profile Button - Bottom Right Corner */
+.floating-profile-btn {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 999;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.floating-avatar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  background: linear-gradient(135deg, #7c4dff 0%, #00e5ff 100%);
+  border-radius: 50%;
+  box-shadow: 0 8px 32px rgba(124, 77, 255, 0.5);
+  flex-shrink: 0;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 3px solid rgba(0, 229, 255, 0.3);
+}
+
+.floating-profile-btn:hover .floating-avatar {
+  transform: scale(1.15);
+  box-shadow: 0 12px 48px rgba(124, 77, 255, 0.7);
+  border-color: rgba(0, 229, 255, 0.6);
+}
+
+.floating-avatar-icon {
+  font-size: 1.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.3));
+}
+
+/* Logout button in navbar */
+.logout-btn {
+  padding: 0.5rem 1rem;
+  border: 1px solid rgba(255, 68, 68, 0.4);
+  background: linear-gradient(135deg, rgba(255, 107, 107, 0.1), rgba(255, 69, 0, 0.05));
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: none;
+  flex-shrink: 0;
+  font-size: 0.9rem;
+  color: var(--text-light);
+}
+
+.logout-btn:hover {
+  background: linear-gradient(135deg, rgba(255, 107, 107, 0.2), rgba(255, 69, 0, 0.1));
+  border-color: rgba(255, 68, 68, 0.7);
+  box-shadow: 0 0 15px rgba(255, 68, 68, 0.3);
 }
 
 .profile-avatar {
@@ -308,8 +364,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 2.8rem;
-  height: 2.8rem;
+  width: 2rem;
+  height: 2rem;
   background: linear-gradient(135deg, #7c4dff 0%, #00e5ff 100%);
   border-radius: 50%;
   box-shadow: 0 4px 16px rgba(124, 77, 255, 0.4);
@@ -318,7 +374,7 @@ body {
 }
 
 .profile-icon {
-  font-size: 1.4rem;
+  font-size: 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -326,10 +382,7 @@ body {
 }
 
 .profile-info {
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-  min-width: 120px;
+  display: none;
 }
 
 .profile-name {
@@ -353,33 +406,10 @@ body {
   box-shadow: 0 6px 24px rgba(124, 77, 255, 0.6);
 }
 
-.logout-btn {
-  padding: 0.6rem;
-  border: 1px solid rgba(255, 68, 68, 0.4);
-  background: linear-gradient(135deg, rgba(255, 107, 107, 0.1), rgba(255, 69, 0, 0.05));
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 2px 8px rgba(255, 68, 68, 0.1);
-  flex-shrink: 0;
-}
-
 .logout-icon {
   font-size: 1.2rem;
   transition: transform 0.3s ease;
   filter: drop-shadow(0 0 4px rgba(255, 68, 68, 0.3));
-}
-
-.logout-btn:hover {
-  background: linear-gradient(135deg, rgba(255, 107, 107, 0.2), rgba(255, 69, 0, 0.1));
-  border-color: rgba(255, 68, 68, 0.7);
-  box-shadow: 0 4px 16px rgba(255, 68, 68, 0.2);
-  transform: scale(1.1);
 }
 
 .logout-btn:hover .logout-icon {
@@ -390,55 +420,6 @@ body {
 /* Hide old styles */
 .nav-user-section {
   display: none;
-}
-
-.logout-btn::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 107, 107, 0.3), transparent);
-  transition: left 0.5s ease;
-}
-
-.logout-icon {
-  font-size: 1.3rem;
-  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  filter: drop-shadow(0 0 8px rgba(255, 68, 68, 0.4));
-}
-
-.logout-text {
-  color: #ff6464;
-  font-weight: 800;
-  transition: all 0.4s ease;
-}
-
-.logout-btn:hover::before {
-  left: 100%;
-}
-
-.logout-btn:hover {
-  background: linear-gradient(135deg, rgba(255, 107, 107, 0.25), rgba(255, 69, 0, 0.15));
-  border-color: rgba(255, 68, 68, 0.9);
-  box-shadow: 0 10px 36px rgba(255, 68, 68, 0.4);
-  transform: translateY(-4px);
-}
-
-.logout-btn:hover .logout-icon {
-  transform: scale(1.25) rotate(-15deg);
-  filter: drop-shadow(0 0 12px rgba(255, 68, 68, 0.6));
-}
-
-.logout-btn:hover .logout-text {
-  color: #ffaaaa;
-  letter-spacing: 1px;
-}
-
-.logout-btn:active {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(255, 68, 68, 0.3);
 }
 
 /* Main App Root */

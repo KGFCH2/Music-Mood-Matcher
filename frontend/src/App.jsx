@@ -4,12 +4,13 @@ import { songs, moods } from './data/songs'
 import Loader from './components/Loader'
 import Login from './components/Login'
 import { useAuth } from './context/AuthContext'
-import './App.css'
 import CrushMode from './components/CrushMode'
 import MoodWebcam from './components/MoodWebcam'
+import ProfileNav from './components/ProfileNav'
+import './App.css'
 
 function App() {
-  const { user, login, logout, isLoading: authLoading } = useAuth()
+  const { user, login, logout, updateUser, isLoading: authLoading } = useAuth()
   const [showLoader, setShowLoader] = useState(true)
   const [currentMood, setCurrentMood] = useState(null)
   const [activeTab, setActiveTab] = useState('home')
@@ -17,6 +18,7 @@ function App() {
   const [favorites, setFavorites] = useState([])
   const [moodHistory, setMoodHistory] = useState([])
   const [showSecurityAlert, setShowSecurityAlert] = useState(false)
+  const [showProfileNav, setShowProfileNav] = useState(false)
 
   // Show security alert when user logs in
   useEffect(() => {
@@ -151,6 +153,11 @@ function App() {
             }} />
           ) : (
             <div className="app-root">
+              {/* Profile Navigation Sidebar */}
+              {showProfileNav && (
+                <ProfileNav user={user} onClose={() => setShowProfileNav(false)} onUpdateUser={updateUser} />
+              )}
+
               {/* Security Alert */}
               {showSecurityAlert && (
                 <motion.div
@@ -216,20 +223,24 @@ function App() {
                       ℹ️ About
                     </button>
                   </div>
-                  <div className="user-profile-btn">
-                    <div className="profile-avatar">
-                      <span className="profile-icon">{getGenderAvatar(user?.gender)}</span>
-                    </div>
-                    <div className="profile-info">
-                      <span className="profile-name">{user?.userName}</span>
-                      <span className="profile-email">{user?.email}</span>
-                    </div>
-                    <button className="logout-btn" onClick={logout} title="Logout">
-                      <span className="logout-icon">👋</span>
-                    </button>
-                  </div>
+                  <button className="logout-btn" onClick={logout} title="Logout">
+                    <span className="logout-icon">👋</span>
+                  </button>
                 </div>
               </nav>
+
+              {/* Floating Profile Button */}
+              <motion.button
+                className="floating-profile-btn"
+                onClick={() => setShowProfileNav(true)}
+                title="View Profile"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <div className="floating-avatar">
+                  <span className="floating-avatar-icon">{getGenderAvatar(user?.gender)}</span>
+                </div>
+              </motion.button>
 
               {/* Home Tab */}
               {activeTab === 'home' && (
@@ -425,14 +436,19 @@ function App() {
 
               {/* Crush Mode Tab */}
               {activeTab === 'crush' && (
-                <div className="tab-content">
+                <motion.div
+                  className="tab-content"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3 }}
+                >
                   <h2>
                     <span className="tab-emoji">🕵️‍♂️</span>
                     <span className="tab-text">Crush Mode</span>
                   </h2>
                   <p className="tab-subtitle">Secret feature: Generate a playlist for your crush!</p>
                   <CrushMode />
-                </div>
+                </motion.div>
               )}
 
               {/* About Tab */}
@@ -477,21 +493,6 @@ function App() {
                   </div>
                 </motion.div>
               )}
-
-              {/* Footer */}
-              <footer className="footer">
-                <div className="footer-content">
-                  <p className="footer-main">
-                    <span className="footer-emoji">🎵</span>
-                    <span className="footer-text">Music Mood Matcher © 2025</span>
-                  </p>
-                  <p className="footer-creators">
-                    <span className="footer-text">Created with</span>
-                    <span className="footer-emoji">💜</span>
-                    <span className="footer-text">by <strong>Babin Bid</strong> & <strong>Debasmita Bose</strong></span>
-                  </p>
-                </div>
-              </footer>
             </div>
           )}
         </>
