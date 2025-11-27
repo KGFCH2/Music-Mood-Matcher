@@ -1029,7 +1029,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout }) {
                                 transition={{ duration: 0.2 }}
                                 onClick={(e) => e.stopPropagation()}
                             >
-                                <h3 style={{ margin: '0 0 1rem', color: '#7c4dff' }}>✅ Verify Your Email</h3>
+                                <h3 style={{ margin: '0 0 1rem', color: '#7c4dff', textAlign: 'center' }}>✅ Verify Your Email</h3>
 
                                 {emailVerificationError && (
                                     <motion.div
@@ -1050,7 +1050,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout }) {
                                     </motion.div>
                                 )}
 
-                                <p style={{ margin: '0 0 1rem', color: '#aaa', fontSize: '0.9rem' }}>
+                                <p style={{ margin: '0 0 1rem', color: '#aaa', fontSize: '0.9rem', textAlign: 'center' }}>
                                     📧 A verification code has been sent to <strong>{user?.email}</strong>
                                 </p>
 
@@ -1075,7 +1075,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout }) {
                                     }}
                                 />
 
-                                <div style={{ display: 'flex', gap: '10px' }}>
+                                <div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
                                     <motion.button
                                         onClick={handleVerifyEmail}
                                         whileHover={{ scale: 1.05 }}

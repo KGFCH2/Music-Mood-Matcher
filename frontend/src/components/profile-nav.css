@@ -532,6 +532,7 @@
     align-items: center;
     justify-content: center;
     z-index: 1100;
+    padding: 1rem;
 }
 
 .profile-dialog {
@@ -540,9 +541,10 @@
     border-radius: 12px;
     padding: 2rem;
     max-width: 400px;
-    width: 90%;
+    width: 100%;
     color: #f7f7f7;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    text-align: center;
 }
 
 
