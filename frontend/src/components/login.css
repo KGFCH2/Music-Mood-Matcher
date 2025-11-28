@@ -549,7 +549,7 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: 
+    background:
         radial-gradient(circle at 20% 80%, rgba(124, 77, 255, 0.15) 0%, transparent 50%),
         radial-gradient(circle at 80% 20%, rgba(0, 229, 255, 0.15) 0%, transparent 50%),
         radial-gradient(circle at 40% 40%, rgba(124, 77, 255, 0.1) 0%, transparent 40%);
@@ -557,8 +557,15 @@
 }
 
 @keyframes pulse-bg {
-    0%, 100% { opacity: 0.5; }
-    50% { opacity: 1; }
+
+    0%,
+    100% {
+        opacity: 0.5;
+    }
+
+    50% {
+        opacity: 1;
+    }
 }
 
 /* Floating music notes for verification overlay */
@@ -576,16 +583,54 @@
     animation: float-verification-note 6s ease-in-out infinite;
 }
 
-.verification-dialog-overlay .floating-note:nth-child(1) { top: 10%; left: 5%; animation-delay: 0s; }
-.verification-dialog-overlay .floating-note:nth-child(2) { top: 20%; right: 10%; animation-delay: 1s; }
-.verification-dialog-overlay .floating-note:nth-child(3) { top: 60%; left: 8%; animation-delay: 2s; }
-.verification-dialog-overlay .floating-note:nth-child(4) { top: 70%; right: 15%; animation-delay: 1.5s; }
-.verification-dialog-overlay .floating-note:nth-child(5) { top: 85%; left: 20%; animation-delay: 2.5s; }
-.verification-dialog-overlay .floating-note:nth-child(6) { top: 30%; right: 5%; animation-delay: 0.5s; }
+.verification-dialog-overlay .floating-note:nth-child(1) {
+    top: 10%;
+    left: 5%;
+    animation-delay: 0s;
+}
+
+.verification-dialog-overlay .floating-note:nth-child(2) {
+    top: 20%;
+    right: 10%;
+    animation-delay: 1s;
+}
+
+.verification-dialog-overlay .floating-note:nth-child(3) {
+    top: 60%;
+    left: 8%;
+    animation-delay: 2s;
+}
+
+.verification-dialog-overlay .floating-note:nth-child(4) {
+    top: 70%;
+    right: 15%;
+    animation-delay: 1.5s;
+}
+
+.verification-dialog-overlay .floating-note:nth-child(5) {
+    top: 85%;
+    left: 20%;
+    animation-delay: 2.5s;
+}
+
+.verification-dialog-overlay .floating-note:nth-child(6) {
+    top: 30%;
+    right: 5%;
+    animation-delay: 0.5s;
+}
 
 @keyframes float-verification-note {
-    0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.1; }
-    50% { transform: translateY(-20px) rotate(10deg); opacity: 0.2; }
+
+    0%,
+    100% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0.1;
+    }
+
+    50% {
+        transform: translateY(-20px) rotate(10deg);
+        opacity: 0.2;
+    }
 }
 
 .verification-dialog {
@@ -600,8 +645,8 @@
     width: 92%;
     max-height: 90vh;
     overflow-y: auto;
-    box-shadow: 
-        0 20px 60px rgba(0, 0, 0, 0.5), 
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.5),
         0 0 40px rgba(124, 77, 255, 0.2),
         inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
@@ -621,8 +666,15 @@
 }
 
 @keyframes bounce-icon {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-5px); }
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-5px);
+    }
 }
 
 .verification-dialog .dialog-header h3 {

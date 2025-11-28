@@ -1004,7 +1004,7 @@ export default function Login({ onLoginSuccess }) {
                                         <span className="floating-note">🎵</span>
                                         <span className="floating-note">🎶</span>
                                     </div>
-                                    
+
                                     <motion.div
                                         className="verification-dialog"
                                         initial={{ opacity: 0, scale: 0.9, y: 20 }}
