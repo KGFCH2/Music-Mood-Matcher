@@ -288,15 +288,16 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout }) {
                 >
                     {/* Header */}
                     <div className="profile-header">
-                        <motion.button
-                            className="close-btn"
-                            onClick={onClose}
-                            whileHover={{ scale: 1.1 }}
-                            whileTap={{ scale: 0.9 }}
-                        >
-                            ✕
-                        </motion.button>
                         <h2>👤 My Profile</h2>
+                        <motion.button
+                            className="close-btn-stylish"
+                            onClick={onClose}
+                            whileHover={{ scale: 1.1, rotate: 90 }}
+                            whileTap={{ scale: 0.9 }}
+                            aria-label="Close profile"
+                        >
+                            <span className="close-icon">×</span>
+                        </motion.button>
                     </div>
 
                     {/* Main Profile Card */}

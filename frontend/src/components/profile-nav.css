@@ -88,6 +88,57 @@
     flex-grow: 1;
 }
 
+/* Stylish Close Button */
+.close-btn-stylish {
+    position: relative;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+}
+
+.close-btn-stylish::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255, 107, 107, 0.8), rgba(255, 68, 68, 0.9));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    border-radius: 10px;
+}
+
+.close-btn-stylish:hover::before {
+    opacity: 1;
+}
+
+.close-btn-stylish:hover {
+    border-color: rgba(255, 107, 107, 0.8);
+    box-shadow: 0 4px 20px rgba(255, 107, 107, 0.4);
+}
+
+.close-btn-stylish .close-icon {
+    position: relative;
+    z-index: 1;
+    font-size: 1.8rem;
+    font-weight: 300;
+    line-height: 1;
+    transition: transform 0.3s ease;
+}
+
+.close-btn-stylish:hover .close-icon {
+    transform: scale(1.1);
+}
+
+/* Legacy close button (kept for compatibility) */
 .close-btn {
     background: rgba(255, 255, 255, 0.2);
     border: none;
