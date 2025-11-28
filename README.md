@@ -7,7 +7,7 @@
 [![Status](https://img.shields.io/badge/Status-Production%20Ready-brightgreen)](https://github.com)
 [![GitHub](https://img.shields.io/badge/GitHub-Music--Mood--Matcher-black?logo=github)](https://github.com/KGFCH2/Music-Mood-Matcher)
 
-A React-based web application that helps users find songs based on their current mood. Built with modern web technologies, featuring a beautiful UI with animations and support for multiple languages.
+A React-based web application that helps users find songs based on their current mood. Built with modern web technologies, featuring a beautiful UI with animations, AI-powered face detection for mood recognition, and support for multiple languages.
 
 ---
 
@@ -19,25 +19,42 @@ Music Mood Matcher/
 ├── LICENSE                        ← MIT License
 └── frontend/                      ← Main React application
     ├── src/
-    │   ├── App.jsx               ← Main React component (416 lines)
+    │   ├── App.jsx               ← Main React component (~450 lines)
     │   ├── App.css               ← Main styles with mood themes & animations (~1113 lines)
     │   ├── index.css             ← Global styles (~50 lines)
     │   ├── main.jsx              ← React entry point (~10 lines)
-    │   ├── assets/               ← Static assets
     │   ├── components/
-    │   │   ├── Login.jsx         ← Register/Sign-In component (~1000 lines)
-    │   │   ├── login.css         ← Auth forms styling (~550 lines)
-    │   │   ├── Loader.jsx        ← Animated intro loader (356 lines)
-    │   │   └── loader.css        ← Loader animations (~250 lines)
+    │   │   ├── Login.jsx         ← Register/Sign-In with verification (~1230 lines)
+    │   │   ├── login.css         ← Auth forms & verification dialog (~1046 lines)
+    │   │   ├── ProfileNav.jsx    ← User profile panel with edit/delete (~1139 lines)
+    │   │   ├── profile-nav.css   ← Profile panel styling (~606 lines)
+    │   │   ├── MoodWebcam.jsx    ← AI face detection for mood (~130 lines)
+    │   │   ├── moodwebcam.css    ← Webcam component styling (~97 lines)
+    │   │   ├── CrushMode.jsx     ← Crush playlist generator (~120 lines)
+    │   │   ├── crushmode.css     ← Crush mode styling (~130 lines)
+    │   │   ├── DemoGuide.jsx     ← Demo user selection guide (~240 lines)
+    │   │   ├── demo-guide.css    ← Demo guide styling (~477 lines)
+    │   │   ├── Loader.jsx        ← Animated intro loader (~356 lines)
+    │   │   ├── loader.css        ← Loader animations (~250 lines)
+    │   │   └── tabs/
+    │   │       ├── HomeTab.jsx   ← Home tab with mood selection
+    │   │       ├── FavoritesTab.jsx ← User favorites management
+    │   │       └── HistoryTab.jsx   ← Mood history tracking
     │   ├── context/
     │   │   └── AuthContext.jsx   ← Auth state & useAuth hook (~50 lines)
     │   └── data/
     │       └── songs.js          ← Song database (277 lines, 240+ songs)
-    ├── public/                   ← Static files
+    ├── public/
+    │   └── models/               ← Face-api.js AI models
+    │       ├── face_expression_model-shard1
+    │       ├── face_expression_model-weights_manifest.json
+    │       ├── tiny_face_detector_model-shard1
+    │       └── tiny_face_detector_model-weights_manifest.json
     ├── index.html                ← HTML template
     ├── package.json              ← Dependencies and scripts
     ├── vite.config.js            ← Vite configuration
-    ├── eslint.config.js          ← ESLint rules
+    ├── vercel.json               ← Vercel deployment config
+    ├── .env.example              ← Environment variables template
     └── .gitignore                ← Git ignore file
 ```
 
@@ -77,17 +94,33 @@ npm run lint     # Run ESLint
 
 ## ✨ Features
 
+### Core Features
 - ![Songs](https://img.shields.io/badge/240%2B-Songs-brightgreen) **240+ Songs** - Curated collection across multiple languages
 - ![Moods](https://img.shields.io/badge/6-Moods-blueviolet) **6 Mood Categories** - Happy, Sad, Energetic, Romantic, Chill, Angry
 - ![Languages](https://img.shields.io/badge/3-Languages-yellow) **Multi-Language Support** - English, Hindi, Bengali
-- ![Authentication](https://img.shields.io/badge/Authentication-User%20System-blue) **User Authentication** - Register/Sign-In system with email verification
-- ![User Data](https://img.shields.io/badge/User%20Data-Isolated-informational) **User-Specific Data** - Each user has isolated favorites and history
+- ![YouTube](https://img.shields.io/badge/YouTube-Integrated-red?logo=youtube) **YouTube Integration** - Click any song to open on YouTube
+- ![Responsive](https://img.shields.io/badge/Responsive-Mobile%20Ready-brightgreen) **Responsive Design** - Works seamlessly on desktop, tablet, and mobile
+
+### 🤖 AI-Powered Features
+- ![Face Detection](https://img.shields.io/badge/AI-Face%20Detection-purple) **Mood Webcam** - AI-powered face expression detection using face-api.js
+- ![Auto Mood](https://img.shields.io/badge/Auto-Mood%20Detection-blue) **Automatic Mood Recognition** - Detects happy, sad, neutral, surprised, angry expressions
+- ![Playlist](https://img.shields.io/badge/Smart-Playlist-green) **Smart Playlists** - Automatically suggests songs based on detected mood
+
+### 💕 Special Features
+- ![Crush Mode](https://img.shields.io/badge/Crush-Mode-pink) **Crush Mode** - Answer fun questions to generate a playlist for your crush
+- ![Demo Mode](https://img.shields.io/badge/Demo-Mode-orange) **Demo Users** - Try the app with pre-configured demo accounts
 - ![Favorites](https://img.shields.io/badge/Favorites%20System-Enabled-blue) **Favorites System** - Save and manage your favorite songs per user
 - ![History](https://img.shields.io/badge/History%20Tracking-Active-informational) **Mood History** - Track your mood selections over time (user-specific)
+
+### 🔐 Authentication & Profile
+- ![Authentication](https://img.shields.io/badge/Authentication-User%20System-blue) **User Authentication** - Register/Sign-In system with email verification
 - ![Email](https://img.shields.io/badge/Email%20Verification-Active-brightgreen) **Email Verification** - Verification code sent on registration via EmailJS
-- ![YouTube](https://img.shields.io/badge/YouTube-Integrated-red?logo=youtube) **YouTube Integration** - Click any song to open on YouTube
+- ![Profile](https://img.shields.io/badge/Profile-Management-purple) **Profile Panel** - Edit name, email, gender with email re-verification
+- ![Delete](https://img.shields.io/badge/Account-Deletion-red) **Account Deletion** - Permanently delete account with confirmation
+- ![User Data](https://img.shields.io/badge/User%20Data-Isolated-informational) **User-Specific Data** - Each user has isolated favorites and history
+
+### 🎨 UI/UX Polish
 - ![Animations](https://img.shields.io/badge/Animations-Framer%20Motion-purple) **Beautiful UI** - Modern design with Framer Motion animations
-- ![Responsive](https://img.shields.io/badge/Responsive-Mobile%20Ready-brightgreen) **Responsive Design** - Works seamlessly on desktop, tablet, and mobile
 - ![Filter](https://img.shields.io/badge/Filters-By%20Language-orange) **Language Filter** - Filter songs by language preference
 - ![Loader](https://img.shields.io/badge/Loader-Animated%20Intro-lightgrey) **Loader Page** - Animated intro loader before main app
 - ![Session](https://img.shields.io/badge/Session-Security-brightgreen) **Session Security** - Auto-logout on server restart, must re-login
@@ -101,6 +134,8 @@ npm run lint     # Run ESLint
 - ![Success Animation](https://img.shields.io/badge/Animation-Success-brightgreen) **Success Animation** - Celebratory animation on successful verification
 - ![Accessibility](https://img.shields.io/badge/A11y-ARIA%20Labels-blue) **Enhanced Accessibility** - ARIA labels, roles, and keyboard navigation
 - ![Env Variables](https://img.shields.io/badge/Config-Environment%20Variables-yellow) **Environment Variables** - EmailJS credentials via `.env` file
+- ![Full Screen](https://img.shields.io/badge/Dialog-Full%20Screen-purple) **Full-Screen Verification** - Immersive verification dialog with animated background
+- ![Compact UI](https://img.shields.io/badge/UI-Compact%20Design-blue) **Compact Verification UI** - Optimized to fit on one screen
 
 ## 📊 Data Overview
 
@@ -128,6 +163,9 @@ Each song includes:
 - ![React DOM](https://img.shields.io/badge/React%20DOM-19.1.1-blue?logo=react&logoColor=white&style=flat) **React DOM** (^19.1.1) - DOM rendering
 - ![Vite](https://img.shields.io/badge/Vite-7.1.7-646cff?logo=vite&logoColor=white&style=flat) **Vite** (^7.1.7) - Build tool and dev server
 - ![PropTypes](https://img.shields.io/badge/PropTypes-15.8.1-green?style=flat) **PropTypes** (^15.8.1) - Runtime type checking
+- ![EmailJS](https://img.shields.io/badge/EmailJS-4.4.1-orange?style=flat) **@emailjs/browser** (^4.4.1) - Email sending service
+- ![Face API](https://img.shields.io/badge/Face--API.js-0.22.2-purple?style=flat) **face-api.js** (^0.22.2) - AI face detection
+- ![Webcam](https://img.shields.io/badge/React%20Webcam-7.2.0-blue?style=flat) **react-webcam** (^7.2.0) - Webcam access
 
 ### Dev Dependencies
 - ![ESLint](https://img.shields.io/badge/ESLint-9.36.0-4b3ddb?logo=eslint&logoColor=white&style=flat) **ESLint** (^9.36.0) - Code linting
@@ -246,12 +284,20 @@ vercel deploy
 
 | File | Purpose | Size | Type |
 |------|---------|------|------|
-| `App.jsx` | Main React component with mood selection, favorites, and history logic | 416 lines | Component |
-| `Login.jsx` | Register/Sign-In with real-time validation, auto-submit, cooldown timer | ~1000 lines | Component |
-| `Loader.jsx` | Animated intro loader page | 356 lines | Component |
+| `App.jsx` | Main React component with mood selection, favorites, and history logic | ~450 lines | Component |
+| `Login.jsx` | Register/Sign-In with real-time validation, auto-submit, cooldown timer | ~1230 lines | Component |
+| `ProfileNav.jsx` | User profile panel with edit profile, email change, account deletion | ~1139 lines | Component |
+| `MoodWebcam.jsx` | AI-powered face detection for automatic mood recognition | ~130 lines | Component |
+| `CrushMode.jsx` | Interactive quiz to generate crush-themed playlist | ~120 lines | Component |
+| `DemoGuide.jsx` | Demo user selection with pre-configured accounts | ~240 lines | Component |
+| `Loader.jsx` | Animated intro loader page | ~356 lines | Component |
 | `AuthContext.jsx` | Authentication state management with useAuth hook | ~50 lines | Context |
 | `App.css` | All styling and animations (moods, cards, navbar, emoji separation) | ~1113 lines | Styles |
-| `login.css` | Auth forms styling with validation states, animations, accessibility | ~550 lines | Styles |
+| `login.css` | Auth forms, verification dialog with full-screen overlay | ~1046 lines | Styles |
+| `profile-nav.css` | Profile panel styling with stylish close button | ~606 lines | Styles |
+| `demo-guide.css` | Demo guide styling | ~477 lines | Styles |
+| `moodwebcam.css` | Webcam component styling | ~97 lines | Styles |
+| `crushmode.css` | Crush mode styling | ~130 lines | Styles |
 | `loader.css` | Loader animation styles | ~250 lines | Styles |
 | `songs.js` | Song database for all moods and languages | 277 lines | Data |
 | `index.css` | Global styles | ~50 lines | Styles |
@@ -266,6 +312,18 @@ vercel deploy
 3. **User clicks a song** → Opens YouTube in new tab
 4. **User marks as favorite** → Song saved to localStorage
 5. **User checks history** → Views past mood selections
+
+### 🤖 AI Mood Detection
+1. **User opens Mood Webcam** → Camera activates
+2. **AI analyzes face expression** → Using face-api.js models
+3. **Mood detected** → Maps expression to mood category
+4. **Playlist generated** → Songs matching detected mood displayed
+
+### 💕 Crush Mode
+1. **User enters Crush Mode** → Fun quiz starts
+2. **Answer 4 questions** → About crush's preferences
+3. **Mood calculated** → Based on answers
+4. **Playlist generated** → Perfect songs for your crush
 
 ---
 
@@ -363,8 +421,8 @@ This project is provided as-is for educational and personal use.
 
 ## 📈 Quick Stats
 
-![Code Size](https://img.shields.io/badge/Code%20Size-~2500%20Lines-blue?style=flat-square)
-![Components](https://img.shields.io/badge/Components-4-purple?style=flat-square)
+![Code Size](https://img.shields.io/badge/Code%20Size-~8000%20Lines-blue?style=flat-square)
+![Components](https://img.shields.io/badge/Components-10-purple?style=flat-square)
 ![Build Size](https://img.shields.io/badge/Build%20Size-~70%20KB-green?style=flat-square)
 ![Build Time](https://img.shields.io/badge/Build%20Time-2.7s-informational?style=flat-square)
 ![Modules](https://img.shields.io/badge/Modules-432-orange?style=flat-square)
@@ -372,6 +430,14 @@ This project is provided as-is for educational and personal use.
 ---
 
 ## 🛠 Recent Updates
+
+- **2025-11-28** — Verification Dialog & Profile Enhancements (v2.1)
+  - 🎨 **Full-Screen Verification Overlay** - Immersive dialog with animated gradient background and floating music notes
+  - 📱 **Compact Verification UI** - Optimized layout to fit everything on one screen
+  - ✨ **Stylish Profile Close Button** - Glass-morphism design with hover rotation animation, positioned on right
+  - 🎯 **Reduced Font Sizes** - Better readability and space optimization in verification dialog
+  - 🔧 **Bug Fixes** - Fixed verification code input placeholder visibility
+  - Files updated: `Login.jsx`, `login.css`, `ProfileNav.jsx`, `profile-nav.css`
 
 - **2025-11-28** — Login System Polish & Enhancements (v2.0)
   - ✨ **Real-time Input Validation** - Live ✓/✗ feedback as users type names and emails
