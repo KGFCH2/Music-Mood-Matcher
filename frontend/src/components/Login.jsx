@@ -21,6 +21,10 @@ export default function Login({ onLoginSuccess }) {
     const [showDemoGuide, setShowDemoGuide] = useState(false)
     const [isResending, setIsResending] = useState(false)
     const [emailSentSuccess, setEmailSentSuccess] = useState(false)
+    const [resendCooldown, setResendCooldown] = useState(0)
+    const [emailValidation, setEmailValidation] = useState({ isValid: null, message: '' })
+    const [nameValidation, setNameValidation] = useState({ isValid: null, message: '' })
+    const [showSuccessAnimation, setShowSuccessAnimation] = useState(false)
 
     // Demo credentials
     const DEMO_USERS = [
@@ -29,10 +33,31 @@ export default function Login({ onLoginSuccess }) {
         { email: 'demo.chill.mode@example.com', name: 'Chill Mode', gender: 'other' }
     ]
 
+    // Ref for auto-focus on verification input
+    const verificationInputRef = React.useRef(null)
+
     // Initialize EmailJS
     useEffect(() => {
-        emailjs.init('yvSwGRuksv7zAychI') // Public key
+        emailjs.init(import.meta.env.VITE_EMAILJS_PUBLIC_KEY || 'yvSwGRuksv7zAychI') // Public key from env
     }, [])
+
+    // Cooldown timer for resend button
+    useEffect(() => {
+        let timer
+        if (resendCooldown > 0) {
+            timer = setInterval(() => {
+                setResendCooldown(prev => prev - 1)
+            }, 1000)
+        }
+        return () => clearInterval(timer)
+    }, [resendCooldown])
+
+    // Auto-focus verification input when dialog opens
+    useEffect(() => {
+        if (showVerificationDialog && verificationInputRef.current) {
+            setTimeout(() => verificationInputRef.current?.focus(), 100)
+        }
+    }, [showVerificationDialog])
 
     // Load registered users from localStorage on mount
     useEffect(() => {
@@ -51,12 +76,85 @@ export default function Login({ onLoginSuccess }) {
         return emailRegex.test(email)
     }
 
+    // Real-time email validation
+    const handleEmailChange = (email) => {
+        setRegisterData({ ...registerData, email })
+        if (!email.trim()) {
+            setEmailValidation({ isValid: null, message: '' })
+        } else if (validateEmail(email)) {
+            const existing = registeredUsers.find(u => u.email === email)
+            if (existing) {
+                setEmailValidation({ isValid: false, message: 'Email already registered' })
+            } else {
+                setEmailValidation({ isValid: true, message: 'Email looks good!' })
+            }
+        } else {
+            setEmailValidation({ isValid: false, message: 'Invalid email format' })
+        }
+    }
+
+    // Real-time name validation
+    const handleNameChange = (name) => {
+        setRegisterData({ ...registerData, userName: name })
+        if (!name.trim()) {
+            setNameValidation({ isValid: null, message: '' })
+        } else if (name.trim().length < 2) {
+            setNameValidation({ isValid: false, message: 'Name too short' })
+        } else if (name.trim().length > 50) {
+            setNameValidation({ isValid: false, message: 'Name too long' })
+        } else {
+            setNameValidation({ isValid: true, message: 'Name looks good!' })
+        }
+    }
+
+    // Auto-submit when verification code is complete
+    const handleVerificationCodeChange = (value) => {
+        const code = value.toUpperCase().replace(/[^A-Z0-9]/g, '')
+        setVerificationInputCode(code)
+        
+        // Auto-submit when 6 characters entered
+        if (code.length === 6) {
+            setTimeout(() => {
+                const user = registeredUsers.find(u => u.email === verificationDialogEmail)
+                if (user && code === user.verificationCode) {
+                    handleAutoVerify(code)
+                }
+            }, 300)
+        }
+    }
+
+    // Auto-verify handler
+    const handleAutoVerify = (code) => {
+        const user = registeredUsers.find(u => u.email === verificationDialogEmail)
+        if (!user) return
+
+        if (code === user.verificationCode) {
+            setShowSuccessAnimation(true)
+            
+            const verifiedUser = { ...user, isVerified: true }
+            const updatedUsers = registeredUsers.map(u =>
+                u.email === verificationDialogEmail ? verifiedUser : u
+            )
+            setRegisteredUsers(updatedUsers)
+            localStorage.setItem('musicMoodUsers', JSON.stringify(updatedUsers))
+            localStorage.setItem('musicMoodUser', JSON.stringify(verifiedUser))
+
+            setTimeout(() => {
+                setShowVerificationDialog(false)
+                setVerificationInputCode('')
+                setEmailSentSuccess(false)
+                setShowSuccessAnimation(false)
+                onLoginSuccess(verifiedUser)
+            }, 1500)
+        }
+    }
+
     const sendVerificationEmail = async (email, userName, verificationCode) => {
         try {
-            // EmailJS Configuration with Security
-            const SERVICE_ID = 'service_zfess1e'
-            const TEMPLATE_ID = 'template_hz19s08'
-            const PUBLIC_KEY = 'yvSwGRuksv7zAychI'
+            // EmailJS Configuration - Uses environment variables with fallbacks
+            const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID || 'service_zfess1e'
+            const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID || 'template_hz19s08'
+            const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || 'yvSwGRuksv7zAychI'
 
             // Verify email format before sending
             if (!validateEmail(email)) {
@@ -253,7 +351,7 @@ export default function Login({ onLoginSuccess }) {
         if (!user.isVerified) {
             // Generate new verification code and send email
             const newVerificationCode = generateVerificationCode()
-            
+
             const emailResult = await sendVerificationEmail(
                 signInEmail,
                 user.userName,
@@ -348,6 +446,8 @@ export default function Login({ onLoginSuccess }) {
     }
 
     const handleResendCode = async () => {
+        if (resendCooldown > 0) return
+        
         setIsResending(true)
         setVerificationError('')
 
@@ -380,9 +480,10 @@ export default function Login({ onLoginSuccess }) {
             )
             setRegisteredUsers(updatedUsers)
             localStorage.setItem('musicMoodUsers', JSON.stringify(updatedUsers))
-            
+
             setEmailSentSuccess(true)
             setVerificationError('')
+            setResendCooldown(60) // 60 second cooldown
             console.log('New verification code sent successfully')
         } else {
             setVerificationError(emailResult.error || 'Failed to resend verification email. Please try again.')
@@ -546,18 +647,26 @@ export default function Login({ onLoginSuccess }) {
                                             <label htmlFor="registerName">
                                                 <span className="label-icon">🎤</span>
                                                 <span className="label-text">Your Name</span>
+                                                {nameValidation.isValid === true && <span className="validation-icon valid">✓</span>}
+                                                {nameValidation.isValid === false && <span className="validation-icon invalid">✗</span>}
                                             </label>
                                             <input
                                                 id="registerName"
                                                 type="text"
                                                 placeholder="Enter your name"
                                                 value={registerData.userName}
-                                                onChange={(e) =>
-                                                    setRegisterData({ ...registerData, userName: e.target.value })
-                                                }
+                                                onChange={(e) => handleNameChange(e.target.value)}
                                                 disabled={isLoading}
-                                                className="form-input"
+                                                className={`form-input ${nameValidation.isValid === true ? 'input-valid' : ''} ${nameValidation.isValid === false ? 'input-invalid' : ''}`}
+                                                aria-label="Your name"
+                                                aria-describedby="name-validation"
+                                                autoComplete="name"
                                             />
+                                            {nameValidation.message && (
+                                                <small id="name-validation" className={`validation-message ${nameValidation.isValid ? 'valid' : 'invalid'}`}>
+                                                    {nameValidation.message}
+                                                </small>
+                                            )}
                                         </motion.div>
 
                                         {/* Email Input */}
@@ -570,18 +679,26 @@ export default function Login({ onLoginSuccess }) {
                                             <label htmlFor="registerEmail">
                                                 <span className="label-icon">📧</span>
                                                 <span className="label-text">Email Address</span>
+                                                {emailValidation.isValid === true && <span className="validation-icon valid">✓</span>}
+                                                {emailValidation.isValid === false && <span className="validation-icon invalid">✗</span>}
                                             </label>
                                             <input
                                                 id="registerEmail"
                                                 type="email"
                                                 placeholder="your@email.com"
                                                 value={registerData.email}
-                                                onChange={(e) =>
-                                                    setRegisterData({ ...registerData, email: e.target.value })
-                                                }
+                                                onChange={(e) => handleEmailChange(e.target.value)}
                                                 disabled={isLoading}
-                                                className="form-input"
+                                                className={`form-input ${emailValidation.isValid === true ? 'input-valid' : ''} ${emailValidation.isValid === false ? 'input-invalid' : ''}`}
+                                                aria-label="Email address"
+                                                aria-describedby="email-validation"
+                                                autoComplete="email"
                                             />
+                                            {emailValidation.message && (
+                                                <small id="email-validation" className={`validation-message ${emailValidation.isValid ? 'valid' : 'invalid'}`}>
+                                                    {emailValidation.message}
+                                                </small>
+                                            )}
                                         </motion.div>
 
                                         {/* Gender Selection */}
@@ -874,6 +991,9 @@ export default function Login({ onLoginSuccess }) {
                                     animate={{ opacity: 1 }}
                                     exit={{ opacity: 0 }}
                                     transition={{ duration: 0.3 }}
+                                    role="dialog"
+                                    aria-modal="true"
+                                    aria-labelledby="verification-title"
                                 >
                                     <motion.div
                                         className="conflict-dialog"
@@ -882,9 +1002,57 @@ export default function Login({ onLoginSuccess }) {
                                         exit={{ opacity: 0, scale: 0.9, y: 20 }}
                                         transition={{ duration: 0.3 }}
                                     >
+                                        {/* Success Animation Overlay */}
+                                        <AnimatePresence>
+                                            {showSuccessAnimation && (
+                                                <motion.div
+                                                    className="success-overlay"
+                                                    initial={{ opacity: 0 }}
+                                                    animate={{ opacity: 1 }}
+                                                    exit={{ opacity: 0 }}
+                                                    style={{
+                                                        position: 'absolute',
+                                                        inset: 0,
+                                                        background: 'rgba(76, 175, 80, 0.95)',
+                                                        borderRadius: '20px',
+                                                        display: 'flex',
+                                                        flexDirection: 'column',
+                                                        alignItems: 'center',
+                                                        justifyContent: 'center',
+                                                        zIndex: 10
+                                                    }}
+                                                >
+                                                    <motion.div
+                                                        initial={{ scale: 0 }}
+                                                        animate={{ scale: [0, 1.2, 1] }}
+                                                        transition={{ duration: 0.5 }}
+                                                        style={{ fontSize: '4rem' }}
+                                                    >
+                                                        ✅
+                                                    </motion.div>
+                                                    <motion.p
+                                                        initial={{ opacity: 0, y: 10 }}
+                                                        animate={{ opacity: 1, y: 0 }}
+                                                        transition={{ delay: 0.3 }}
+                                                        style={{ color: 'white', fontSize: '1.5rem', fontWeight: 'bold', marginTop: '1rem' }}
+                                                    >
+                                                        Email Verified!
+                                                    </motion.p>
+                                                    <motion.p
+                                                        initial={{ opacity: 0 }}
+                                                        animate={{ opacity: 1 }}
+                                                        transition={{ delay: 0.5 }}
+                                                        style={{ color: 'rgba(255,255,255,0.9)', marginTop: '0.5rem' }}
+                                                    >
+                                                        Redirecting...
+                                                    </motion.p>
+                                                </motion.div>
+                                            )}
+                                        </AnimatePresence>
+
                                         <div className="dialog-header">
                                             <span className="dialog-icon">📧</span>
-                                            <h3>Verify Your Email</h3>
+                                            <h3 id="verification-title">Verify Your Email</h3>
                                             <p>A verification code has been sent to <strong>{verificationDialogEmail}</strong></p>
                                             <p style={{ fontSize: '0.9rem', marginTop: '0.5rem', color: '#b0b0b0' }}>
                                                 📨 Check your email inbox for the verification code.<br />
@@ -899,11 +1067,13 @@ export default function Login({ onLoginSuccess }) {
                                                     initial={{ opacity: 0, x: -20 }}
                                                     animate={{ opacity: 1, x: 0 }}
                                                     transition={{ duration: 0.3 }}
-                                                    style={{ 
-                                                        background: 'rgba(76, 175, 80, 0.2)', 
-                                                        border: '1px solid #4caf50', 
-                                                        borderRadius: '8px', 
-                                                        padding: '0.75rem 1rem', 
+                                                    role="alert"
+                                                    aria-live="polite"
+                                                    style={{
+                                                        background: 'rgba(76, 175, 80, 0.2)',
+                                                        border: '1px solid #4caf50',
+                                                        borderRadius: '8px',
+                                                        padding: '0.75rem 1rem',
                                                         marginBottom: '1rem',
                                                         display: 'flex',
                                                         alignItems: 'center',
@@ -921,6 +1091,8 @@ export default function Login({ onLoginSuccess }) {
                                                     initial={{ opacity: 0, x: -20 }}
                                                     animate={{ opacity: 1, x: 0 }}
                                                     transition={{ duration: 0.3 }}
+                                                    role="alert"
+                                                    aria-live="assertive"
                                                 >
                                                     <span className="error-icon">⚠️</span>
                                                     <span className="error-text">{verificationError}</span>
@@ -938,15 +1110,22 @@ export default function Login({ onLoginSuccess }) {
                                                     <span className="label-text">Verification Code</span>
                                                 </label>
                                                 <input
+                                                    ref={verificationInputRef}
                                                     id="verificationCode"
                                                     type="text"
                                                     placeholder="Enter code (e.g., ABC123)"
                                                     value={verificationInputCode}
-                                                    onChange={(e) => setVerificationInputCode(e.target.value.toUpperCase())}
+                                                    onChange={(e) => handleVerificationCodeChange(e.target.value)}
                                                     maxLength="6"
                                                     className="form-input"
-                                                    style={{ letterSpacing: '2px', textAlign: 'center', fontSize: '1.2rem' }}
+                                                    style={{ letterSpacing: '4px', textAlign: 'center', fontSize: '1.4rem', fontWeight: 'bold' }}
+                                                    aria-label="Verification code"
+                                                    autoComplete="one-time-code"
+                                                    autoFocus
                                                 />
+                                                <small style={{ color: '#888', marginTop: '0.5rem', display: 'block', textAlign: 'center' }}>
+                                                    Code will auto-submit when complete
+                                                </small>
                                             </motion.div>
 
                                             <motion.button
@@ -967,28 +1146,35 @@ export default function Login({ onLoginSuccess }) {
                                                 className="resend-btn"
                                                 type="button"
                                                 onClick={handleResendCode}
-                                                disabled={isResending}
-                                                whileHover={{ scale: 1.05 }}
-                                                whileTap={{ scale: 0.95 }}
-                                                style={{ 
-                                                    marginTop: '1rem', 
-                                                    background: 'transparent', 
-                                                    border: '1px solid #667eea', 
-                                                    color: '#667eea',
+                                                disabled={isResending || resendCooldown > 0}
+                                                whileHover={{ scale: resendCooldown > 0 ? 1 : 1.05 }}
+                                                whileTap={{ scale: resendCooldown > 0 ? 1 : 0.95 }}
+                                                style={{
+                                                    marginTop: '1rem',
+                                                    background: 'transparent',
+                                                    border: '1px solid #667eea',
+                                                    color: resendCooldown > 0 ? '#888' : '#667eea',
                                                     padding: '0.75rem 1.5rem',
                                                     borderRadius: '8px',
-                                                    cursor: isResending ? 'not-allowed' : 'pointer',
-                                                    opacity: isResending ? 0.7 : 1,
+                                                    cursor: (isResending || resendCooldown > 0) ? 'not-allowed' : 'pointer',
+                                                    opacity: (isResending || resendCooldown > 0) ? 0.6 : 1,
                                                     display: 'flex',
                                                     alignItems: 'center',
                                                     justifyContent: 'center',
-                                                    gap: '0.5rem'
+                                                    gap: '0.5rem',
+                                                    minWidth: '180px'
                                                 }}
+                                                aria-disabled={isResending || resendCooldown > 0}
                                             >
                                                 {isResending ? (
                                                     <>
                                                         <span className="spinner"></span>
                                                         <span>Sending...</span>
+                                                    </>
+                                                ) : resendCooldown > 0 ? (
+                                                    <>
+                                                        <span>⏱️</span>
+                                                        <span>Resend in {resendCooldown}s</span>
                                                     </>
                                                 ) : (
                                                     <>
@@ -1006,6 +1192,7 @@ export default function Login({ onLoginSuccess }) {
                                                     setVerificationInputCode('')
                                                     setVerificationError('')
                                                     setEmailSentSuccess(false)
+                                                    setResendCooldown(0)
                                                 }}
                                                 whileHover={{ scale: 1.05 }}
                                                 whileTap={{ scale: 0.95 }}
