@@ -19,6 +19,8 @@ export default function Login({ onLoginSuccess }) {
     const [verificationInputCode, setVerificationInputCode] = useState('')
     const [verificationError, setVerificationError] = useState('')
     const [showDemoGuide, setShowDemoGuide] = useState(false)
+    const [isResending, setIsResending] = useState(false)
+    const [emailSentSuccess, setEmailSentSuccess] = useState(false)
 
     // Demo credentials
     const DEMO_USERS = [
@@ -59,7 +61,7 @@ export default function Login({ onLoginSuccess }) {
             // Verify email format before sending
             if (!validateEmail(email)) {
                 console.error('Invalid email format:', email)
-                return false
+                return { success: false, error: 'Invalid email format' }
             }
 
             // Template variables - IMPORTANT: These must exactly match your EmailJS template
@@ -90,10 +92,12 @@ export default function Login({ onLoginSuccess }) {
             console.log('✅ Verification email sent successfully!')
             console.log('Response Status:', response.status)
             console.log('Response Text:', response.text)
-            return true
+            return { success: true }
 
         } catch (error) {
             console.error('❌ Failed to send verification email:', error.message)
+
+            let errorMessage = 'Failed to send verification email. Please try again.'
 
             // Log specific error codes for debugging
             if (error.status === 400) {
@@ -102,15 +106,21 @@ export default function Login({ onLoginSuccess }) {
                 console.error('   - {{to_email}} for recipient email')
                 console.error('   - {{user_name}} for user name')
                 console.error('   - {{verification_code}} for verification code')
+                errorMessage = 'Email service configuration error. Please contact support.'
             } else if (error.status === 401) {
                 console.error('Error 401: Unauthorized - Check public key:', PUBLIC_KEY)
+                errorMessage = 'Email service authentication failed. Please contact support.'
             } else if (error.status === 404) {
                 console.error('Error 404: Not found - Check Service ID and Template ID')
+                errorMessage = 'Email service not found. Please contact support.'
+            } else if (error.status === 429) {
+                console.error('Error 429: Too many requests')
+                errorMessage = 'Too many email requests. Please wait a moment and try again.'
             } else {
                 console.error('Error:', error.status, error.text)
             }
 
-            return false
+            return { success: false, error: errorMessage }
         }
     }
 
@@ -118,7 +128,7 @@ export default function Login({ onLoginSuccess }) {
         return Math.random().toString(36).substring(2, 8).toUpperCase()
     }
 
-    const handleRegister = (e) => {
+    const handleRegister = async (e) => {
         e.preventDefault()
         setError('')
 
@@ -157,7 +167,7 @@ export default function Login({ onLoginSuccess }) {
 
         setIsLoading(true)
 
-        setTimeout(async () => {
+        try {
             // Generate secure verification code
             const verificationCode = generateVerificationCode()
 
@@ -178,19 +188,26 @@ export default function Login({ onLoginSuccess }) {
                 emailVerified: false  // Track if this specific email was verified
             }
 
-            // Save new user to registered users list BEFORE sending email
-            const updatedUsers = [...registeredUsers, userData]
-            setRegisteredUsers(updatedUsers)
-            localStorage.setItem('musicMoodUsers', JSON.stringify(updatedUsers))
-
-            // Now send verification email to the registered email
-            const emailSent = await sendVerificationEmail(
+            // Send verification email FIRST before saving user
+            const emailResult = await sendVerificationEmail(
                 registrationEmail,
                 registrationName,
                 verificationCode
             )
 
+            if (!emailResult.success) {
+                setIsLoading(false)
+                setError(emailResult.error || 'Failed to send verification email. Please try again.')
+                return
+            }
+
+            // Save new user to registered users list AFTER email is sent successfully
+            const updatedUsers = [...registeredUsers, userData]
+            setRegisteredUsers(updatedUsers)
+            localStorage.setItem('musicMoodUsers', JSON.stringify(updatedUsers))
+
             setIsLoading(false)
+            setEmailSentSuccess(true)
 
             // Show verification dialog with the registered email
             setVerificationDialogEmail(registrationEmail)
@@ -201,11 +218,15 @@ export default function Login({ onLoginSuccess }) {
 
             // Log registration info
             console.log('User registered with email:', registrationEmail)
-            console.log('Verification code sent:', emailSent)
-        }, 1000)
+            console.log('Verification email sent successfully')
+        } catch (err) {
+            setIsLoading(false)
+            setError('An unexpected error occurred. Please try again.')
+            console.error('Registration error:', err)
+        }
     }
 
-    const handleSignIn = (e) => {
+    const handleSignIn = async (e) => {
         e.preventDefault()
         setError('')
 
@@ -228,37 +249,59 @@ export default function Login({ onLoginSuccess }) {
 
         setIsLoading(true)
 
-        setTimeout(() => {
-            // Check if user is verified
-            if (!user.isVerified) {
-                setIsLoading(false)
-                setVerificationDialogEmail(signInEmail)
-                setShowVerificationDialog(true)
-                setVerificationInputCode('')
-                setVerificationError('')
-                setSignInEmail('')
-                return
-            }
+        // Check if user is verified
+        if (!user.isVerified) {
+            // Generate new verification code and send email
+            const newVerificationCode = generateVerificationCode()
+            
+            const emailResult = await sendVerificationEmail(
+                signInEmail,
+                user.userName,
+                newVerificationCode
+            )
 
-            // Update login history
+            // Update user with new verification code
             const updatedUser = {
                 ...user,
-                loginHistory: [...(user.loginHistory || []), new Date().toISOString()]
+                verificationCode: newVerificationCode
             }
-
-            // Update in registered users list
             const updatedUsers = registeredUsers.map(u =>
                 u.email === signInEmail ? updatedUser : u
             )
             setRegisteredUsers(updatedUsers)
             localStorage.setItem('musicMoodUsers', JSON.stringify(updatedUsers))
 
-            // Save current user session
-            localStorage.setItem('musicMoodUser', JSON.stringify(updatedUser))
-
             setIsLoading(false)
-            onLoginSuccess(updatedUser)
-        }, 1000)
+            setVerificationDialogEmail(signInEmail)
+            setShowVerificationDialog(true)
+            setVerificationInputCode('')
+            setVerificationError('')
+            setEmailSentSuccess(emailResult.success)
+            if (!emailResult.success) {
+                setVerificationError(emailResult.error || 'Failed to send verification email.')
+            }
+            setSignInEmail('')
+            return
+        }
+
+        // Update login history
+        const updatedUser = {
+            ...user,
+            loginHistory: [...(user.loginHistory || []), new Date().toISOString()]
+        }
+
+        // Update in registered users list
+        const updatedUsers = registeredUsers.map(u =>
+            u.email === signInEmail ? updatedUser : u
+        )
+        setRegisteredUsers(updatedUsers)
+        localStorage.setItem('musicMoodUsers', JSON.stringify(updatedUsers))
+
+        // Save current user session
+        localStorage.setItem('musicMoodUser', JSON.stringify(updatedUser))
+
+        setIsLoading(false)
+        onLoginSuccess(updatedUser)
     }
 
     const handleVerifyEmail = (e) => {
@@ -297,10 +340,55 @@ export default function Login({ onLoginSuccess }) {
 
             setShowVerificationDialog(false)
             setVerificationInputCode('')
+            setEmailSentSuccess(false)
             onLoginSuccess(verifiedUser)
         } else {
             setVerificationError('Invalid verification code. Please check your email and try again.')
         }
+    }
+
+    const handleResendCode = async () => {
+        setIsResending(true)
+        setVerificationError('')
+
+        // Find the user by email
+        const user = registeredUsers.find(u => u.email === verificationDialogEmail)
+        if (!user) {
+            setVerificationError('User not found. Please register again.')
+            setIsResending(false)
+            return
+        }
+
+        // Generate new verification code
+        const newVerificationCode = generateVerificationCode()
+
+        // Send new verification email
+        const emailResult = await sendVerificationEmail(
+            verificationDialogEmail,
+            user.userName,
+            newVerificationCode
+        )
+
+        if (emailResult.success) {
+            // Update user with new verification code
+            const updatedUser = {
+                ...user,
+                verificationCode: newVerificationCode
+            }
+            const updatedUsers = registeredUsers.map(u =>
+                u.email === verificationDialogEmail ? updatedUser : u
+            )
+            setRegisteredUsers(updatedUsers)
+            localStorage.setItem('musicMoodUsers', JSON.stringify(updatedUsers))
+            
+            setEmailSentSuccess(true)
+            setVerificationError('')
+            console.log('New verification code sent successfully')
+        } else {
+            setVerificationError(emailResult.error || 'Failed to resend verification email. Please try again.')
+        }
+
+        setIsResending(false)
     }
 
     const setupDemoUser = (demoUser) => {
@@ -805,6 +893,28 @@ export default function Login({ onLoginSuccess }) {
                                         </div>
 
                                         <form onSubmit={handleVerifyEmail} style={{ padding: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                            {emailSentSuccess && (
+                                                <motion.div
+                                                    className="success-message"
+                                                    initial={{ opacity: 0, x: -20 }}
+                                                    animate={{ opacity: 1, x: 0 }}
+                                                    transition={{ duration: 0.3 }}
+                                                    style={{ 
+                                                        background: 'rgba(76, 175, 80, 0.2)', 
+                                                        border: '1px solid #4caf50', 
+                                                        borderRadius: '8px', 
+                                                        padding: '0.75rem 1rem', 
+                                                        marginBottom: '1rem',
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        gap: '0.5rem'
+                                                    }}
+                                                >
+                                                    <span>✅</span>
+                                                    <span style={{ color: '#4caf50' }}>Verification email sent successfully!</span>
+                                                </motion.div>
+                                            )}
+
                                             {verificationError && (
                                                 <motion.div
                                                     className="error-message"
@@ -830,7 +940,7 @@ export default function Login({ onLoginSuccess }) {
                                                 <input
                                                     id="verificationCode"
                                                     type="text"
-                                                    placeholder="Enter 6-digit code"
+                                                    placeholder="Enter code (e.g., ABC123)"
                                                     value={verificationInputCode}
                                                     onChange={(e) => setVerificationInputCode(e.target.value.toUpperCase())}
                                                     maxLength="6"
@@ -854,12 +964,48 @@ export default function Login({ onLoginSuccess }) {
                                             </motion.button>
 
                                             <motion.button
+                                                className="resend-btn"
+                                                type="button"
+                                                onClick={handleResendCode}
+                                                disabled={isResending}
+                                                whileHover={{ scale: 1.05 }}
+                                                whileTap={{ scale: 0.95 }}
+                                                style={{ 
+                                                    marginTop: '1rem', 
+                                                    background: 'transparent', 
+                                                    border: '1px solid #667eea', 
+                                                    color: '#667eea',
+                                                    padding: '0.75rem 1.5rem',
+                                                    borderRadius: '8px',
+                                                    cursor: isResending ? 'not-allowed' : 'pointer',
+                                                    opacity: isResending ? 0.7 : 1,
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'center',
+                                                    gap: '0.5rem'
+                                                }}
+                                            >
+                                                {isResending ? (
+                                                    <>
+                                                        <span className="spinner"></span>
+                                                        <span>Sending...</span>
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <span>🔄</span>
+                                                        <span>Resend Code</span>
+                                                    </>
+                                                )}
+                                            </motion.button>
+
+                                            <motion.button
                                                 className="cancel-btn"
                                                 type="button"
                                                 onClick={() => {
                                                     setShowVerificationDialog(false)
                                                     setVerificationInputCode('')
                                                     setVerificationError('')
+                                                    setEmailSentSuccess(false)
                                                 }}
                                                 whileHover={{ scale: 1.05 }}
                                                 whileTap={{ scale: 0.95 }}
