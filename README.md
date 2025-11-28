@@ -25,8 +25,8 @@ Music Mood Matcher/
     │   ├── main.jsx              ← React entry point (~10 lines)
     │   ├── assets/               ← Static assets
     │   ├── components/
-    │   │   ├── Login.jsx         ← Register/Sign-In component (486 lines)
-    │   │   ├── login.css         ← Auth forms styling (~426 lines)
+    │   │   ├── Login.jsx         ← Register/Sign-In component (~1000 lines)
+    │   │   ├── login.css         ← Auth forms styling (~550 lines)
     │   │   ├── Loader.jsx        ← Animated intro loader (356 lines)
     │   │   └── loader.css        ← Loader animations (~250 lines)
     │   ├── context/
@@ -84,13 +84,23 @@ npm run lint     # Run ESLint
 - ![User Data](https://img.shields.io/badge/User%20Data-Isolated-informational) **User-Specific Data** - Each user has isolated favorites and history
 - ![Favorites](https://img.shields.io/badge/Favorites%20System-Enabled-blue) **Favorites System** - Save and manage your favorite songs per user
 - ![History](https://img.shields.io/badge/History%20Tracking-Active-informational) **Mood History** - Track your mood selections over time (user-specific)
-- ![Email](https://img.shields.io/badge/Email%20Verification-Active-brightgreen) **Email Verification** - Verification code sent on registration
+- ![Email](https://img.shields.io/badge/Email%20Verification-Active-brightgreen) **Email Verification** - Verification code sent on registration via EmailJS
 - ![YouTube](https://img.shields.io/badge/YouTube-Integrated-red?logo=youtube) **YouTube Integration** - Click any song to open on YouTube
 - ![Animations](https://img.shields.io/badge/Animations-Framer%20Motion-purple) **Beautiful UI** - Modern design with Framer Motion animations
 - ![Responsive](https://img.shields.io/badge/Responsive-Mobile%20Ready-brightgreen) **Responsive Design** - Works seamlessly on desktop, tablet, and mobile
 - ![Filter](https://img.shields.io/badge/Filters-By%20Language-orange) **Language Filter** - Filter songs by language preference
 - ![Loader](https://img.shields.io/badge/Loader-Animated%20Intro-lightgrey) **Loader Page** - Animated intro loader before main app
 - ![Session](https://img.shields.io/badge/Session-Security-brightgreen) **Session Security** - Auto-logout on server restart, must re-login
+
+### 🆕 New Polished Features (v2.0)
+
+- ![Real-time](https://img.shields.io/badge/Validation-Real--time-green) **Real-time Input Validation** - Instant feedback with ✓/✗ indicators as you type
+- ![Auto Submit](https://img.shields.io/badge/Auto-Submit-blue) **Auto-Submit Verification** - Code auto-submits when 6 characters entered
+- ![Cooldown](https://img.shields.io/badge/Resend-Cooldown-orange) **60s Resend Cooldown** - Rate limiting prevents email spam
+- ![Auto Focus](https://img.shields.io/badge/UX-Auto%20Focus-purple) **Auto-Focus** - Verification input auto-focuses when dialog opens
+- ![Success Animation](https://img.shields.io/badge/Animation-Success-brightgreen) **Success Animation** - Celebratory animation on successful verification
+- ![Accessibility](https://img.shields.io/badge/A11y-ARIA%20Labels-blue) **Enhanced Accessibility** - ARIA labels, roles, and keyboard navigation
+- ![Env Variables](https://img.shields.io/badge/Config-Environment%20Variables-yellow) **Environment Variables** - EmailJS credentials via `.env` file
 
 ## 📊 Data Overview
 
@@ -237,11 +247,11 @@ vercel deploy
 | File | Purpose | Size | Type |
 |------|---------|------|------|
 | `App.jsx` | Main React component with mood selection, favorites, and history logic | 416 lines | Component |
-| `Login.jsx` | Register/Sign-In authentication component with sliding transitions | 486 lines | Component |
+| `Login.jsx` | Register/Sign-In with real-time validation, auto-submit, cooldown timer | ~1000 lines | Component |
 | `Loader.jsx` | Animated intro loader page | 356 lines | Component |
 | `AuthContext.jsx` | Authentication state management with useAuth hook | ~50 lines | Context |
 | `App.css` | All styling and animations (moods, cards, navbar, emoji separation) | ~1113 lines | Styles |
-| `login.css` | Authentication forms styling with animations and optimizations | ~426 lines | Styles |
+| `login.css` | Auth forms styling with validation states, animations, accessibility | ~550 lines | Styles |
 | `loader.css` | Loader animation styles | ~250 lines | Styles |
 | `songs.js` | Song database for all moods and languages | 277 lines | Data |
 | `index.css` | Global styles | ~50 lines | Styles |
@@ -262,22 +272,42 @@ vercel deploy
 ## 🔐 Authentication System
 
 ### User Registration
-1. User enters **Name** and **Email**
-2. Verification code generated and logged to console
-3. User account created with unique ID
-4. Auto-redirects to Home page
+1. User enters **Name** and **Email** with real-time validation
+2. Visual feedback: ✓ for valid input, ✗ for invalid
+3. Verification code generated and sent via EmailJS
+4. Verification dialog auto-focuses the code input
+5. Code auto-submits when 6 characters entered
+6. Success animation plays on verification
+7. Auto-redirects to Home page
 
 ### User Sign-In
 1. User enters registered **Email**
 2. System validates email against registered users
-3. User session restored with their favorites and history
-4. Auto-redirects to Home page
+3. If unverified, sends new verification code
+4. User session restored with their favorites and history
+5. Auto-redirects to Home page
+
+### Email Verification Features
+- **60-second cooldown** between resend requests (prevents spam)
+- **Auto-submit** when verification code is complete
+- **Auto-focus** on verification input field
+- **Success animation** with checkmark on verification
+- **Error shake animation** for invalid codes
 
 ### Session Security
 - Session data (`musicMoodUser`) is cleared on server restart
 - Users must re-login when accessing the app (no auto-login)
 - User accounts and history remain saved in localStorage
 - Each user's data is completely isolated by userId
+
+### Environment Variables
+Create a `.env` file in the `frontend/` directory:
+```env
+VITE_EMAILJS_SERVICE_ID=your_service_id
+VITE_EMAILJS_TEMPLATE_ID=your_template_id
+VITE_EMAILJS_PUBLIC_KEY=your_public_key
+```
+See `.env.example` for reference.
 
 ---
 
@@ -343,6 +373,18 @@ This project is provided as-is for educational and personal use.
 
 ## 🛠 Recent Updates
 
+- **2025-11-28** — Login System Polish & Enhancements (v2.0)
+  - ✨ **Real-time Input Validation** - Live ✓/✗ feedback as users type names and emails
+  - ⏱️ **60-second Resend Cooldown** - Rate limiting with countdown timer to prevent email spam
+  - 🎯 **Auto-Focus** - Verification code input automatically focuses when dialog opens
+  - ⚡ **Auto-Submit** - Verification code auto-submits when 6 characters are entered
+  - 🎉 **Success Animation** - Celebratory green overlay with checkmark animation on verification
+  - ♿ **Accessibility Improvements** - Added ARIA labels, roles, aria-live regions for screen readers
+  - 🔐 **Environment Variables** - EmailJS credentials can now be stored in `.env` file
+  - 📝 **Input Sanitization** - Verification codes sanitized to uppercase alphanumeric only
+  - 🎨 **New CSS Styles** - Validation states, success animations, focus-visible outlines
+  - Files updated: `Login.jsx`, `login.css`, `.env.example` created
+
 - **2025-11-18** — UI Polish: Emoji/Text Separation
   - Separated emojis from mood-specific text colors throughout all sections
   - Updated `.mood-title` to use flexbox layout with `.mood-emoji-header` and `.mood-text` spans
@@ -364,4 +406,4 @@ This project is provided as-is for educational and personal use.
 
 - **2025-11-15** — Inserted a new animated loader page shown before the homepage. The loader is visual-only by default (no autoplaying music). Files added/updated: `frontend/src/components/Loader.jsx`, `frontend/src/components/loader.css`. Audio experiments were performed earlier and then removed per request.
 
-Last Updated: November 18, 2025
+Last Updated: November 28, 2025
