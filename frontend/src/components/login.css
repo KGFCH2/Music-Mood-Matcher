@@ -532,6 +532,121 @@
     z-index: 2000;
 }
 
+/* Verification Dialog Overlay - Full screen, hides background */
+.verification-dialog-overlay {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    overflow: hidden;
+}
+
+/* Animated background for verification dialog */
+.verification-dialog-overlay::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: 
+        radial-gradient(circle at 20% 80%, rgba(124, 77, 255, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(0, 229, 255, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(124, 77, 255, 0.1) 0%, transparent 40%);
+    animation: pulse-bg 8s ease-in-out infinite;
+}
+
+@keyframes pulse-bg {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+}
+
+/* Floating music notes for verification overlay */
+.verification-dialog-overlay .floating-notes {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.verification-dialog-overlay .floating-note {
+    position: absolute;
+    font-size: 2rem;
+    opacity: 0.1;
+    animation: float-verification-note 6s ease-in-out infinite;
+}
+
+.verification-dialog-overlay .floating-note:nth-child(1) { top: 10%; left: 5%; animation-delay: 0s; }
+.verification-dialog-overlay .floating-note:nth-child(2) { top: 20%; right: 10%; animation-delay: 1s; }
+.verification-dialog-overlay .floating-note:nth-child(3) { top: 60%; left: 8%; animation-delay: 2s; }
+.verification-dialog-overlay .floating-note:nth-child(4) { top: 70%; right: 15%; animation-delay: 1.5s; }
+.verification-dialog-overlay .floating-note:nth-child(5) { top: 85%; left: 20%; animation-delay: 2.5s; }
+.verification-dialog-overlay .floating-note:nth-child(6) { top: 30%; right: 5%; animation-delay: 0.5s; }
+
+@keyframes float-verification-note {
+    0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.1; }
+    50% { transform: translateY(-20px) rotate(10deg); opacity: 0.2; }
+}
+
+.verification-dialog {
+    position: relative;
+    z-index: 1;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 20px;
+    padding: 0;
+    max-width: 400px;
+    width: 92%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.5), 
+        0 0 40px rgba(124, 77, 255, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.verification-dialog .dialog-header {
+    background: linear-gradient(135deg, rgba(124, 77, 255, 0.2), rgba(0, 229, 255, 0.1));
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+}
+
+.verification-dialog .dialog-header .dialog-icon {
+    font-size: 2.2rem;
+    display: block;
+    margin-bottom: 0.5rem;
+    animation: bounce-icon 2s ease-in-out infinite;
+}
+
+@keyframes bounce-icon {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+.verification-dialog .dialog-header h3 {
+    color: #ffffff;
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin: 0.3rem 0;
+    background: linear-gradient(135deg, #7c4dff 0%, #00e5ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.verification-dialog .dialog-header p {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.82rem;
+    line-height: 1.4;
+    margin-top: 0.3rem;
+}
+
+.verification-dialog .dialog-header p strong {
+    color: #00e5ff;
+}
+
 .conflict-dialog {
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
     backdrop-filter: blur(20px);
@@ -768,9 +883,11 @@
         transform: scale(0.9);
         opacity: 0;
     }
+
     50% {
         transform: scale(1.02);
     }
+
     100% {
         transform: scale(1);
         opacity: 1;
@@ -846,6 +963,7 @@
         opacity: 0;
         transform: translateX(-20px);
     }
+
     to {
         opacity: 1;
         transform: translateX(0);
@@ -858,7 +976,19 @@
 }
 
 @keyframes shake-error {
-    0%, 100% { transform: translateX(0); }
-    20%, 60% { transform: translateX(-5px); }
-    40%, 80% { transform: translateX(5px); }
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    20%,
+    60% {
+        transform: translateX(-5px);
+    }
+
+    40%,
+    80% {
+        transform: translateX(5px);
+    }
 }
