@@ -111,7 +111,7 @@ export default function Login({ onLoginSuccess }) {
     const handleVerificationCodeChange = (value) => {
         const code = value.toUpperCase().replace(/[^A-Z0-9]/g, '')
         setVerificationInputCode(code)
-        
+
         // Auto-submit when 6 characters entered
         if (code.length === 6) {
             setTimeout(() => {
@@ -130,7 +130,7 @@ export default function Login({ onLoginSuccess }) {
 
         if (code === user.verificationCode) {
             setShowSuccessAnimation(true)
-            
+
             const verifiedUser = { ...user, isVerified: true }
             const updatedUsers = registeredUsers.map(u =>
                 u.email === verificationDialogEmail ? verifiedUser : u
@@ -447,7 +447,7 @@ export default function Login({ onLoginSuccess }) {
 
     const handleResendCode = async () => {
         if (resendCooldown > 0) return
-        
+
         setIsResending(true)
         setVerificationError('')
 
@@ -986,17 +986,27 @@ export default function Login({ onLoginSuccess }) {
                         <AnimatePresence>
                             {showVerificationDialog && (
                                 <motion.div
-                                    className="conflict-dialog-overlay"
+                                    className="verification-dialog-overlay"
                                     initial={{ opacity: 0 }}
                                     animate={{ opacity: 1 }}
                                     exit={{ opacity: 0 }}
-                                    transition={{ duration: 0.3 }}
+                                    transition={{ duration: 0.4 }}
                                     role="dialog"
                                     aria-modal="true"
                                     aria-labelledby="verification-title"
                                 >
+                                    {/* Floating music notes */}
+                                    <div className="floating-notes">
+                                        <span className="floating-note">🎵</span>
+                                        <span className="floating-note">🎶</span>
+                                        <span className="floating-note">🎵</span>
+                                        <span className="floating-note">🎶</span>
+                                        <span className="floating-note">🎵</span>
+                                        <span className="floating-note">🎶</span>
+                                    </div>
+                                    
                                     <motion.div
-                                        className="conflict-dialog"
+                                        className="verification-dialog"
                                         initial={{ opacity: 0, scale: 0.9, y: 20 }}
                                         animate={{ opacity: 1, scale: 1, y: 0 }}
                                         exit={{ opacity: 0, scale: 0.9, y: 20 }}
@@ -1053,14 +1063,13 @@ export default function Login({ onLoginSuccess }) {
                                         <div className="dialog-header">
                                             <span className="dialog-icon">📧</span>
                                             <h3 id="verification-title">Verify Your Email</h3>
-                                            <p>A verification code has been sent to <strong>{verificationDialogEmail}</strong></p>
-                                            <p style={{ fontSize: '0.9rem', marginTop: '0.5rem', color: '#b0b0b0' }}>
-                                                📨 Check your email inbox for the verification code.<br />
-                                                💡 If you don't see it, check your <strong>spam/junk</strong> folder first.
+                                            <p>Code sent to <strong>{verificationDialogEmail}</strong></p>
+                                            <p style={{ fontSize: '0.75rem', marginTop: '0.25rem', color: '#b0b0b0' }}>
+                                                📨 Check inbox or spam folder
                                             </p>
                                         </div>
 
-                                        <form onSubmit={handleVerifyEmail} style={{ padding: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                        <form onSubmit={handleVerifyEmail} style={{ padding: '1rem 1.5rem 1.25rem', display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
                                             {emailSentSuccess && (
                                                 <motion.div
                                                     className="success-message"
@@ -1072,16 +1081,17 @@ export default function Login({ onLoginSuccess }) {
                                                     style={{
                                                         background: 'rgba(76, 175, 80, 0.2)',
                                                         border: '1px solid #4caf50',
-                                                        borderRadius: '8px',
-                                                        padding: '0.75rem 1rem',
-                                                        marginBottom: '1rem',
+                                                        borderRadius: '6px',
+                                                        padding: '0.5rem 0.75rem',
+                                                        marginBottom: '0.75rem',
                                                         display: 'flex',
                                                         alignItems: 'center',
-                                                        gap: '0.5rem'
+                                                        gap: '0.4rem',
+                                                        fontSize: '0.85rem'
                                                     }}
                                                 >
                                                     <span>✅</span>
-                                                    <span style={{ color: '#4caf50' }}>Verification email sent successfully!</span>
+                                                    <span style={{ color: '#4caf50' }}>Email sent!</span>
                                                 </motion.div>
                                             )}
 
@@ -1104,27 +1114,28 @@ export default function Login({ onLoginSuccess }) {
                                                 initial={{ opacity: 0, x: -20 }}
                                                 animate={{ opacity: 1, x: 0 }}
                                                 transition={{ delay: 0.1, duration: 0.4 }}
+                                                style={{ width: '100%', marginBottom: '0.5rem' }}
                                             >
-                                                <label htmlFor="verificationCode">
+                                                <label htmlFor="verificationCode" style={{ marginBottom: '0.4rem' }}>
                                                     <span className="label-icon">🔐</span>
-                                                    <span className="label-text">Verification Code</span>
+                                                    <span className="label-text" style={{ fontSize: '0.85rem' }}>Verification Code</span>
                                                 </label>
                                                 <input
                                                     ref={verificationInputRef}
                                                     id="verificationCode"
                                                     type="text"
-                                                    placeholder="Enter code (e.g., ABC123)"
+                                                    placeholder="ABC123"
                                                     value={verificationInputCode}
                                                     onChange={(e) => handleVerificationCodeChange(e.target.value)}
                                                     maxLength="6"
                                                     className="form-input"
-                                                    style={{ letterSpacing: '4px', textAlign: 'center', fontSize: '1.4rem', fontWeight: 'bold' }}
+                                                    style={{ letterSpacing: '6px', textAlign: 'center', fontSize: '1.3rem', fontWeight: 'bold', padding: '0.8rem 1rem' }}
                                                     aria-label="Verification code"
                                                     autoComplete="one-time-code"
                                                     autoFocus
                                                 />
-                                                <small style={{ color: '#888', marginTop: '0.5rem', display: 'block', textAlign: 'center' }}>
-                                                    Code will auto-submit when complete
+                                                <small style={{ color: '#888', marginTop: '0.3rem', display: 'block', textAlign: 'center', fontSize: '0.75rem' }}>
+                                                    Auto-submits when complete
                                                 </small>
                                             </motion.div>
 
@@ -1136,10 +1147,10 @@ export default function Login({ onLoginSuccess }) {
                                                 initial={{ opacity: 0, y: 20 }}
                                                 animate={{ opacity: 1, y: 0 }}
                                                 transition={{ delay: 0.2, duration: 0.4 }}
-                                                style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}
+                                                style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem', padding: '0.75rem 1.5rem', fontSize: '0.9rem' }}
                                             >
                                                 <span className="btn-icon">✅</span>
-                                                <span className="btn-text">Verify Email</span>
+                                                <span className="btn-text">Verify</span>
                                             </motion.button>
 
                                             <motion.button
@@ -1150,19 +1161,20 @@ export default function Login({ onLoginSuccess }) {
                                                 whileHover={{ scale: resendCooldown > 0 ? 1 : 1.05 }}
                                                 whileTap={{ scale: resendCooldown > 0 ? 1 : 0.95 }}
                                                 style={{
-                                                    marginTop: '1rem',
+                                                    marginTop: '0.6rem',
                                                     background: 'transparent',
                                                     border: '1px solid #667eea',
                                                     color: resendCooldown > 0 ? '#888' : '#667eea',
-                                                    padding: '0.75rem 1.5rem',
-                                                    borderRadius: '8px',
+                                                    padding: '0.5rem 1rem',
+                                                    borderRadius: '6px',
                                                     cursor: (isResending || resendCooldown > 0) ? 'not-allowed' : 'pointer',
                                                     opacity: (isResending || resendCooldown > 0) ? 0.6 : 1,
                                                     display: 'flex',
                                                     alignItems: 'center',
                                                     justifyContent: 'center',
-                                                    gap: '0.5rem',
-                                                    minWidth: '180px'
+                                                    gap: '0.4rem',
+                                                    minWidth: '140px',
+                                                    fontSize: '0.85rem'
                                                 }}
                                                 aria-disabled={isResending || resendCooldown > 0}
                                             >
@@ -1196,7 +1208,7 @@ export default function Login({ onLoginSuccess }) {
                                                 }}
                                                 whileHover={{ scale: 1.05 }}
                                                 whileTap={{ scale: 0.95 }}
-                                                style={{ marginTop: '1rem' }}
+                                                style={{ marginTop: '0.6rem', padding: '0.5rem 1rem', fontSize: '0.85rem' }}
                                             >
                                                 <span className="btn-icon">❌</span>
                                                 <span className="btn-text">Cancel</span>
