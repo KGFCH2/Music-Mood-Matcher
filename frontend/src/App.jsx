@@ -113,6 +113,28 @@ function App() {
     angry: { primary: '#DC143C', accent: '#FF0000', rgb: '220, 20, 60' }
   }
 
+  const totalSelections = moodHistory.length
+  const moodCounts = moods.map(mood => {
+    const count = moodHistory.filter(entry => entry.mood === mood).length
+    return { mood, count }
+  })
+  const maxMoodCount = Math.max(...moodCounts.map(entry => entry.count), 1)
+  const recentHistory = [...moodHistory].slice(-6).reverse()
+
+  const formatHistoryTime = (timestamp) => {
+    if (!timestamp) return '—'
+    const parsed = new Date(timestamp)
+    if (Number.isNaN(parsed.getTime())) return '—'
+    return parsed.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
+  }
+
+  const formatHistoryDate = (timestamp) => {
+    if (!timestamp) return '—'
+    const parsed = new Date(timestamp)
+    if (Number.isNaN(parsed.getTime())) return '—'
+    return parsed.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })
+  }
+
   // Apply mood-based theme
   useEffect(() => {
     if (currentMood && moodColors[currentMood]) {
@@ -382,6 +404,57 @@ function App() {
                             </motion.div>
                           )
                         })}
+                      </div>
+
+                      <div className="history-insights">
+                        <div className="history-chart-card">
+                          <div className="history-chart-head">
+                            <h3>Recent mood trend</h3>
+                            <p>{totalSelections} pick{totalSelections !== 1 ? 's' : ''}</p>
+                          </div>
+                          <div className="chart-bars">
+                            {moodCounts.map(({ mood, count }) => (
+                              <div className="chart-bar" key={mood}>
+                                <div className="bar-meta">
+                                  <span className="bar-label">{mood.charAt(0).toUpperCase() + mood.slice(1)}</span>
+                                  <span className="bar-count">{count}</span>
+                                </div>
+                                <div className="bar-track">
+                                  <div
+                                    className="bar-fill"
+                                    style={{
+                                      height: `${(count / maxMoodCount) * 100}%`,
+                                      background: moodColors[mood]?.primary || 'var(--primary)'
+                                    }}
+                                  />
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+
+                        <div className="history-timeline-card">
+                          <div className="history-chart-head">
+                            <h3>Timeline</h3>
+                            <p>Last {recentHistory.length || 0} picks</p>
+                          </div>
+                          {recentHistory.length === 0 ? (
+                            <p className="empty-state">No timeline entries yet.</p>
+                          ) : (
+                            <ul className="timeline-list">
+                              {recentHistory.map((entry, idx) => (
+                                <li className="timeline-item" key={`${entry.timestamp}-${idx}`}>
+                                  <span className="timeline-emoji">{moodEmojis[entry.mood]}</span>
+                                  <div className="timeline-meta">
+                                    <span className="timeline-mood">{entry.mood.charAt(0).toUpperCase() + entry.mood.slice(1)}</span>
+                                    <span className="timeline-time">{formatHistoryTime(entry.timestamp)}</span>
+                                    <span className="timeline-date">{formatHistoryDate(entry.timestamp)}</span>
+                                  </div>
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+                        </div>
                       </div>
 
                       <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1rem', gap: '1rem' }}>
