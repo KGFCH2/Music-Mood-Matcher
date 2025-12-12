@@ -34,9 +34,9 @@ body,
 
 body {
   font-family: 'Poppins', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  background: linear-gradient(135deg, #0b1220 0%, #1a1a2e 50%, #16213e 100%);
+  background: var(--body-bg, linear-gradient(135deg, #0b1220 0%, #1a1a2e 50%, #16213e 100%));
   background-attachment: fixed;
-  color: var(--text-light);
+  color: var(--text-color);
   min-height: 100vh;
   overflow-x: hidden;
   position: relative;
@@ -867,6 +867,137 @@ body {
   background: linear-gradient(135deg, rgba(123, 77, 255, 0.15), rgba(0, 229, 255, 0.08));
   transform: translateY(-4px);
   box-shadow: 0 8px 24px rgba(124, 77, 255, 0.2);
+}
+
+.history-insights {
+  margin-top: 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.25rem;
+}
+
+.history-chart-card,
+.history-timeline-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.04), rgba(124, 77, 255, 0.08));
+  border-radius: 16px;
+  padding: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(12px);
+}
+
+.history-chart-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 1rem;
+  gap: 0.5rem;
+}
+
+.history-chart-head h3 {
+  font-size: 1.1rem;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+}
+
+.history-chart-head p {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.chart-bars {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-end;
+  min-height: 160px;
+}
+
+.chart-bar {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.bar-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: var(--text-muted);
+}
+
+.bar-count {
+  font-weight: 700;
+  color: var(--text-light);
+}
+
+.bar-track {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 0.25rem;
+  display: flex;
+  align-items: flex-end;
+}
+
+.bar-fill {
+  width: 100%;
+  border-radius: 10px;
+  transition: height 0.3s ease;
+}
+
+.history-timeline-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.timeline-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 0;
+  margin: 0;
+}
+
+.timeline-item {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.9rem 1rem;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(124, 77, 255, 0.15), rgba(0, 229, 255, 0.05));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.timeline-emoji {
+  font-size: 1.4rem;
+}
+
+.timeline-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.timeline-mood {
+  font-weight: 600;
+  color: var(--text-light);
+}
+
+.timeline-time,
+.timeline-date {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.timeline-date {
+  font-size: 0.75rem;
 }
 
 .history-item {
