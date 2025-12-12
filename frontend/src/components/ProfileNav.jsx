@@ -21,11 +21,22 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout }) {
     const [emailVerificationCode, setEmailVerificationCode] = useState('')
     const [emailVerificationError, setEmailVerificationError] = useState('')
     const [emailVerificationSent, setEmailVerificationSent] = useState(false)
+    const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light')
 
     // Initialize EmailJS
     useEffect(() => {
         emailjs.init('yvSwGRuksv7zAychI')
     }, [])
+
+    // Theme effect
+    useEffect(() => {
+        document.documentElement.setAttribute('data-theme', theme)
+        localStorage.setItem('theme', theme)
+    }, [theme])
+
+    const toggleTheme = () => {
+        setTheme(prev => prev === 'light' ? 'dark' : 'light')
+    }
 
     const generateVerificationCode = () => {
         return Math.random().toString(36).substring(2, 8).toUpperCase()
@@ -289,15 +300,26 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout }) {
                     {/* Header */}
                     <div className="profile-header">
                         <h2>👤 My Profile</h2>
-                        <motion.button
-                            className="close-btn-stylish"
-                            onClick={onClose}
-                            whileHover={{ scale: 1.1, rotate: 90 }}
-                            whileTap={{ scale: 0.9 }}
-                            aria-label="Close profile"
-                        >
-                            <span className="close-icon">×</span>
-                        </motion.button>
+                        <div className="header-actions">
+                            <motion.button
+                                className="theme-toggle-btn"
+                                onClick={toggleTheme}
+                                whileHover={{ scale: 1.1 }}
+                                whileTap={{ scale: 0.9 }}
+                                aria-label="Toggle theme"
+                            >
+                                {theme === 'light' ? '🌙' : '☀️'}
+                            </motion.button>
+                            <motion.button
+                                className="close-btn-stylish"
+                                onClick={onClose}
+                                whileHover={{ scale: 1.1, rotate: 90 }}
+                                whileTap={{ scale: 0.9 }}
+                                aria-label="Close profile"
+                            >
+                                <span className="close-icon">×</span>
+                            </motion.button>
+                        </div>
                     </div>
 
                     {/* Main Profile Card */}
