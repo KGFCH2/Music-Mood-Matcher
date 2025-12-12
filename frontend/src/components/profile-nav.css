@@ -37,6 +37,21 @@
     border: 1px solid rgba(124, 77, 255, 0.2);
 }
 
+[data-theme="light"] .profile-nav-panel {
+    background: #f4f4ff;
+    color: #000000;
+    --text-color: #000000;
+    --text-light: #000000;
+    --text-muted: #666666;
+    --header-bg: #f4f4ff;
+}
+
+[data-theme="dark"] .profile-nav-panel {
+    background: #1a1a2e;
+    color: #f7f7f7;
+    --header-bg: #1a1a2e;
+}
+
 @keyframes slideInCenter {
     from {
         transform: scale(0.95) translateY(20px);
@@ -71,14 +86,16 @@
 .profile-header {
     position: sticky;
     top: 0;
-    background: var(--button-bg);
+    background: var(--header-bg);
     color: var(--text-color);
-    padding: 1.5rem;
-    z-index: 10;
-    box-shadow: 0 2px 12px rgba(124, 77, 255, 0.2);
+    padding: 1rem;
+    z-index: 200;
+    box-shadow: 0 4px 20px rgba(124, 77, 255, 0.3);
     display: flex;
     align-items: center;
     justify-content: space-between;
+    border-bottom: 2px solid rgba(124, 77, 255, 0.3);
+    width: 100%;
 }
 
 .profile-header h2 {
@@ -188,7 +205,7 @@
 /* Main Profile Card */
 .profile-main-card {
     background: rgba(255, 255, 255, 0.05);
-    margin: 1rem 1rem 0.8rem;
+    margin: 0 1rem 0.8rem;
     padding: 1rem 1.2rem;
     border-radius: 12px;
     text-align: center;
@@ -217,13 +234,13 @@
     margin: 0 0 0.3rem;
     font-size: 1.2rem;
     font-weight: 600;
-    color: #f7f7f7;
+    color: var(--text-light, #f7f7f7);
 }
 
 .profile-email-main {
     margin: 0 0 0.3rem;
     font-size: 0.85rem;
-    color: #b0b0b0;
+    color: var(--text-muted, #b0b0b0);
 }
 
 .profile-gender-verified-row {
@@ -293,6 +310,7 @@
 .profile-sections {
     flex: 1;
     padding: 0 1.5rem 1.5rem;
+    margin-top: 0;
 }
 
 .profile-section {
@@ -316,7 +334,7 @@
     cursor: pointer;
     font-size: 1rem;
     font-weight: 500;
-    color: #f7f7f7;
+    color: var(--text-color, #f7f7f7);
     transition: all 0.2s ease;
     border-bottom: 1px solid transparent;
 }
@@ -378,11 +396,11 @@
 
 .info-label {
     font-weight: 500;
-    color: #b0b0b0;
+    color: var(--text-muted, #b0b0b0);
 }
 
 .info-value {
-    color: #f7f7f7;
+    color: var(--text-light, #f7f7f7);
     text-align: right;
     flex: 1;
     margin-left: 1rem;
@@ -418,7 +436,7 @@
 .history-label {
     margin: 0 0 0.75rem;
     font-weight: 500;
-    color: #b0b0b0;
+    color: var(--text-muted, #b0b0b0);
     font-size: 0.9rem;
 }
 
@@ -455,7 +473,7 @@
 }
 
 .item-date {
-    color: #b0b0b0;
+    color: var(--text-muted, #b0b0b0);
 }
 
 /* Privacy Section */
@@ -473,7 +491,7 @@
     background: rgba(255, 255, 255, 0.05);
     border-radius: 6px;
     font-size: 0.9rem;
-    color: #b0b0b0;
+    color: var(--text-muted, #b0b0b0);
 }
 
 .privacy-icon {
@@ -616,6 +634,30 @@
     border-radius: 12px;
     padding: 2rem;
     max-width: 400px;
+    width: 90%;
+    color: #f7f7f7;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+/* Conflict Dialog (for email verification) */
+.conflict-dialog-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1200;
+    /* Higher than profile overlay */
+}
+
+.conflict-dialog {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    border: 1px solid rgba(124, 77, 255, 0.3);
+    border-radius: 12px;
+    padding: 2rem;
+    max-width: 500px;
     width: 90%;
     color: #f7f7f7;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
