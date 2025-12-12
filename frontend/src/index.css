@@ -9,6 +9,36 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  /* Light theme variables */
+  --bg-color: #f4f4ff;
+  --body-bg: linear-gradient(135deg, #f4f4ff 0%, #ffffff 70%);
+  --text-color: #1f1f2b;
+  --text-light: #1f1f2b;
+  --text-muted: #6c6c84;
+  --button-bg: #ffffff;
+  --button-border: #7c75ff;
+}
+
+[data-theme="light"] {
+  --bg-color: #f4f4ff;
+  --body-bg: linear-gradient(135deg, #f4f4ff 0%, #ffffff 70%);
+  --text-color: #1f1f2b;
+  --text-light: #1f1f2b;
+  --text-muted: #6c6c84;
+  --button-bg: #ffffff;
+  --button-border: #7c75ff;
+}
+
+[data-theme="dark"] {
+  /* Dark theme variables */
+  --bg-color: #0b1220;
+  --body-bg: linear-gradient(135deg, #0b1220 0%, #12172c 60%, #1a1a2e 100%);
+  --text-color: rgba(255, 255, 255, 0.92);
+  --text-light: rgba(255, 255, 255, 0.9);
+  --text-muted: #b0b0b0;
+  --button-bg: #1a1a2e;
+  --button-border: #646cff;
 }
 
 a {
@@ -26,6 +56,8 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  background: var(--body-bg, var(--bg-color));
+  color: var(--text-color);
 }
 
 h1 {
@@ -41,9 +73,11 @@ button {
   font-family: inherit;
   cursor: pointer;
   transition: border-color 0.25s;
+  background-color: var(--button-bg);
+  color: var(--text-color);
 }
 button:hover {
-  border-color: #646cff;
+  border-color: var(--button-border);
 }
 button:focus,
 button:focus-visible {
