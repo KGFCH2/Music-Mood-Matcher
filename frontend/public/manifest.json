@@ -20,7 +20,10 @@
       "purpose": "any"
     }
   ],
-  "categories": ["music", "entertainment"],
+  "categories": [
+    "music",
+    "entertainment"
+  ],
   "screenshots": [
     {
       "src": "/music.png",
