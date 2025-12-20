@@ -26,11 +26,12 @@ const questions = [
 ]
 
 function getMoodFromAnswers(answers) {
-  // Simple mapping for demo purposes
-  if (answers[1] === 'Romantic' || answers[3] === 'You’re special') return 'romantic'
-  if (answers[1] === 'Energetic' || answers[3] === 'Let’s have fun!') return 'energetic'
-  if (answers[1] === 'Chill' || answers[2] === 'Go for a walk') return 'chill'
-  if (answers[1] === 'Happy' || answers[3] === 'You make me smile') return 'happy'
+  // Normalize answers and match by keywords for robustness
+  const a = (answers || []).map(s => (s || '').toString().toLowerCase());
+  if ((a[1] && a[1].includes('romant')) || (a[3] && a[3].includes('special'))) return 'romantic'
+  if ((a[1] && a[1].includes('energet')) || (a[3] && a[3].includes('fun'))) return 'energetic'
+  if ((a[1] && a[1].includes('chill')) || (a[2] && a[2].includes('walk'))) return 'chill'
+  if ((a[1] && a[1].includes('happ')) || (a[3] && a[3].includes('smile'))) return 'happy'
   return 'romantic'
 }
 
@@ -45,18 +46,20 @@ function CrushMode() {
   }
 
   const handleAnswer = (answer) => {
-    setAnswers(prev => [...prev, answer])
-    if (step < questions.length) {
-      setStep(step + 1)
-    } else {
-      // Generate playlist
-      const mood = getMoodFromAnswers([...answers, answer])
-      const moodSongs = songs[mood] || []
-      // Pick 5 random songs
-      const selected = moodSongs.sort(() => 0.5 - Math.random()).slice(0, 5)
-      setPlaylist(selected)
-      setStep('done')
-    }
+    setAnswers(prev => {
+      const next = [...prev, answer]
+      if (step < questions.length) {
+        setStep(s => s + 1)
+      } else {
+        // Generate playlist using the up-to-date answers array
+        const mood = getMoodFromAnswers(next)
+        const moodSongs = songs[mood] || []
+        const selected = moodSongs.sort(() => 0.5 - Math.random()).slice(0, 5)
+        setPlaylist(selected)
+        setStep('done')
+      }
+      return next
+    })
   }
 
   const handleRestart = () => {
