@@ -37,11 +37,20 @@ function MoodWebcam() {
 
   useEffect(() => {
     const loadModels = async () => {
-      setLoading(true);
-      await faceapi.nets.tinyFaceDetector.loadFromUri('/models');
-      await faceapi.nets.faceExpressionNet.loadFromUri('/models');
-      setModelsLoaded(true);
-      setLoading(false);
+      try {
+        setLoading(true);
+        // Load models from CDN (jsDelivr) - no local files needed
+        const MODEL_URL = 'https://cdn.jsdelivr.net/npm/@vladmandic/face-api/model/';
+        await faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL);
+        await faceapi.nets.faceExpressionNet.loadFromUri(MODEL_URL);
+        setModelsLoaded(true);
+        setFeedback('');
+      } catch (err) {
+        console.error('Error loading face-api models:', err);
+        setFeedback('Failed to load AI models. Check your internet connection.');
+      } finally {
+        setLoading(false);
+      }
     };
     loadModels();
   }, []);
@@ -66,14 +75,11 @@ function MoodWebcam() {
     if (detections && detections.expressions) {
       const sorted = Object.entries(detections.expressions).sort((a, b) => b[1] - a[1]);
       const topExpression = sorted[0][0];
-      let mood = 'neutral';
-      if (topExpression === 'happy') mood = 'happy';
-      else if (topExpression === 'sad') mood = 'sad';
-      else if (topExpression === 'angry') mood = 'angry';
-      else if (topExpression === 'surprised' || topExpression === 'disgusted') mood = 'existential';
-      else if (topExpression === 'fearful' || topExpression === 'neutral') mood = 'tired';
-      setDetectedMood(mood);
-      setPlaylist(getPlaylistFromMood(moodMap[mood]));
+      // show the raw detected expression (happy, sad, neutral, etc.) to the user
+      setDetectedMood(topExpression);
+      // map expression -> intermediate category -> playlist
+      const category = moodMap[topExpression] || 'cheerful';
+      setPlaylist(getPlaylistFromMood(category));
       setFeedback('');
     } else {
       setDetectedMood(null);
