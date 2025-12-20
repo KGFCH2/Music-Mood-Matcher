@@ -405,7 +405,9 @@ function App() {
                     <span className="tab-text">AI Mood Detection</span>
                   </h2>
                   <p className="tab-subtitle">Let your webcam detect your mood and generate a playlist! (No images are stored)</p>
-                  <MoodWebcam />
+                  <Suspense fallback={<Loader />}>
+                    <MoodWebcam />
+                  </Suspense>
                 </div>
               )}
 
@@ -422,7 +424,9 @@ function App() {
                     <span className="tab-text">Crush Mode</span>
                   </h2>
                   <p className="tab-subtitle">Secret feature: Generate a playlist for your crush!</p>
-                  <CrushMode />
+                  <Suspense fallback={<Loader />}>
+                    <CrushMode />
+                  </Suspense>
                 </motion.div>
               )}
 
