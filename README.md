@@ -321,6 +321,7 @@ Each user has **completely isolated data**.
 - Detects: Happy, Sad, Neutral, Surprised, Angry
 - Auto-generates matching playlist
 - Privacy-focused (no data sent to servers)
+- Models loaded from CDN (jsDelivr) automatically
 
 ### Crush Mode
 - Answer 4 fun questions
