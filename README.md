@@ -2,22 +2,31 @@
 
 [![React](https://img.shields.io/badge/React-19.1.1-blue?logo=react&logoColor=white)](https://react.dev)
 [![Vite](https://img.shields.io/badge/Vite-7.1.7-646cff?logo=vite&logoColor=white)](https://vitejs.dev)
+[![Node.js](https://img.shields.io/badge/Node.js-Express-green?logo=node.js)](https://expressjs.com)
+[![MongoDB](https://img.shields.io/badge/MongoDB-Database-green?logo=mongodb)](https://www.mongodb.com)
 [![Status](https://img.shields.io/badge/Status-Production%20Ready-brightgreen)](https://github.com)
 [![GitHub](https://img.shields.io/badge/GitHub-Music--Mood--Matcher-black?logo=github)](https://github.com/KGFCH2/Music-Mood-Matcher)
 
-A modern React web app that helps users discover songs based on their mood. Features AI-powered face detection, user authentication with email verification, and 240+ songs across multiple languages.
+A modern full-stack web app that helps users discover songs based on their mood. Features AI-powered face detection, JWT authentication with MongoDB, backend REST API, and 240+ songs across multiple languages.
 
 ---
 
 ## ⚡ Quick Start
 
+### Backend Setup
+```bash
+cd backend
+npm install
+npm start          # or npm run dev for development
+```
+Backend runs on `http://localhost:5000`
+
+### Frontend Setup
 ```bash
 cd frontend
 npm install
-npm run dev
+npm run dev        # Starts on http://localhost:5173
 ```
-
-Open **http://localhost:5173** in your browser.
 
 ---
 
@@ -29,9 +38,11 @@ Open **http://localhost:5173** in your browser.
 | 🎭 **6 Mood Categories** | Happy, Sad, Energetic, Romantic, Chill, Angry |
 | 🤖 **AI Face Detection** | Mood Webcam with face-api.js for automatic mood recognition |
 | 💕 **Crush Mode** | Fun quiz to generate playlists for your crush |
-| 👤 **User Authentication** | Register/Sign-In with email verification via EmailJS |
-| ⭐ **Favorites & History** | Per-user saved favorites and mood tracking |
-| 📱 **Responsive Design** | Works on desktop, tablet, and mobile |
+| 👤 **JWT Authentication** | Secure registration/login with password hashing |
+| ⭐ **Favorites & History** | Per-user saved favorites and mood tracking with persistence |
+| 📊 **Mood Analytics** | Track mood patterns over time |
+| 📱 **PWA Support** | Works offline with service worker caching |
+| 🔒 **Enhanced Security** | CORS, rate limiting, Helmet.js protection |
 | 🎨 **Beautiful UI** | Framer Motion animations, glass-morphism design |
 
 ---
@@ -39,30 +50,49 @@ Open **http://localhost:5173** in your browser.
 ## 📁 Project Structure
 
 ```
-frontend/
-├── src/
-│   ├── App.jsx                    # Main app (~450 lines)
-│   ├── App.css                    # Core styles (~1113 lines)
-│   ├── components/
-│   │   ├── Login.jsx              # Auth with verification (~1230 lines)
-│   │   ├── ProfileNav.jsx         # User profile panel (~1139 lines)
-│   │   ├── MoodWebcam.jsx         # AI face detection (~130 lines)
-│   │   ├── CrushMode.jsx          # Crush quiz (~120 lines)
-│   │   ├── DemoGuide.jsx          # Demo users (~240 lines)
-│   │   ├── Loader.jsx             # Intro animation (~356 lines)
-│   │   └── tabs/
-│   │       ├── HomeTab.jsx
-│   │       ├── FavoritesTab.jsx
-│   │       └── HistoryTab.jsx
-│   ├── context/
-│   │   └── AuthContext.jsx        # Auth state management
-│   └── data/
-│       └── songs.js               # Song database (240+ songs)
-├── public/
-│   └── models/                    # Face-api.js AI models
-├── package.json
-├── vite.config.js
-└── .env.example
+Music-Mood-Matcher/
+├── frontend/
+│   ├── src/
+│   │   ├── App.jsx                    # Main app with lazy loading
+│   │   ├── api/
+│   │   │   └── apiClient.js          # Axios API client
+│   │   ├── components/
+│   │   │   ├── CrushMode.jsx         # Lazy loaded
+│   │   │   ├── MoodWebcam.jsx        # Lazy loaded
+│   │   │   ├── ProfileNav.jsx        # User profile panel
+│   │   │   └── tabs/
+│   │   ├── context/
+│   │   │   └── AuthContext.jsx       # Auth state + JWT tokens
+│   │   ├── test/
+│   │   │   ├── setup.js              # Vitest configuration
+│   │   │   └── App.test.jsx          # Sample tests
+│   │   └── serviceWorkerRegister.js  # PWA service worker
+│   ├── public/
+│   │   ├── sw.js                     # Service worker script
+│   │   └── manifest.json             # PWA manifest
+│   ├── vitest.config.js              # Testing configuration
+│   └── package.json
+│
+├── backend/
+│   ├── src/
+│   │   ├── server.js                 # Express app setup
+│   │   ├── db.js                     # MongoDB connection
+│   │   ├── models/
+│   │   │   ├── User.js               # User schema with favorites
+│   │   │   └── MoodHistory.js        # Mood tracking schema
+│   │   ├── controllers/
+│   │   │   ├── authController.js     # Register, login, profile
+│   │   │   └── userController.js     # Favorites, history, stats
+│   │   ├── routes/
+│   │   │   ├── authRoutes.js         # Auth endpoints
+│   │   │   └── userRoutes.js         # User endpoints
+│   │   └── middleware/
+│   │       ├── auth.js               # JWT verification
+│   │       └── errorHandler.js       # Error handling
+│   ├── .env.example
+│   └── package.json
+│
+└── README.md
 ```
 
 ---
@@ -71,33 +101,187 @@ frontend/
 
 **Frontend:**
 - React 19.1.1 + Vite 7.1.7
-- Framer Motion 12.23.24 (animations)
-- @emailjs/browser 4.4.1 (email service)
-- face-api.js 0.22.2 (AI face detection)
-- react-webcam 7.2.0 (webcam access)
+- Framer Motion (animations)
+- Vitest + Testing Library (unit tests)
+- Axios (HTTP client)
+- PWA with Service Workers
 
-**Development:**
-- ESLint 9.36.0
-- PropTypes 15.8.1
+**Backend:**
+- Node.js + Express.js
+- MongoDB + Mongoose ODM
+- JWT (authentication)
+- Bcryptjs (password hashing)
+- Helmet.js (security)
+- Express Rate Limit (DDoS protection)
+
+**AI/Detection:**
+- face-api.js (facial expression recognition)
+- react-webcam (camera access)
 
 ---
 
 ## 🚀 Available Scripts
 
+### Frontend
 ```bash
-npm run dev      # Start development server
-npm run build    # Create production build
-npm run preview  # Preview build locally
-npm run lint     # Check code quality
+npm run dev         # Start dev server
+npm run build       # Production build
+npm run preview     # Preview build
+npm run lint        # ESLint check
+npm run test        # Run Vitest
+npm run test:ui     # Vitest with UI
+```
+
+### Backend
+```bash
+npm start           # Production
+npm run dev         # Development with nodemon
 ```
 
 ---
 
-## 🔐 Authentication
+## 🔐 Authentication Flow
 
-### Register
-1. Enter name & email with real-time validation ✓/✗
-2. Verification code sent via EmailJS
+### JWT-based Auth (New)
+1. **Register** - User creates account, password hashed with bcryptjs
+2. **Login** - Returns JWT token stored in localStorage
+3. **Request** - Token sent in Authorization header
+4. **Verify** - Middleware validates token on protected routes
+5. **Refresh** - Token expires in 7 days (configurable)
+
+### API Endpoints
+
+**Auth:**
+```
+POST   /api/auth/register  - Create new user
+POST   /api/auth/login     - Get JWT token
+GET    /api/auth/profile   - Get user profile (protected)
+```
+
+**User:**
+```
+POST   /api/user/favorites         - Add favorite song
+DELETE /api/user/favorites/:songId - Remove favorite
+GET    /api/user/favorites        - Get all favorites
+POST   /api/user/mood-history     - Save mood session
+GET    /api/user/mood-history     - Get mood history
+GET    /api/user/mood-stats       - Get mood analytics
+```
+
+---
+
+## 📦 Installation & Setup
+
+### Prerequisites
+- Node.js 18+
+- MongoDB running locally or Atlas connection string
+
+### Step 1: Backend Setup
+```bash
+cd backend
+npm install
+cp .env.example .env
+# Edit .env with your MongoDB URI and JWT secret
+npm run dev
+```
+
+### Step 2: Frontend Setup
+```bash
+cd frontend
+npm install
+cp .env.example .env
+# Update VITE_API_URL if backend is on different port
+npm run dev
+```
+
+Both should now be running and communicating!
+
+---
+
+## 🧪 Testing
+
+### Run Frontend Tests
+```bash
+cd frontend
+npm test                 # Watch mode
+npm run test:ui         # With UI dashboard
+```
+
+### Example Test
+```javascript
+import { describe, it, expect } from 'vitest'
+
+describe('App', () => {
+  it('should render correctly', () => {
+    expect(true).toBe(true)
+  })
+})
+```
+
+---
+
+## 🔒 Security Features
+
+- ✅ JWT tokens (7-day expiry)
+- ✅ Password hashing with bcryptjs (10 salt rounds)
+- ✅ CORS enabled for frontend origin
+- ✅ Helmet.js headers protection
+- ✅ Rate limiting (100 requests/15 mins)
+- ✅ .env variables for secrets
+- ✅ .gitignore protects sensitive data
+- ✅ MongoDB indexes for performance
+
+---
+
+## 📱 PWA Features
+
+- ✅ Service worker caching strategy
+- ✅ manifest.json for installation
+- ✅ Works offline for cached assets
+- ✅ Add to home screen on mobile
+- ✅ Fast loading with code splitting
+
+---
+
+## 🚀 Deployment
+
+### Frontend (Vercel/Netlify)
+```bash
+npm run build
+# Deploy the 'dist' folder
+```
+
+### Backend (Heroku/Railway/Render)
+```bash
+# Set environment variables on hosting platform
+# Deploy src folder with MongoDB Atlas connection
+```
+
+---
+
+## 📊 Performance Optimizations
+
+✅ Code splitting with React.lazy()  
+✅ Service worker caching  
+✅ Lazy-loaded components (CrushMode, MoodWebcam)  
+✅ Vite fast refresh & HMR  
+✅ MongoDB indexes for queries  
+✅ Gzip compression via Express
+
+---
+
+## 🎯 Future Enhancements
+
+- [ ] Spotify API integration for direct music playback
+- [ ] Voice-based mood detection
+- [ ] Real-time collaborative playlists
+- [ ] Mobile app (React Native)
+- [ ] Advanced mood analytics dashboard
+- [ ] Social features (friend connections)
+- [ ] Recommendation ML algorithm
+- [ ] Multi-language UI support
+
+
 3. Auto-focus and auto-submit verification code
 4. Success animation on verification
 

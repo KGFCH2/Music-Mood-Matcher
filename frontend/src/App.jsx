@@ -1,13 +1,15 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, lazy, Suspense } from 'react'
 import { motion } from 'framer-motion'
 import { songs, moods } from './data/songs'
 import Loader from './components/Loader'
 import Login from './components/Login'
 import { useAuth } from './context/AuthContext'
-import CrushMode from './components/CrushMode'
-import MoodWebcam from './components/MoodWebcam'
 import ProfileNav from './components/ProfileNav'
 import './App.css'
+
+// Lazy load heavy components
+const CrushMode = lazy(() => import('./components/CrushMode'))
+const MoodWebcam = lazy(() => import('./components/MoodWebcam'))
 
 function App() {
   const { user, login, logout, updateUser, isLoading: authLoading } = useAuth()
