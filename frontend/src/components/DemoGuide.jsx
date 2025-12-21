@@ -183,32 +183,32 @@ export default function DemoGuide({ onSelectDemo, onBack }) {
                     <h3 className="features-title">✨ Why Try Demo?</h3>
                     <div className="features-grid">
                         <div className="feature-item">
-                            <div className="feature-icon">⚡</div>
+                            <div className="feature-icon emoji-pop emoji-demo-instant">⚡</div>
                             <p>Instant Access</p>
                             <span>No verification needed</span>
                         </div>
                         <div className="feature-item">
-                            <div className="feature-icon">🎧</div>
+                            <div className="feature-icon emoji-pop emoji-demo-full">🎧</div>
                             <p>Full Features</p>
                             <span>All features unlocked</span>
                         </div>
                         <div className="feature-item">
-                            <div className="feature-icon">🎨</div>
+                            <div className="feature-icon emoji-pop emoji-demo-ui">🎨</div>
                             <p>Beautiful UI</p>
                             <span>Experience the design</span>
                         </div>
                         <div className="feature-item">
-                            <div className="feature-icon">♻️</div>
+                            <div className="feature-icon emoji-pop emoji-demo-reuse">♻️</div>
                             <p>Reusable</p>
                             <span>Use anytime you want</span>
                         </div>
                         <div className="feature-item">
-                            <div className="feature-icon">🎵</div>
+                            <div className="feature-icon emoji-pop emoji-demo-moods">🎵</div>
                             <p>6 Moods</p>
                             <span>Explore all emotions</span>
                         </div>
                         <div className="feature-item">
-                            <div className="feature-icon">🌍</div>
+                            <div className="feature-icon emoji-pop emoji-demo-lang">🌍</div>
                             <p>Multi-Language</p>
                             <span>English, Hindi & Bengali</span>
                         </div>
