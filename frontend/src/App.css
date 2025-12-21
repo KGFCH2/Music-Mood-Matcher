@@ -295,14 +295,7 @@ body {
   text-shadow: 0 0 20px rgba(0, 229, 255, 0.9);
 }
 
-.emoji-crush {
-  color: #7C4DFF;
-}
-
-.emoji-crush:hover {
-  filter: drop-shadow(0 10px 30px rgba(124, 77, 255, 0.95));
-  text-shadow: 0 0 18px rgba(124, 77, 255, 0.9);
-}
+/* Crush emoji removed */
 
 .emoji-home {
   color: #FFFFFF;

@@ -47,8 +47,6 @@ const moodTips = {
   angry: "Let the music carry the weight of your frustration."
 };
 
-// Lazy load heavy components
-const CrushMode = lazy(() => import('./components/CrushMode'))
 const MoodWebcam = lazy(() => import('./components/MoodWebcam'))
 
 const musicFacts = [
@@ -280,10 +278,7 @@ function App() {
                       <span className="emoji-pop emoji-ai">🤖</span>
                       <span className="nav-text">AI Mood</span>
                     </button>
-                    <button className={`nav-btn ${activeTab === 'crush' ? 'active' : ''}`} onClick={() => setActiveTab('crush')}>
-                      <span className="emoji-pop emoji-crush">🕵️‍♂️</span>
-                      <span className="nav-text">Crush Mode</span>
-                    </button>
+                    {/* Crush Mode removed */}
                   </div>
                   <button className="logout-btn" onClick={logout} title="Logout">
                     <span className="logout-icon">👋</span>
@@ -598,24 +593,7 @@ function App() {
                 </div>
               )}
 
-              {/* Crush Mode Tab */}
-              {activeTab === 'crush' && (
-                <motion.div
-                  className="tab-content"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <h2>
-                    <span className="tab-emoji emoji-pop emoji-crush">🕵️‍♂️</span>
-                    <span className="tab-text">Crush Mode</span>
-                  </h2>
-                  <p className="tab-subtitle">Secret feature: Generate a playlist for your crush!</p>
-                  <Suspense fallback={<Loader />}>
-                    <CrushMode />
-                  </Suspense>
-                </motion.div>
-              )}
+              {/* Crush Mode removed */}
 
               {/* About Tab */}
               {activeTab === 'about' && (
