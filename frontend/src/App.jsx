@@ -7,9 +7,58 @@ import { useAuth } from './context/AuthContext'
 import ProfileNav from './components/ProfileNav'
 import './App.css'
 
+// Typewriter effect for music ↔ mood examples
+const typewriterExamples = [
+  'Happy — Upbeat Pop & Indie',
+  'Sad — Soulful Ballads & Piano',
+  'Energetic — Electronic & Dance',
+  'Romantic — Soft R&B & Acoustic',
+  'Chill — Ambient, Lo-fi & Jazz',
+  'Angry — Heavy Rock & Metal',
+  'Music is the shorthand of emotion. — Leo Tolstoy',
+  'Where words fail, music speaks. — Hans Christian Andersen',
+  'Music can change the world because it can change people. — Bono',
+]
+
+const moodDetails = {
+  happy: 'Major keys, bright instrumentation, faster tempos (120+ BPM). It triggers dopamine release, creating a sense of reward and joy.',
+  sad: 'Minor keys, slower tempos (60-90 BPM), melancholic melodies. It allows for emotional release and can actually provide comfort through empathy.',
+  energetic: 'High energy, strong beats, dynamic rhythms, synths & drums. It increases heart rate and adrenaline, perfect for motivation and focus.',
+  romantic: 'Smooth vocals, warm harmonies, slower tempos, intimate acoustics. It fosters connection and releases oxytocin, the "love hormone".',
+  chill: 'Minimalist arrangements, atmospheric textures, steady grooves. It lowers cortisol levels and helps synchronize brain waves for relaxation.',
+  angry: 'Distortion, aggressive drums, heavy bass, intense vocals. It provides a safe outlet for intense emotions and can be cathartic.',
+}
+
+const moodMusicRelation = {
+  happy: "Major keys + Fast Tempo = Joy",
+  sad: "Minor keys + Slow Tempo = Reflection",
+  energetic: "Heavy Bass + High BPM = Power",
+  chill: "Soft Pads + Nature Sounds = Peace",
+  romantic: "Strings + Gentle Vocals = Love",
+  angry: "Distortion + Aggressive Beats = Release"
+};
+
+const moodTips = {
+  happy: "Try singing along! It releases even more endorphins.",
+  sad: "Don't skip the sad songs; they help you process and move on.",
+  energetic: "Use this for your hardest tasks to maintain peak performance.",
+  chill: "Perfect for deep work or winding down before sleep.",
+  romantic: "Great for creating a shared emotional space with someone.",
+  angry: "Let the music carry the weight of your frustration."
+};
+
 // Lazy load heavy components
 const CrushMode = lazy(() => import('./components/CrushMode'))
 const MoodWebcam = lazy(() => import('./components/MoodWebcam'))
+
+const musicFacts = [
+  "Listening to music while exercising can improve your performance by 15%.",
+  "Your heartbeat changes and mimics the music you listen to.",
+  "The 'Mozart Effect' suggests that listening to classical music can temporarily boost IQ.",
+  "Music is one of the few activities that involves using the whole brain.",
+  "An average person listens to about 18 hours of music per week.",
+  "Flowers can grow faster if you play music around them."
+];
 
 function App() {
   const { user, login, logout, updateUser, isLoading: authLoading } = useAuth()
@@ -20,6 +69,39 @@ function App() {
   const [favorites, setFavorites] = useState([])
   const [moodHistory, setMoodHistory] = useState([])
   const [showProfileNav, setShowProfileNav] = useState(false)
+  const [randomFact, setRandomFact] = useState('')
+  const [titleHover, setTitleHover] = useState(false)
+  const [typewriterHover, setTypewriterHover] = useState(false)
+
+  useEffect(() => {
+    setRandomFact(musicFacts[Math.floor(Math.random() * musicFacts.length)])
+  }, [])
+
+  // Typewriter state
+  const [typeText, setTypeText] = useState('')
+  const [exampleIndex, setExampleIndex] = useState(0)
+  const [charIndex, setCharIndex] = useState(0)
+
+  useEffect(() => {
+    let timeout = null
+    const current = typewriterExamples[exampleIndex]
+
+    if (charIndex <= current.length) {
+      timeout = setTimeout(() => {
+        setTypeText(current.slice(0, charIndex))
+        setCharIndex((i) => i + 1)
+      }, 80)
+    } else {
+      // finished typing this example, move to next
+      timeout = setTimeout(() => {
+        setTypeText('')
+        setCharIndex(0)
+        setExampleIndex((i) => (i + 1) % typewriterExamples.length)
+      }, 1500) // pause before next example
+    }
+
+    return () => clearTimeout(timeout)
+  }, [charIndex, exampleIndex])
 
   // Load user-specific favorites when user changes
   useEffect(() => {
@@ -62,6 +144,11 @@ function App() {
     }
   }, [moodHistory, user?.userId])
 
+  // Scroll to top whenever activeTab changes
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }, [activeTab])
+
   function toggleFavorite(id, song) {
     setFavorites(prev => {
       const exists = prev.some(f => f.id === id)
@@ -100,9 +187,9 @@ function App() {
       case 'female':
         return '👩'
       case 'other':
-        return '🧑'
+        return '👤' // use classic neutral silhouette for 'other'
       default:
-        return '👤'
+        return '🧑' // default to neutral avatar
     }
   }
 
@@ -127,7 +214,7 @@ function App() {
       document.documentElement.style.setProperty('--accent', '#00e5ff')
       document.body.className = ''
     }
-  }, [currentMood])
+  }, [currentMood, moodColors])
 
   return (
     <>
@@ -144,7 +231,7 @@ function App() {
               setCurrentMood(null)
             }} />
           ) : (
-            <div className="app-root">
+            <div className="app-root music-hacker">
               {/* Profile Navigation Sidebar */}
               {showProfileNav && (
                 <ProfileNav user={user} onClose={() => setShowProfileNav(false)} onUpdateUser={updateUser} onLogout={() => {
@@ -178,22 +265,24 @@ function App() {
                   </div>
                   <div className="nav-menu">
                     <button className={`nav-btn ${activeTab === 'home' ? 'active' : ''}`} onClick={() => { setActiveTab('home'); setCurrentMood(null); }}>
-                      🏠 Home
+                      <span className="emoji-pop emoji-home">🏠</span>
+                      <span className="nav-text">Home</span>
                     </button>
                     <button className={`nav-btn ${activeTab === 'favorites' ? 'active' : ''}`} onClick={() => setActiveTab('favorites')}>
-                      ❤️ Favorites ({favorites.length})
+                      <span className="emoji-pop emoji-favorites">❤️</span>
+                      <span className="nav-text">Favorites ({favorites.length})</span>
                     </button>
                     <button className={`nav-btn ${activeTab === 'history' ? 'active' : ''}`} onClick={() => setActiveTab('history')}>
-                      📊 History
+                      <span className="emoji-pop emoji-stats">📊</span>
+                      <span className="nav-text">History</span>
                     </button>
                     <button className={`nav-btn ${activeTab === 'ai-mood' ? 'active' : ''}`} onClick={() => setActiveTab('ai-mood')}>
-                      🤖 AI Mood
+                      <span className="emoji-pop emoji-ai">🤖</span>
+                      <span className="nav-text">AI Mood</span>
                     </button>
                     <button className={`nav-btn ${activeTab === 'crush' ? 'active' : ''}`} onClick={() => setActiveTab('crush')}>
-                      🕵️‍♂️ Crush Mode
-                    </button>
-                    <button className={`nav-btn ${activeTab === 'about' ? 'active' : ''}`} onClick={() => setActiveTab('about')}>
-                      ℹ️ About
+                      <span className="emoji-pop emoji-crush">🕵️‍♂️</span>
+                      <span className="nav-text">Crush Mode</span>
                     </button>
                   </div>
                   <button className="logout-btn" onClick={logout} title="Logout">
@@ -220,13 +309,104 @@ function App() {
               {/* Home Tab */}
               {activeTab === 'home' && (
                 <>
-                  <header className="app-header">
-                    <h2>
-                      <span className="header-emoji">🎶</span>
-                      <span className="header-text">Pick your mood and feel the rhythm</span>
+                  <div className="home-details-container" style={{ maxWidth: '1200px', margin: '0 auto', padding: '2rem 1rem' }}>
+                    {/* Hero Section with Context */}
+                    <div style={{ textAlign: 'center', padding: '3rem 2rem', marginBottom: '2rem' }}>
+                      <h1 className="home-hero-title" onMouseEnter={() => setTitleHover(true)} onMouseLeave={() => setTitleHover(false)} style={{ transform: titleHover ? 'scale(1.05)' : 'scale(1)', transition: 'transform 0.3s ease' }}>🎵 Music Mood Matcher 🎵</h1>
+                      <p className="home-hero-subtitle">
+                        Discover the perfect music for your mood. Select how you feel or let our AI detect your emotion, and we'll suggest songs tailored just for you.
+                      </p>
+
+                      {/* Typewriter Section */}
+                      <h2 className="typewriter-label">Did you know?</h2>
+                      <div className="typewriter-container" onMouseEnter={() => setTypewriterHover(true)} onMouseLeave={() => setTypewriterHover(false)}>
+                        <span className="typewriter-text" style={{ filter: typewriterHover ? 'drop-shadow(0 0 10px rgba(0, 229, 255, 0.8))' : 'none', transition: 'filter 0.3s ease' }}>{typeText}</span>
+                        <span className="typewriter-cursor">▌</span>
+                      </div>
+                    </div>
+
+                    {/* Beauty Cards Grid */}
+                    <div className="beauty-grid">
+                      <motion.div
+                        className="beauty-card"
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5 }}
+                        viewport={{ once: true }}
+                      >
+                        <div className="beauty-icon emoji-pop">🎧</div>
+                        <h3>Discover Music</h3>
+                        <p>Select a mood and find songs that match your vibe</p>
+                      </motion.div>
+
+                      <motion.div
+                        className="beauty-card"
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: 0.1 }}
+                        viewport={{ once: true }}
+                      >
+                        <div className="beauty-icon emoji-pop">🤖</div>
+                        <h3>AI Detection</h3>
+                        <p>Let your webcam detect your mood automatically</p>
+                      </motion.div>
+
+                      <motion.div
+                        className="beauty-card"
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: 0.2 }}
+                        viewport={{ once: true }}
+                      >
+                        <div className="beauty-icon emoji-pop">❤️</div>
+                        <h3>Save Favorites</h3>
+                        <p>Build your personal music collection</p>
+                      </motion.div>
+
+                      <motion.div
+                        className="beauty-card"
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: 0.3 }}
+                        viewport={{ once: true }}
+                      >
+                        <div className="beauty-icon emoji-pop">🌍</div>
+                        <h3>3 Languages</h3>
+                        <p>English, Hindi & Bengali songs available</p>
+                      </motion.div>
+
+                      <motion.div
+                        className="beauty-card"
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: 0.4 }}
+                        viewport={{ once: true }}
+                      >
+                        <div className="beauty-icon emoji-pop">🎵</div>
+                        <h3>Perfect Playlists</h3>
+                        <p>Curated songs for every emotional state</p>
+                      </motion.div>
+
+                      <motion.div
+                        className="beauty-card"
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: 0.5 }}
+                        viewport={{ once: true }}
+                      >
+                        <div className="beauty-icon emoji-pop">🔒</div>
+                        <h3>Private & Fast</h3>
+                        <p>Your data stays on your device, always</p>
+                      </motion.div>
+                    </div>
+                  </div>
+
+                  <div className="mood-selection-header" style={{ textAlign: 'center', marginTop: '4rem', marginBottom: '2rem' }}>
+                    <h2 style={{ fontSize: '2.2rem', color: 'var(--primary)', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '2px' }}>
+                      Select Your Current Mood
                     </h2>
-                    <p className="subtitle">Explore curated songs in English, Hindi & Bengali</p>
-                  </header>
+                    <p style={{ color: 'var(--text-muted)', marginTop: '0.5rem' }}>Choose a vibe to get personalized song recommendations</p>
+                  </div>
 
                   <section className="moods">
                     {moods.map((m, idx) => (
@@ -241,7 +421,7 @@ function App() {
                         whileHover={{ scale: 1.05, y: -5 }}
                         whileTap={{ scale: 0.95 }}
                       >
-                        <span className="mood-emoji">{moodEmojis[m]}</span>
+                        <span className="mood-emoji emoji-pop">{moodEmojis[m]}</span>
                         <span className="mood-name">{m}</span>
                       </motion.button>
                     ))}
@@ -268,9 +448,16 @@ function App() {
                     {currentMood && (
                       <>
                         <h2 className="mood-title">
-                          <span className="mood-emoji-header">{moodEmojis[currentMood]}</span>
+                          <span className="mood-emoji-header emoji-pop">{moodEmojis[currentMood]}</span>
                           <span className="mood-text">{currentMood.toUpperCase()} Vibes</span>
                         </h2>
+                        <p className="mood-description-text">
+                          {moodDetails[currentMood]}
+                        </p>
+                        <div className="mood-insight-badge">
+                          <span className="insight-icon">💡</span>
+                          <span className="insight-text">{moodTips[currentMood]}</span>
+                        </div>
                         <div className="songs-grid">
                           {getSongsByMood(currentMood).map((s, i) => {
                             const id = `${currentMood}-${s.title}-${s.artist}-${s.language}`
@@ -314,7 +501,7 @@ function App() {
                   transition={{ duration: 0.3 }}
                 >
                   <h2>
-                    <span className="tab-emoji">❤️</span>
+                    <span className="tab-emoji emoji-pop emoji-favorites">❤️</span>
                     <span className="tab-text">Your Favorite Songs</span>
                   </h2>
                   {favorites.length === 0 && <p className="empty-state">No favorites yet. Add songs to your favorites!</p>}
@@ -359,7 +546,7 @@ function App() {
                   transition={{ duration: 0.3 }}
                 >
                   <h2>
-                    <span className="tab-emoji">📊</span>
+                    <span className="tab-emoji emoji-pop emoji-stats">📊</span>
                     <span className="tab-text">Mood Statistics</span>
                   </h2>
                   {moodHistory.length === 0 && <p className="empty-state">No mood history yet. Start selecting moods!</p>}
@@ -401,7 +588,7 @@ function App() {
               {activeTab === 'ai-mood' && (
                 <div className="tab-content">
                   <h2>
-                    <span className="tab-emoji">🤖</span>
+                    <span className="tab-emoji emoji-pop emoji-ai">🤖</span>
                     <span className="tab-text">AI Mood Detection</span>
                   </h2>
                   <p className="tab-subtitle">Let your webcam detect your mood and generate a playlist! (No images are stored)</p>
@@ -420,7 +607,7 @@ function App() {
                   transition={{ duration: 0.3 }}
                 >
                   <h2>
-                    <span className="tab-emoji">🕵️‍♂️</span>
+                    <span className="tab-emoji emoji-pop emoji-crush">🕵️‍♂️</span>
                     <span className="tab-text">Crush Mode</span>
                   </h2>
                   <p className="tab-subtitle">Secret feature: Generate a playlist for your crush!</p>
@@ -439,7 +626,7 @@ function App() {
                   transition={{ duration: 0.3 }}
                 >
                   <h2>
-                    <span className="tab-emoji">ℹ️</span>
+                    <span className="tab-emoji emoji-pop emoji-about">ℹ️</span>
                     <span className="tab-text">About Music Mood Matcher</span>
                   </h2>
                   <div className="about-content">
@@ -464,14 +651,301 @@ function App() {
                       <li>Check your history and favorites anytime</li>
                     </ol>
                     <p className="footer-text">
-                      <span className="made-emoji">🎶</span>
+                      <span className="made-emoji emoji-pop">🎶</span>
                       <span className="made-text">Made with</span>
-                      <span className="heart-emoji">❤️</span>
+                      <span className="heart-emoji emoji-pop">❤️</span>
                       <span className="made-text">by Babin & Debasmita</span>
                     </p>
                   </div>
+                  <div className="page-footer">
+                    <div className="footer-divider"></div>
+                    <div className="footer-nav">
+                      <button className="footer-nav-btn" onClick={() => setActiveTab('privacy')}><span className="emoji-pop emoji-privacy">🔒</span> <span>Privacy Policy</span></button>
+                      <button className="footer-nav-btn" onClick={() => setActiveTab('terms')}><span className="emoji-pop emoji-terms">📋</span> <span>Terms of Service</span></button>
+                      <button className="footer-nav-btn" onClick={() => setActiveTab('faq')}><span className="emoji-pop emoji-faq">❓</span> <span>FAQ</span></button>
+                    </div>
+                    <p className="footer-copyright">© 2024 Music Mood Matcher. All rights reserved.</p>
+                  </div>
                 </motion.div>
               )}
+
+              {/* Privacy Policy Tab */}
+              {activeTab === 'privacy' && (
+                <motion.div
+                  className="tab-content"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <h2>
+                    <span className="tab-emoji emoji-pop emoji-privacy">🔒</span>
+                    <span className="tab-text">Privacy Policy</span>
+                  </h2>
+                  <div className="about-content">
+                    <p><strong>Last Updated: December 2024</strong></p>
+
+                    <h3>1. Introduction</h3>
+                    <p>Music Mood Matcher ("we," "us," or "our") operates the Music Mood Matcher application. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our application.</p>
+
+                    <h3>2. Information We Collect</h3>
+                    <p><strong>Personal Information:</strong></p>
+                    <ul>
+                      <li>Name and email address (for account registration)</li>
+                      <li>Gender (optional, for personalization)</li>
+                      <li>Mood selection history (stored locally)</li>
+                      <li>Favorite songs list (stored locally)</li>
+                    </ul>
+                    <p><strong>Automatic Information:</strong></p>
+                    <ul>
+                      <li>Browser type and version</li>
+                      <li>IP address (for security purposes)</li>
+                      <li>Pages visited and time spent on app</li>
+                      <li>Cookies and similar tracking technologies</li>
+                    </ul>
+
+                    <h3>3. How We Use Your Information</h3>
+                    <ul>
+                      <li>To provide and maintain our service</li>
+                      <li>To personalize your experience with mood-based recommendations</li>
+                      <li>To track user analytics and improve the app</li>
+                      <li>To respond to your inquiries and support requests</li>
+                      <li>To maintain security and prevent fraudulent activities</li>
+                    </ul>
+
+                    <h3>4. Data Storage & Security</h3>
+                    <p>Your mood history and favorites are primarily stored locally in your browser using localStorage. This means your data stays on your device. We implement industry-standard security measures including SSL encryption for transmitted data. However, no method of transmission over the Internet is 100% secure.</p>
+
+                    <h3>5. Third-Party Services</h3>
+                    <p>We use YouTube for song playback and Google Analytics for app analytics. These third parties have their own privacy policies and data handling practices. We recommend reviewing their policies as well.</p>
+
+                    <h3>6. Your Rights</h3>
+                    <ul>
+                      <li><strong>Access:</strong> You can request access to the personal data we hold about you</li>
+                      <li><strong>Deletion:</strong> You can request deletion of your account and associated data</li>
+                      <li><strong>Portability:</strong> You can export your data in a machine-readable format</li>
+                      <li><strong>Opt-out:</strong> You can disable cookies in your browser settings</li>
+                    </ul>
+
+                    <h3>7. Contact Us</h3>
+                    <p>If you have any questions about this Privacy Policy, please contact us at: privacy@musicmoodmatcher.com</p>
+                  </div>
+                  <div className="page-footer">
+                    <div className="footer-divider"></div>
+                    <div className="footer-nav">
+                      <button className="footer-nav-btn" onClick={() => setActiveTab('terms')}>📋 Terms of Service</button>
+                      <button className="footer-nav-btn" onClick={() => setActiveTab('faq')}>❓ FAQ</button>
+                      <button className="footer-nav-btn" onClick={() => setActiveTab('about')}>ℹ️ About</button>
+                    </div>
+                    <p className="footer-copyright">© 2024 Music Mood Matcher. All rights reserved.</p>
+                  </div>
+                </motion.div>
+              )}
+
+              {/* Terms of Service Tab */}
+              {activeTab === 'terms' && (
+                <motion.div
+                  className="tab-content"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <h2>
+                    <span className="tab-emoji emoji-pop emoji-terms">📋</span>
+                    <span className="tab-text">Terms of Service</span>
+                  </h2>
+                  <div className="about-content">
+                    <p><strong>Last Updated: December 2024</strong></p>
+
+                    <h3>1. Agreement to Terms</h3>
+                    <p>By accessing and using Music Mood Matcher, you accept and agree to be bound by the terms and provision of this agreement. If you do not agree to abide by the above, please do not use this service.</p>
+
+                    <h3>2. Use License</h3>
+                    <p>Permission is granted to temporarily download one copy of the materials (information or software) on Music Mood Matcher for personal, non-commercial transitory viewing only. This is the grant of a license, not a transfer of title, and under this license you may not:</p>
+                    <ul>
+                      <li>Modify or copy the materials</li>
+                      <li>Use the materials for any commercial purpose or for any public display</li>
+                      <li>Attempt to decompile or reverse engineer any software contained on the app</li>
+                      <li>Remove any copyright or other proprietary notations from the materials</li>
+                      <li>Transfer the materials to another person or "mirror" the materials on any other server</li>
+                      <li>Violate any applicable laws or regulations related to access to the app</li>
+                    </ul>
+
+                    <h3>3. Disclaimer</h3>
+                    <p>The materials on Music Mood Matcher are provided on an 'as is' basis. We make no warranties, expressed or implied, and hereby disclaim and negate all other warranties including, without limitation, implied warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement of intellectual property or other violation of rights.</p>
+
+                    <h3>4. Limitations</h3>
+                    <p>In no event shall Music Mood Matcher or its suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption) arising out of the use or inability to use the materials on the app, even if we or an authorized representative has been notified orally or in writing of the possibility of such damage.</p>
+
+                    <h3>5. Accuracy of Materials</h3>
+                    <p>The materials appearing on Music Mood Matcher could include technical, typographical, or photographic errors. We do not warrant that any of the materials on the app are accurate, complete, or current. We may make changes to the materials contained on the app at any time without notice.</p>
+
+                    <h3>6. Links</h3>
+                    <p>We have not reviewed all of the sites linked to our website and are not responsible for the contents of any such linked site. The inclusion of any link does not imply endorsement by us of the site. Use of any such linked website is at the user's own risk.</p>
+
+                    <h3>7. Modifications</h3>
+                    <p>We may revise these terms of service for the app at any time without notice. By using the app, you are agreeing to be bound by the then current version of these terms of service.</p>
+
+                    <h3>8. Governing Law</h3>
+                    <p>These terms and conditions are governed by and construed in accordance with the laws of India and you irrevocably submit to the exclusive jurisdiction of the courts in that location.</p>
+
+                    <h3>9. Contact</h3>
+                    <p>If you have any questions about these Terms of Service, please contact us at: terms@musicmoodmatcher.com</p>
+                  </div>
+                  <div className="page-footer">
+                    <div className="footer-divider"></div>
+                    <div className="footer-nav">
+                      <button className="footer-nav-btn" onClick={() => setActiveTab('privacy')}>🔒 Privacy Policy</button>
+                      <button className="footer-nav-btn" onClick={() => setActiveTab('faq')}>❓ FAQ</button>
+                      <button className="footer-nav-btn" onClick={() => setActiveTab('about')}>ℹ️ About</button>
+                    </div>
+                    <p className="footer-copyright">© 2024 Music Mood Matcher. All rights reserved.</p>
+                  </div>
+                </motion.div>
+              )}
+
+              {/* FAQ Tab */}
+              {activeTab === 'faq' && (
+                <motion.div
+                  className="tab-content"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <h2>
+                    <span className="tab-emoji emoji-pop emoji-faq">❓</span>
+                    <span className="tab-text">Frequently Asked Questions</span>
+                  </h2>
+                  <div className="about-content">
+
+                    <h3>General Questions</h3>
+
+                    <h4>What is Music Mood Matcher?</h4>
+                    <p>Music Mood Matcher is a web application that recommends songs based on your current mood. Select one of six moods (Happy, Sad, Energetic, Romantic, Chill, Angry) and discover curated playlists in English, Hindi, and Bengali.</p>
+
+                    <h4>Is Music Mood Matcher free to use?</h4>
+                    <p>Yes! Music Mood Matcher is completely free. We don't charge any subscription fees. You can enjoy unlimited mood-based music recommendations without any cost.</p>
+
+                    <h4>Do I need to create an account?</h4>
+                    <p>Yes, you need to sign up with your name, email, and optional gender information. Your account helps us save your favorites and mood history so you can pick up where you left off.</p>
+
+                    <h4>What moods are available?</h4>
+                    <p>We offer six moods: Happy, Sad, Energetic, Romantic, Chill, and Angry. Each mood has a curated selection of songs designed to match that emotional state.</p>
+
+                    <h3>Features & Functionality</h3>
+
+                    <h4>How do I save my favorite songs?</h4>
+                    <p>Click the heart icon (❤️) on any song card to add it to your favorites. You can view all saved favorites in the "Favorites" tab. Your favorites are saved locally in your browser.</p>
+
+                    <h4>Can I filter songs by language?</h4>
+                    <p>Yes! Once you select a mood, use the "Filter by language" dropdown to choose English, Hindi, Bengali, or view all languages together.</p>
+
+                    <h4>Where do the songs play from?</h4>
+                    <p>Clicking the "Play" button on any song opens it directly on YouTube. We partner with YouTube to provide you with seamless music playback.</p>
+
+                    <h4>What is the Crush Mode feature?</h4>
+                    <p>Crush Mode is a fun, secret feature that generates a personalized playlist for someone special! It combines various moods to create the perfect romantic vibe.</p>
+
+                    <h4>How does the AI Mood feature work?</h4>
+                    <p>The AI Mood feature uses your device's webcam to detect your facial expression and automatically recommend songs that match your detected emotion. It's fun and completely optional!</p>
+
+                    <h3>Data & Privacy</h3>
+
+                    <h4>Is my data safe?</h4>
+                    <p>Yes! Your mood history and favorites are stored locally on your device using your browser's localStorage. We also use SSL encryption for any data transmitted to our servers. For details, see our Privacy Policy.</p>
+
+                    <h4>What data do you collect?</h4>
+                    <p>We collect your name, email, and optional gender for account purposes. Your mood selections and favorite songs are stored locally on your device. We use basic analytics to understand app usage but don't track personal behavior.</p>
+
+                    <h4>Can I delete my account and data?</h4>
+                    <p>Yes! You can request account deletion anytime. To delete your account, use the profile settings or contact support. Your local data can be cleared by clearing your browser's cache.</p>
+
+                    <h4>Do you sell my data?</h4>
+                    <p>Absolutely not. We never sell, rent, or share your personal information with third parties. Your data is yours alone.</p>
+
+                    <h3>Technical Questions</h3>
+
+                    <h4>What browsers does Music Mood Matcher support?</h4>
+                    <p>Music Mood Matcher works on all modern browsers: Chrome, Firefox, Safari, Edge, and Opera. We recommend keeping your browser updated for the best experience.</p>
+
+                    <h4>Can I use Music Mood Matcher on mobile?</h4>
+                    <p>Yes! Music Mood Matcher is fully responsive and works great on smartphones, tablets, and desktops. Simply open it in your mobile browser.</p>
+
+                    <h4>Why isn't the app loading?</h4>
+                    <p>Try refreshing the page or clearing your browser cache. If issues persist, make sure JavaScript is enabled and you're using a supported browser. Contact support if problems continue.</p>
+
+                    <h4>What should I do if I encounter a bug?</h4>
+                    <p>We'd love to hear about it! Please report any bugs to: support@musicmoodmatcher.com with a description of the issue and screenshots if possible.</p>
+
+                    <h3>Music & Content</h3>
+
+                    <h4>How often are new songs added?</h4>
+                    <p>We regularly update our music library with new recommendations. Follow us on social media or check the app for announcements about new additions!</p>
+
+                    <h4>Can I suggest songs for a specific mood?</h4>
+                    <p>Yes! We'd love your suggestions. Send your recommendations to: suggestions@musicmoodmatcher.com. Your input helps us improve our music curation.</p>
+
+                    <h4>Why is a particular song in a certain mood category?</h4>
+                    <p>Songs are categorized based on their musical characteristics (tempo, key, instrumentation, lyrics) and the emotions they evoke. Our curation is based on music theory and user feedback.</p>
+
+                    <h4>Can I download songs for offline listening?</h4>
+                    <p>Music Mood Matcher requires an internet connection to stream songs via YouTube. However, you can create a playlist on YouTube itself for offline downloads through their premium service.</p>
+
+                    <h3>Still Have Questions?</h3>
+
+                    <p><strong>Contact us:</strong> support@musicmoodmatcher.com</p>
+                    <p><strong>Email:</strong> info@musicmoodmatcher.com</p>
+                    <p>We're here to help! Response time is typically within 24-48 hours.</p>
+                  </div>
+                  <div className="page-footer">
+                    <div className="footer-divider"></div>
+                    <div className="footer-nav">
+                      <button className="footer-nav-btn" onClick={() => setActiveTab('privacy')}>🔒 Privacy Policy</button>
+                      <button className="footer-nav-btn" onClick={() => setActiveTab('terms')}>📋 Terms of Service</button>
+                      <button className="footer-nav-btn" onClick={() => setActiveTab('about')}>ℹ️ About</button>
+                    </div>
+                    <p className="footer-copyright">© 2024 Music Mood Matcher. All rights reserved.</p>
+                  </div>
+                </motion.div>
+              )}
+
+              {/* Footer Section */}
+              <footer className="footer">
+                <div className="footer-content">
+                  <p className="footer-creators">
+                    Made with <span className="heart-emoji">❤️</span> by Babin & Debasmita
+                  </p>
+                  <div className="footer-links">
+                    <span
+                      className="footer-link"
+                      onClick={() => setActiveTab('privacy')}
+                      title="Read our Privacy Policy"
+                    >
+                      🔒 Privacy Policy
+                    </span>
+                    <span
+                      className="footer-link"
+                      onClick={() => setActiveTab('terms')}
+                      title="Read our Terms of Service"
+                    >
+                      📋 Terms of Service
+                    </span>
+                    <span
+                      className="footer-link"
+                      onClick={() => setActiveTab('faq')}
+                      title="Read FAQs"
+                    >
+                      ❓ FAQ
+                    </span>
+                    <span
+                      className="footer-link"
+                      onClick={() => setActiveTab('about')}
+                      title="Learn About Music Mood Matcher"
+                    >
+                      ℹ️ About
+                    </span>
+                  </div>
+                </div>
+              </footer>
             </div>
           )}
         </>
