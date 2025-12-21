@@ -820,8 +820,7 @@ function App() {
                     <h4>Where do the songs play from?</h4>
                     <p>Clicking the "Play" button on any song opens it directly on YouTube. We partner with YouTube to provide you with seamless music playback.</p>
 
-                    <h4>What is the Crush Mode feature?</h4>
-                    <p>Crush Mode is a fun, secret feature that generates a personalized playlist for someone special! It combines various moods to create the perfect romantic vibe.</p>
+                    <!-- Crush Mode info removed -->
 
                     <h4>How does the AI Mood feature work?</h4>
                     <p>The AI Mood feature uses your device's webcam to detect your facial expression and automatically recommend songs that match your detected emotion. It's fun and completely optional!</p>
