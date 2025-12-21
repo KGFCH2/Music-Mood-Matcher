@@ -5,8 +5,8 @@
     align-items: flex-start;
     justify-content: center;
     padding-top: 0.8rem;
-    background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+    background: radial-gradient(circle at 10% 10%, rgba(0, 255, 122, 0.03), transparent 10%), #030406;
+    font-family: 'Cambria Math', Cambria, serif;
     z-index: 1000;
     overflow: auto;
 }
@@ -16,6 +16,44 @@
     inset: 0;
     overflow: hidden;
     pointer-events: none;
+}
+
+/* Make login feel playful and musical like HomeTab */
+.login-card {
+    border-radius: 20px;
+}
+
+.login-header .header-icon {
+    font-size: 3rem;
+    transform-origin: center;
+}
+
+.musical-note {
+    opacity: 0.12;
+    transform: rotate(-8deg);
+}
+
+.musical-note:hover {
+    transform: scale(1.05) rotate(-6deg);
+    opacity: 0.18;
+}
+
+.decorative-bars .bar {
+    border-radius: 6px;
+}
+
+.login-btn {
+    border-radius: 999px;
+}
+
+.emoji-big {
+    font-size: 1.6rem;
+}
+
+/* floating notes for extra playfulness */
+.login-background .floating-note-deco {
+    font-size: 3rem;
+    opacity: 0.04;
 }
 
 .musical-note {
@@ -79,16 +117,16 @@
 
 .login-card {
     position: relative;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 24px;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.6), rgba(6, 6, 12, 0.7));
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(0, 255, 122, 0.06);
+    border-radius: 14px;
     padding: 1.6rem 1.4rem 2.4rem 1.4rem;
     width: 100%;
-    max-width: 430px;
+    max-width: 480px;
     max-height: 95vh;
     overflow-y: auto;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 40px rgba(124, 77, 255, 0.1);
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.6);
     z-index: 10;
 }
 
@@ -117,15 +155,12 @@
 }
 
 .login-header h1 {
-    color: #ffffff;
-    font-size: 1.5rem;
+    color: #00ff7a;
+    font-size: 1.6rem;
     font-weight: 700;
     margin: 0.3rem 0 0;
-    letter-spacing: 0.5px;
-    background: linear-gradient(135deg, #7c4dff 0%, #00e5ff 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    letter-spacing: 0.6px;
+    text-shadow: 0 2px 14px rgba(0, 255, 122, 0.06);
 }
 
 .header-subtitle {
@@ -274,6 +309,47 @@
 .form-input:disabled {
     opacity: 0.6;
     cursor: not-allowed;
+}
+
+/* Theme-aware form input colors: ensure selects/options are readable */
+[data-theme="light"] .form-input {
+    color: #000000 !important;
+    background: #ffffff !important;
+    border-color: rgba(0, 0, 0, 0.08) !important;
+}
+
+@media (prefers-color-scheme: light) {
+    .form-input {
+        color: #000000 !important;
+        background: #ffffff !important;
+        border-color: rgba(0, 0, 0, 0.08) !important;
+    }
+
+    .form-input option {
+        color: #000000 !important;
+        background: #ffffff !important;
+    }
+}
+
+/* Ensure options remain white in dark theme */
+[data-theme="dark"] .form-input {
+    color: #ffffff !important;
+}
+
+@media (prefers-color-scheme: dark) {
+    .form-input {
+        color: #ffffff !important;
+    }
+
+    .form-input option {
+        color: #ffffff !important;
+        background: transparent !important;
+    }
+}
+
+/* Also ensure select dropdown arrow contrasts in light mode */
+[data-theme="light"] .form-input::-ms-expand {
+    filter: invert(0%);
 }
 
 .login-btn {
@@ -481,6 +557,19 @@
 .gender-text {
     display: block;
     font-size: 0.75rem;
+}
+
+/* Make gender label text visible in light mode */
+[data-theme="light"] .gender-text {
+    color: #000000 !important;
+    font-weight: 600;
+}
+
+@media (prefers-color-scheme: light) {
+    .gender-text {
+        color: #000000 !important;
+        font-weight: 600;
+    }
 }
 
 .gender-btn:hover:not(:disabled) {
