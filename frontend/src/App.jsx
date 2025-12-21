@@ -705,7 +705,7 @@ function App() {
                     </ul>
 
                     <h3>7. Contact Us</h3>
-                    <p>If you have any questions about this Privacy Policy, please contact us at: privacy@musicmoodmatcher.com</p>
+                    <p>If you have any questions about this Privacy Policy, please contact us at: babinbid05@gmail.com</p>
                   </div>
                   <div className="page-footer">
                     <div className="footer-divider"></div>
@@ -767,7 +767,7 @@ function App() {
                     <p>These terms and conditions are governed by and construed in accordance with the laws of India and you irrevocably submit to the exclusive jurisdiction of the courts in that location.</p>
 
                     <h3>9. Contact</h3>
-                    <p>If you have any questions about these Terms of Service, please contact us at: terms@musicmoodmatcher.com</p>
+                    <p>If you have any questions about these Terms of Service, please contact us at: babinbid05@gmail.com</p>
                   </div>
                   <div className="page-footer">
                     <div className="footer-divider"></div>
