@@ -72,109 +72,58 @@ Music-Mood-Matcher/
 │   │   └── manifest.json             # PWA manifest
 │   ├── vitest.config.js              # Testing configuration
 │   └── package.json
-│
-├── backend/
-│   ├── src/
-│   │   ├── server.js                 # Express app setup
-│   │   ├── db.js                     # MongoDB connection
-│   │   ├── models/
-│   │   │   ├── User.js               # User schema with favorites
-│   │   │   └── MoodHistory.js        # Mood tracking schema
-│   │   ├── controllers/
-│   │   │   ├── authController.js     # Register, login, profile
-│   │   │   └── userController.js     # Favorites, history, stats
-│   │   ├── routes/
-│   │   │   ├── authRoutes.js         # Auth endpoints
-│   │   │   └── userRoutes.js         # User endpoints
-│   │   └── middleware/
-│   │       ├── auth.js               # JWT verification
-│   │       └── errorHandler.js       # Error handling
-│   ├── .env.example
-│   └── package.json
-│
-└── README.md
-```
+# 🎵 Music Mood Matcher
 
----
+Lightweight README — updated 2025-12-21 to reflect repository cleanup.
 
-## 🎹 The Band Lineup
+Quick summary: a full‑stack React + Express app that matches songs to detected moods.
 
-**🎸 Lead Guitar (Frontend):**
-- React 19.1.1 + Vite 7.1.7 (Lightning-fast rendering)
-- Framer Motion (Smooth choreography)
-- Vitest + Testing Library (Quality assurance)
-- Axios (HTTP messenger)
-- PWA with Service Workers (Offline radio mode)
+What's in this repo (kept):
 
-**🥁 The Rhythm Section (Backend):**
-- Node.js + Express.js (The beat)
-- MongoDB + Mongoose ODM (The vault)
-- JWT (VIP passes)
-- Bcryptjs (Vault locks)
-- Helmet.js (Armor)
-- Express Rate Limit (Bouncer)
+- [frontend](frontend): Vite + React frontend (source in frontend/src)
+- [frontend/package.json](frontend/package.json) and configuration files (`vite.config.js`, `vitest.config.js`)
+- [frontend/public](frontend/public) (PWA assets and manifest; large unused model shards removed)
+- [README.md](README.md), [INSTRUCTIONS.md](INSTRUCTIONS.md), [LICENSE](LICENSE)
 
-**🤖 The AI Producer:**
-- face-api.js (Mood microphone)
-- react-webcam (Camera feed)
+Removed or ignored items:
 
----
+- Large prebuilt model shard files under `frontend/public/models/removed/` were removed to keep the repo lightweight. If you need them, re-download from the original model provider and place them into `public/models/` at build/deploy time.
+- `node_modules/` is not tracked here (remove locally to reclaim space and reinstall as needed).
 
-## 🎚️ Control Your Mix
+Quick start
 
-### 🎸 Frontend Commands
+1) Backend (if present in `backend/`)
+
 ```bash
-npm run dev         # 🎤 Go live on stage
-npm run build       # 📀 Master the recording
-npm run preview     # 👂 Check the mix
-npm run lint        # 🔊 Soundcheck
-npm run test        # ✔️ Test the acoustics
-npm run test:ui     # 📊 See the spectrum
+cd backend
+npm install
+npm run dev
 ```
 
-### 🥁 Backend Commands
+2) Frontend
+
 ```bash
-npm start           # 🎵 Release to radio
-npm run dev         # 🎧 Studio mode with auto-reload
+cd frontend
+npm install
+npm run dev
 ```
 
----
+Tips
 
-## 🎤 Soundcheck: Authentication Flow
+- To fully clear local dependencies (Windows):
 
-### 🎸 The VIP Pass System
-1. **Get Your Ticket** - Sign up, confirm your email
-2. **Backstage Pass** - Login gets you a secure VIP token
-3. **Show Your Pass** - Token proves you're on the list
-4. **Verify at the Door** - System checks your pass is valid
-5. **Renew Your Pass** - Fresh VIP pass every 7 days
-
-### 🎵 The Setlist: API Endpoints
-
-**🎤 Main Stage (Auth):**
-```
-POST   /api/auth/register  - 🎫 Get your concert ticket
-POST   /api/auth/login     - 🎟️ Show your VIP pass
-GET    /api/auth/profile   - 👤 See your artist profile
+```powershell
+rmdir /s /q node_modules
+del package-lock.json
 ```
 
-**🎧 Backstage (User):**
-```
-POST   /api/user/favorites         - ⭐ Add to your collection
-DELETE /api/user/favorites/:songId - 🗑️ Remove from favorites
-GET    /api/user/favorites        - 📋 Show all loved songs
-POST   /api/user/mood-history     - 📝 Record this vibe
-GET    /api/user/mood-history     - 📖 Play back your journey
-GET    /api/user/mood-stats       - 📊 See your music DNA
+- To clear on Unix/macOS:
+
+```bash
+rm -rf node_modules package-lock.json
 ```
 
----
-
-## 🎧 Setup Your Studio
-
-### 🎸 What You'll Need
-- Node.js 18+ (Your instrument)
-- MongoDB running locally or Atlas connection string (Your vault)
+If you'd like, I can remove other large, unnecessary files or help re-add model assets to `public/models/` as a separate step.
 
 ### Step 1: Setup the Amplifier (Backend)
 ```bash
