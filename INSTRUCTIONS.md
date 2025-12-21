@@ -1,142 +1,47 @@
-# 🎵 Music Mood Matcher - Complete Setup & Project Audit
+# 🎵 Music Mood Matcher - Setup & Cleanup Notes
 
-**Last Audit:** December 21, 2025  
-**Status:** ⚠️ **MOSTLY READY** (3 minor issues identified and fixed)
+Last updated: 2025-12-21 — this file was edited to reflect repository cleanup.
 
----
+Summary:
 
-## 📋 Project Overview
+- The repo has been cleaned to remove large, prebuilt model shard files from `frontend/public/models/removed/` to keep the repository lightweight.
+- `node_modules/` is intentionally not included; run `npm install` locally after cloning.
 
-Full-stack music recommendation app with:
-- **Frontend:** React 18 + Vite (localhost:5173)
-- **Backend:** Express.js + MongoDB (localhost:5000)
-- **Auth:** JWT-based with MongoDB persistence
-- **Features:** Mood detection, favorites, crush mode, PWA support
+If you need the removed model files for local AI experiments, download them from the original model provider and place them into `frontend/public/models/` before running the app.
 
----
+Quick setup
 
-## ⚠️ Issues Found & Fixed
+1) Frontend
 
-### 1. **EMPTY TAB COMPONENTS** ❌ → ✅ FIXED
-**Files:** 
-- `frontend/src/components/tabs/HomeTab.jsx`
-- `frontend/src/components/tabs/HistoryTab.jsx`
-- `frontend/src/components/tabs/FavoritesTab.jsx`
-
-**Issue:** Components were empty (0 lines)  
-**Impact:** Tabs won't render properly in the app
-**Status:** IMPLEMENTED - Basic stub components created
-
-### 2. **UNUSED DEPENDENCY IN BACKEND** ⚠️ → ✅ FIXED
-**File:** `backend/package.json`  
-**Issue:** `"rate-limit": "^0.1.1"` is installed but never used (express-rate-limit is the correct package)  
-**Status:** REMOVED from dependencies
-
-### 3. **AUTHCONTEXT NOT CONNECTED TO BACKEND JWT** ⚠️ → ℹ️ NOTED
-**File:** `frontend/src/context/AuthContext.jsx`  
-**Issue:** Still uses localStorage for `musicMoodUser` (legacy) instead of JWT tokens from backend  
-**Status:** DOCUMENTED - Integration steps provided below
-
----
-
-## 🚀 Step-by-Step Setup Guide
-
-### **Phase 1: Database Setup**
-
-#### Step 1a: Local MongoDB (Option A)
-```bash
-# Install MongoDB Community Edition
-# Windows: https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/
-# macOS: brew install mongodb-community
-# Linux: See docs
-
-# Start MongoDB
-mongod
-# Verify: connection on localhost:27017
-```
-
-#### Step 1b: MongoDB Atlas (Option B - RECOMMENDED)
-```bash
-# Already configured in backend/.env:
-MONGODB_URI=mongodb+srv://babinbid05_db_user:Zj69qqdW1PcSVaVi@cluster0.ldmwt8h.mongodb.net/?appName=Cluster0
-# This is LIVE and ready to use ✅
-```
-
----
-
-### **Phase 2: Backend Setup**
-
-#### Step 2a: Install Dependencies
-```bash
-cd backend
-npm install
-```
-
-**Installed Packages:**
-| Package | Version | Purpose |
-|---------|---------|---------|
-| express | 5.2.1 | Web framework |
-| mongoose | 9.0.2 | MongoDB ODM |
-| jsonwebtoken | 9.0.3 | JWT tokens |
-| bcryptjs | 3.0.3 | Password hashing |
-| cors | 2.8.5 | Cross-origin requests |
-| helmet | 8.1.0 | Security headers |
-| express-rate-limit | 8.2.1 | Rate limiting |
-| dotenv | 17.2.3 | Environment variables |
-| nodemon | 3.0.2 | Auto-reload (dev) |
-
-#### Step 2b: Verify Environment Variables
-**File:** `backend/.env`
-```env
-PORT=5000
-MONGODB_URI=mongodb+srv://babinbid05_db_user:Zj69qqdW1PcSVaVi@cluster0.ldmwt8h.mongodb.net/?appName=Cluster0
-JWT_SECRET=956f6b74910c22063adbca1b4828c030fb583e81d6a5ae8d70d478f954950f85
-JWT_EXPIRE=7d
-NODE_ENV=development
-CORS_ORIGIN=http://localhost:5173
-```
-
-**Status:** ✅ **All configured**
-
-#### Step 2c: Start Backend Server
-```bash
-npm run dev    # Development (auto-reload with nodemon)
-# OR
-npm start      # Production
-```
-
-**Expected Output:**
-```
-Server running on port 5000
-✅ MongoDB Connected: cluster0.ldmwt8h.mongodb.net
-```
-
-#### Step 2d: Test Backend Health
-```bash
-curl http://localhost:5000/api/health
-# Expected Response:
-# {"status":"Server is running"}
-```
-
----
-
-### **Phase 3: Frontend Setup**
-
-#### Step 3a: Install Dependencies
 ```bash
 cd frontend
 npm install
+npm run dev
 ```
 
-**Key Packages:**
-| Package | Version | Purpose |
-|---------|---------|---------|
-| react | 18.3.1 | UI library |
-| react-dom | 18.3.1 | DOM binding |
-| axios | 1.6.5 | HTTP client |
-| face-api.js | 0.22.2 | Face detection |
-| react-webcam | 7.2.0 | Webcam access |
-| framer-motion | 12.23.24 | Animations |
+2) Backend (if present)
+
+```bash
+cd backend
+npm install
+npm run dev
+```
+
+Repository cleanup notes
+
+- Removed files:
+  - `frontend/public/models/removed/face_expression_model-shard1`
+  - `frontend/public/models/removed/face_expression_model-weights_manifest.json`
+  - `frontend/public/models/removed/tiny_face_detector_model-shard1`
+  - `frontend/public/models/removed/tiny_face_detector_model-weights_manifest.json`
+
+- Recommendation: After cloning, remove `node_modules` and reinstall to reclaim space, or simply run `npm install` to recreate them locally.
+
+Want me to also:
+
+- Remove other large artifacts (e.g., local caches) from the repo?  
+- Re-add model files into a release asset instead of tracking them in Git?  
+Tell me which and I will proceed.
 | vite | 7.1.7 | Build tool |
 | vitest | 1.0.4 | Testing framework |
 
