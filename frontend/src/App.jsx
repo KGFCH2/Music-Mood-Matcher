@@ -851,7 +851,7 @@ function App() {
                     <p>Try refreshing the page or clearing your browser cache. If issues persist, make sure JavaScript is enabled and you're using a supported browser. Contact support if problems continue.</p>
 
                     <h4>What should I do if I encounter a bug?</h4>
-                    <p>We'd love to hear about it! Please report any bugs to: support@musicmoodmatcher.com with a description of the issue and screenshots if possible.</p>
+                    <p>We'd love to hear about it! Please report any bugs to: babinbid05@gmail.com with a description of the issue and screenshots if possible.</p>
 
                     <h3>Music & Content</h3>
 
@@ -859,7 +859,7 @@ function App() {
                     <p>We regularly update our music library with new recommendations. Follow us on social media or check the app for announcements about new additions!</p>
 
                     <h4>Can I suggest songs for a specific mood?</h4>
-                    <p>Yes! We'd love your suggestions. Send your recommendations to: suggestions@musicmoodmatcher.com. Your input helps us improve our music curation.</p>
+                    <p>Yes! We'd love your suggestions. Send your recommendations to: babinbid05@gmail.com. Your input helps us improve our music curation.</p>
 
                     <h4>Why is a particular song in a certain mood category?</h4>
                     <p>Songs are categorized based on their musical characteristics (tempo, key, instrumentation, lyrics) and the emotions they evoke. Our curation is based on music theory and user feedback.</p>
@@ -869,8 +869,8 @@ function App() {
 
                     <h3>Still Have Questions?</h3>
 
-                    <p><strong>Contact us:</strong> support@musicmoodmatcher.com</p>
-                    <p><strong>Email:</strong> info@musicmoodmatcher.com</p>
+                    <p><strong>Contact us:</strong> babinbid05@gmail.com</p>
+                    <p><strong>Email:</strong> babinbid05@gmail.com</p>
                     <p>We're here to help! Response time is typically within 24-48 hours.</p>
                   </div>
                   <div className="page-footer">
