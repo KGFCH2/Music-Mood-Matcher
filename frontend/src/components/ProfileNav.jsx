@@ -174,9 +174,9 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout }) {
             case 'female':
                 return '👩'
             case 'other':
-                return '🧑'
+                return '👤' // use classic silhouette for 'other'
             default:
-                return '👤'
+                return '🧑' // default neutral avatar
         }
     }
 
@@ -448,12 +448,17 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout }) {
                                                 <select
                                                     value={editingGender}
                                                     onChange={(e) => setEditingGender(e.target.value)}
-                                                    className="form-input"
-                                                    style={{ maxWidth: '150px', marginLeft: '10px' }}
+                                                    className="form-input force-light-select"
+                                                    style={{
+                                                        maxWidth: '150px',
+                                                        marginLeft: '10px',
+                                                        color: '#000000',
+                                                        background: '#ffffff'
+                                                    }}
                                                 >
-                                                    <option value="male">👨 Male</option>
-                                                    <option value="female">👩 Female</option>
-                                                    <option value="other">👤 Other</option>
+                                                    <option value="male" style={{ color: '#000000', background: '#ffffff' }}>👨 Male</option>
+                                                    <option value="female" style={{ color: '#000000', background: '#ffffff' }}>👩 Female</option>
+                                                    <option value="other" style={{ color: '#000000', background: '#ffffff' }}>👤 Other</option>
                                                 </select>
                                             ) : (
                                                 <span className="info-value">
@@ -732,7 +737,18 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout }) {
                                             <p style={{ color: '#ff6b6b', fontWeight: '600', margin: '0 0 0.5rem' }}>
                                                 ⚠️ Warning: This action cannot be undone
                                             </p>
-                                            <p style={{ color: '#b0b0b0', margin: '0', fontSize: '0.9rem', lineHeight: '1.4' }}>
+                                            <p
+                                                className="delete-note force-dark-on-light"
+                                                style={{
+                                                    margin: '0',
+                                                    fontSize: '0.9rem',
+                                                    lineHeight: '1.4',
+                                                    color: '#000000',
+                                                    background: '#ffffff',
+                                                    padding: '0.45rem',
+                                                    borderRadius: '6px'
+                                                }}
+                                            >
                                                 Deleting your account will permanently remove all your profile data. However, you can re-register with the same email address anytime.
                                             </p>
                                         </div>
