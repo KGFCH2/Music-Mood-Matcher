@@ -642,7 +642,7 @@ function App() {
                       <button className="footer-nav-btn" onClick={() => setActiveTab('terms')}><span className="emoji-pop emoji-terms">📋</span> <span>Terms of Service</span></button>
                       <button className="footer-nav-btn" onClick={() => setActiveTab('faq')}><span className="emoji-pop emoji-faq">❓</span> <span>FAQ</span></button>
                     </div>
-                    <p className="footer-copyright">© 2024 Music Mood Matcher. All rights reserved.</p>
+                    <p className="footer-copyright">© 2025 Music Mood Matcher. All rights reserved.</p>
                   </div>
                 </motion.div>
               )}
@@ -660,7 +660,7 @@ function App() {
                     <span className="tab-text">Privacy Policy</span>
                   </h2>
                   <div className="about-content">
-                    <p><strong>Last Updated: December 2024</strong></p>
+                    <p><strong>Last Updated: December 2025</strong></p>
 
                     <h3>1. Introduction</h3>
                     <p>Music Mood Matcher ("we," "us," or "our") operates the Music Mood Matcher application. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our application.</p>
@@ -714,7 +714,7 @@ function App() {
                       <button className="footer-nav-btn" onClick={() => setActiveTab('faq')}>❓ FAQ</button>
                       <button className="footer-nav-btn" onClick={() => setActiveTab('about')}>ℹ️ About</button>
                     </div>
-                    <p className="footer-copyright">© 2024 Music Mood Matcher. All rights reserved.</p>
+                    <p className="footer-copyright">© 2025 Music Mood Matcher. All rights reserved.</p>
                   </div>
                 </motion.div>
               )}
@@ -732,7 +732,7 @@ function App() {
                     <span className="tab-text">Terms of Service</span>
                   </h2>
                   <div className="about-content">
-                    <p><strong>Last Updated: December 2024</strong></p>
+                    <p><strong>Last Updated: December 2025</strong></p>
 
                     <h3>1. Agreement to Terms</h3>
                     <p>By accessing and using Music Mood Matcher, you accept and agree to be bound by the terms and provision of this agreement. If you do not agree to abide by the above, please do not use this service.</p>
@@ -776,7 +776,7 @@ function App() {
                       <button className="footer-nav-btn" onClick={() => setActiveTab('faq')}>❓ FAQ</button>
                       <button className="footer-nav-btn" onClick={() => setActiveTab('about')}>ℹ️ About</button>
                     </div>
-                    <p className="footer-copyright">© 2024 Music Mood Matcher. All rights reserved.</p>
+                    <p className="footer-copyright">© 2025 Music Mood Matcher. All rights reserved.</p>
                   </div>
                 </motion.div>
               )}
@@ -880,7 +880,7 @@ function App() {
                       <button className="footer-nav-btn" onClick={() => setActiveTab('terms')}>📋 Terms of Service</button>
                       <button className="footer-nav-btn" onClick={() => setActiveTab('about')}>ℹ️ About</button>
                     </div>
-                    <p className="footer-copyright">© 2024 Music Mood Matcher. All rights reserved.</p>
+                    <p className="footer-copyright">© 2025 Music Mood Matcher. All rights reserved.</p>
                   </div>
                 </motion.div>
               )}
