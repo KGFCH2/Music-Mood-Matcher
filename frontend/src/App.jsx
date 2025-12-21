@@ -705,7 +705,7 @@ function App() {
                     </ul>
 
                     <h3>7. Contact Us</h3>
-                    <p>If you have any questions about this Privacy Policy, please contact us at: <a href="mailto:babinbid05@gmail.com,dbose272@gmail.com">babinbid05@gmail.com / dbose272@gmail.com</a></p>
+                    <p>If you have any questions about this Privacy Policy, please contact us at: <a href="mailto:babinbid05@gmail.com">babinbid05@gmail.com</a> / <a href="mailto:dbose272@gmail.com">dbose272@gmail.com</a></p>
                   </div>
                   <div className="page-footer">
                     <div className="footer-divider"></div>
@@ -767,7 +767,7 @@ function App() {
                     <p>These terms and conditions are governed by and construed in accordance with the laws of India and you irrevocably submit to the exclusive jurisdiction of the courts in that location.</p>
 
                     <h3>9. Contact</h3>
-                    <p>If you have any questions about these Terms of Service, please contact us at: <a href="mailto:babinbid05@gmail.com,dbose272@gmail.com">babinbid05@gmail.com / dbose272@gmail.com</a></p>
+                    <p>If you have any questions about these Terms of Service, please contact us at: <a href="mailto:babinbid05@gmail.com">babinbid05@gmail.com</a> / <a href="mailto:dbose272@gmail.com">dbose272@gmail.com</a></p>
                   </div>
                   <div className="page-footer">
                     <div className="footer-divider"></div>
@@ -851,7 +851,7 @@ function App() {
                     <p>Try refreshing the page or clearing your browser cache. If issues persist, make sure JavaScript is enabled and you're using a supported browser. Contact support if problems continue.</p>
 
                     <h4>What should I do if I encounter a bug?</h4>
-                    <p>We'd love to hear about it! Please report any bugs to: <a href="mailto:babinbid05@gmail.com,dbose272@gmail.com">babinbid05@gmail.com / dbose272@gmail.com</a> with a description of the issue and screenshots if possible.</p>
+                    <p>We'd love to hear about it! Please report any bugs to: <a href="mailto:babinbid05@gmail.com">babinbid05@gmail.com</a> / <a href="mailto:dbose272@gmail.com">dbose272@gmail.com</a> with a description of the issue and screenshots if possible.</p>
 
                     <h3>Music & Content</h3>
 
@@ -859,7 +859,7 @@ function App() {
                     <p>We regularly update our music library with new recommendations. Follow us on social media or check the app for announcements about new additions!</p>
 
                     <h4>Can I suggest songs for a specific mood?</h4>
-                    <p>Yes! We'd love your suggestions. Send your recommendations to: <a href="mailto:babinbid05@gmail.com,dbose272@gmail.com">babinbid05@gmail.com / dbose272@gmail.com</a>. Your input helps us improve our music curation.</p>
+                    <p>Yes! We'd love your suggestions. Send your recommendations to: <a href="mailto:babinbid05@gmail.com">babinbid05@gmail.com</a> / <a href="mailto:dbose272@gmail.com">dbose272@gmail.com</a>. Your input helps us improve our music curation.</p>
 
                     <h4>Why is a particular song in a certain mood category?</h4>
                     <p>Songs are categorized based on their musical characteristics (tempo, key, instrumentation, lyrics) and the emotions they evoke. Our curation is based on music theory and user feedback.</p>
@@ -869,8 +869,8 @@ function App() {
 
                     <h3>Still Have Questions?</h3>
 
-                    <p><strong>Contact us:</strong> <a href="mailto:babinbid05@gmail.com,dbose272@gmail.com">babinbid05@gmail.com / dbose272@gmail.com</a></p>
-                    <p><strong>Email:</strong> <a href="mailto:babinbid05@gmail.com,dbose272@gmail.com">babinbid05@gmail.com / dbose272@gmail.com</a></p>
+                    <p><strong>Contact us:</strong> <a href="mailto:babinbid05@gmail.com">babinbid05@gmail.com</a> / <a href="mailto:dbose272@gmail.com">dbose272@gmail.com</a></p>
+                    <p><strong>Email:</strong> <a href="mailto:babinbid05@gmail.com">babinbid05@gmail.com</a> / <a href="mailto:dbose272@gmail.com">dbose272@gmail.com</a></p>
                     <p>We're here to help! Response time is typically within 24-48 hours.</p>
                   </div>
                   <div className="page-footer">
