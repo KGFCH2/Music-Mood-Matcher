@@ -26,15 +26,15 @@
     width: 100%;
     max-width: 500px;
     max-height: 90vh;
-    background: var(--bg-color);
-    color: var(--text-color);
-    box-shadow: 0 20px 60px rgba(124, 77, 255, 0.3);
+    background: linear-gradient(180deg, rgba(2, 6, 8, 0.8), rgba(6, 6, 12, 0.9));
+    color: var(--text-color, #dfffdc);
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.7);
     overflow-y: auto;
     display: flex;
     flex-direction: column;
     animation: slideInCenter 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-    border-radius: 16px;
-    border: 1px solid rgba(124, 77, 255, 0.2);
+    border-radius: 12px;
+    border: 1px solid rgba(0, 255, 122, 0.06);
 }
 
 [data-theme="light"] .profile-nav-panel {
@@ -45,6 +45,92 @@
     --text-muted: #666666;
     --header-bg: #f4f4ff;
 }
+
+/* Ensure gender badge text is legible in light mode */
+[data-theme="light"] .profile-nav-panel .gender-badge {
+    color: #000000 !important;
+    background: linear-gradient(135deg, rgba(220, 220, 220, 0.6), rgba(240, 240, 240, 0.6));
+    border-color: rgba(0, 0, 0, 0.06);
+}
+
+@media (prefers-color-scheme: light) {
+    .gender-badge {
+        color: #000000 !important;
+        background: linear-gradient(135deg, rgba(220, 220, 220, 0.6), rgba(240, 240, 240, 0.6));
+        border-color: rgba(0, 0, 0, 0.06);
+    }
+}
+
+/* Ensure form selects and options are readable inside the profile panel */
+[data-theme="light"] .profile-nav-panel .form-input,
+[data-theme="light"] .profile-nav-panel .form-input option {
+    color: #000000 !important;
+    background: #ffffff !important;
+}
+
+@media (prefers-color-scheme: light) {
+
+    .profile-nav-panel .form-input,
+    .profile-nav-panel .form-input option {
+        color: #000000 !important;
+        background: #ffffff !important;
+    }
+}
+
+[data-theme="dark"] .profile-nav-panel .form-input,
+[data-theme="dark"] .profile-nav-panel .form-input option {
+    color: #ffffff !important;
+    background: transparent !important;
+}
+
+@media (prefers-color-scheme: dark) {
+
+    .profile-nav-panel .form-input,
+    .profile-nav-panel .form-input option {
+        color: #ffffff !important;
+        background: transparent !important;
+    }
+}
+
+/* Placeholder color overrides for inputs inside profile panel */
+.profile-nav-panel .form-input::placeholder {
+    color: rgba(0, 0, 0, 0.45) !important;
+    /* default for light-like backgrounds */
+}
+
+.profile-nav-panel .form-input::-webkit-input-placeholder {
+    color: rgba(0, 0, 0, 0.45) !important;
+}
+
+.profile-nav-panel .form-input::-moz-placeholder {
+    color: rgba(0, 0, 0, 0.45) !important;
+}
+
+.profile-nav-panel .form-input:-ms-input-placeholder {
+    color: rgba(0, 0, 0, 0.45) !important;
+}
+
+[data-theme="dark"] .profile-nav-panel .form-input::placeholder,
+[data-theme="dark"] .profile-nav-panel .form-input::-webkit-input-placeholder,
+[data-theme="dark"] .profile-nav-panel .form-input::-moz-placeholder,
+[data-theme="dark"] .profile-nav-panel .form-input:-ms-input-placeholder {
+    color: rgba(255, 255, 255, 0.45) !important;
+}
+
+/* High-specificity fallback: force a light-style dropdown inside profile panel */
+.profile-nav-panel .force-light-select,
+.profile-nav-panel .force-light-select option {
+    color: #000000 !important;
+    background: #ffffff !important;
+}
+
+/* Also apply when app explicitly sets data-theme="dark" to ensure overrides */
+[data-theme="dark"] .profile-nav-panel .force-light-select,
+[data-theme="dark"] .profile-nav-panel .force-light-select option {
+    color: #000000 !important;
+    background: #ffffff !important;
+}
+
 
 [data-theme="dark"] .profile-nav-panel {
     background: #1a1a2e;
@@ -90,18 +176,18 @@
     color: var(--text-color);
     padding: 1rem;
     z-index: 200;
-    box-shadow: 0 4px 20px rgba(124, 77, 255, 0.3);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-bottom: 2px solid rgba(124, 77, 255, 0.3);
+    border-bottom: 1px solid rgba(0, 255, 122, 0.04);
     width: 100%;
 }
 
 .profile-header h2 {
     margin: 0;
-    font-size: 1.5rem;
-    font-weight: 600;
+    font-size: 1.3rem;
+    font-weight: 700;
     flex-grow: 1;
 }
 
@@ -407,7 +493,7 @@
 }
 
 .info-code {
-    font-family: 'Courier New', monospace;
+    font-family: 'Cambria Math', Cambria, serif;
     font-size: 0.85rem;
     background: rgba(0, 0, 0, 0.3);
     padding: 0.35rem 0.65rem;
@@ -665,9 +751,61 @@
 
 
 .notice-code {
-    font-family: 'Courier New', monospace;
+    font-family: 'Cambria Math', Cambria, serif;
     margin: 0.5rem 0 0;
     padding: 0.4rem 0.6rem;
     background: rgba(0, 229, 255, 0.1);
     border-radius: 4px;
+}
+
+/* Playful music styling to match HomeTab */
+.profile-nav-panel {
+    border-radius: 18px;
+}
+
+.profile-header h2 {
+    font-size: 1.6rem;
+    font-weight: 700;
+}
+
+.profile-avatar-large {
+    box-shadow: 0 12px 36px rgba(124, 77, 255, 0.18);
+}
+
+.profile-section {
+    background: linear-gradient(135deg, rgba(124, 77, 255, 0.06), rgba(0, 229, 255, 0.02));
+    border-radius: 12px;
+}
+
+.section-toggle {
+    gap: 1rem;
+}
+
+.history-count {
+    background: linear-gradient(90deg, #FFD700, #7c4dff);
+    color: #0b1220;
+}
+
+.floating-note-deco {
+    font-size: 2.2rem;
+    opacity: 0.05;
+    position: absolute;
+    pointer-events: none;
+}
+
+/* Force the delete-note paragraph to appear like light mode (white background, black text)
+   even when the surrounding theme is dark. This improves visibility for important warnings. */
+.profile-nav-panel .delete-note.force-dark-on-light {
+    background: #ffffff !important;
+    color: #000000 !important;
+    padding: 0.55rem 0.6rem !important;
+    border-radius: 6px !important;
+    border: 1px solid rgba(0, 0, 0, 0.06) !important;
+    display: block !important;
+    line-height: 1.4 !important;
+}
+
+/* Slight shadow in dark theme so the white box stands out */
+[data-theme="dark"] .profile-nav-panel .delete-note.force-dark-on-light {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
 }
