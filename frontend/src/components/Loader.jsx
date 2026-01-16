@@ -52,8 +52,3 @@ Loader.propTypes = {
   // duration before calling onDone (ms)
   introDuration: PropTypes.number,
 }
-
-Loader.defaultProps = {
-  onDone: undefined,
-  introDuration: 1200,
-}
