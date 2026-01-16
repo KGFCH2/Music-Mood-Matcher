@@ -61,30 +61,47 @@ function MoodWebcam() {
       return;
     }
     const video = webcamRef.current.video;
-    if (!video) {
-      setFeedback('Webcam not ready.');
+    if (!video || video.readyState !== 4 || video.videoWidth === 0) {
+      // readyState 4 means HaveEnoughData, but we also check videoWidth
       return;
     }
-    const detections = await faceapi.detectSingleFace(video, new faceapi.TinyFaceDetectorOptions()).withFaceExpressions();
-    if (!detections) {
-      setDetectedMood(null);
-      setPlaylist([]);
-      setFeedback('No face detected. Please face the camera.');
-      return;
-    }
-    if (detections && detections.expressions) {
-      const sorted = Object.entries(detections.expressions).sort((a, b) => b[1] - a[1]);
-      const topExpression = sorted[0][0];
-      // show the raw detected expression (happy, sad, neutral, etc.) to the user
-      setDetectedMood(topExpression);
-      // map expression -> intermediate category -> playlist
-      const category = moodMap[topExpression] || 'cheerful';
-      setPlaylist(getPlaylistFromMood(category));
-      setFeedback('');
-    } else {
-      setDetectedMood(null);
-      setPlaylist([]);
-      setFeedback('No mood detected. Try changing your expression.');
+
+    try {
+      const detections = await faceapi.detectSingleFace(
+        video,
+        new faceapi.TinyFaceDetectorOptions()
+      ).withFaceExpressions();
+
+      if (!detections) {
+        setDetectedMood(null);
+        setPlaylist([]);
+        setFeedback('No face detected. Please face the camera.');
+        return;
+      }
+
+      // Check for valid box dimensions to prevent face-api internal errors
+      if (!detections.detection || !detections.detection.box ||
+        detections.detection.box.width === 0 ||
+        detections.detection.box.height === 0) {
+        return;
+      }
+      if (detections && detections.expressions) {
+        const sorted = Object.entries(detections.expressions).sort((a, b) => b[1] - a[1]);
+        const topExpression = sorted[0][0];
+        // show the raw detected expression (happy, sad, neutral, etc.) to the user
+        setDetectedMood(topExpression);
+        // map expression -> intermediate category -> playlist
+        const category = moodMap[topExpression] || 'cheerful';
+        setPlaylist(getPlaylistFromMood(category));
+        setFeedback('');
+      } else {
+        setDetectedMood(null);
+        setPlaylist([]);
+        setFeedback('No mood detected. Try changing your expression.');
+      }
+    } catch (error) {
+      console.error('Mood detection error capture:', error);
+      // Fail silently for interval performance, or set a subtle error if constant 
     }
   };
 
