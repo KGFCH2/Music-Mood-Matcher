@@ -121,3 +121,69 @@
   background: #FF1493;
   color: #fff;
 }
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .moodwebcam-root {
+    max-width: 95%;
+    margin: 1rem auto;
+    padding: 1.5rem;
+  }
+
+  .moodwebcam-privacy {
+    font-size: 0.9rem;
+  }
+
+  .moodwebcam-btn {
+    padding: 0.7rem 1rem;
+    font-size: 1rem;
+  }
+
+  .moodwebcam-mood {
+    font-size: 1.2rem;
+  }
+
+  .moodwebcam-song {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .moodwebcam-play-btn {
+    align-self: flex-end;
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .moodwebcam-root {
+    padding: 1rem;
+    margin: 0.5rem;
+  }
+
+  .moodwebcam-btn {
+    padding: 0.6rem 0.9rem;
+    font-size: 0.95rem;
+  }
+
+  .moodwebcam-mood {
+    font-size: 1.1rem;
+  }
+
+  .moodwebcam-song {
+    padding: 0.6rem 0.8rem;
+  }
+
+  .moodwebcam-song-title {
+    font-size: 0.95rem;
+  }
+
+  .moodwebcam-song-artist {
+    font-size: 0.85rem;
+  }
+
+  .moodwebcam-play-btn {
+    padding: 0.4rem 0.7rem;
+    font-size: 0.9rem;
+  }
+}
