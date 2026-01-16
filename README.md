@@ -1,25 +1,15 @@
 # 🎵 Music Mood Matcher
 
-[![React](https://img.shields.io/badge/React-19.1.1-blue?logo=react&logoColor=white)](https://react.dev)
+[![React](https://img.shields.io/badge/React-18.3.1-blue?logo=react&logoColor=white)](https://react.dev)
 [![Vite](https://img.shields.io/badge/Vite-7.1.7-646cff?logo=vite&logoColor=white)](https://vitejs.dev)
-[![Node.js](https://img.shields.io/badge/Node.js-Express-green?logo=node.js)](https://expressjs.com)
-[![MongoDB](https://img.shields.io/badge/MongoDB-Database-green?logo=mongodb)](https://www.mongodb.com)
 [![Status](https://img.shields.io/badge/Status-Production%20Ready-brightgreen)](https://github.com)
 [![GitHub](https://img.shields.io/badge/GitHub-Music--Mood--Matcher-black?logo=github)](https://github.com/KGFCH2/Music-Mood-Matcher)
 
-Your personal DJ in a browser. 🎧 Discover the perfect soundtrack for every emotion using AI mood detection. 240+ songs in 3 languages, all curated to match your vibe.
+Your personal DJ in a browser. 🎧 Discover the perfect soundtrack for every emotion using AI mood detection. 150+ songs in 3 languages, all curated to match your vibe.
 
 ---
 
 ## 🎸 Let's Jam: Quick Start
-
-### Backend Setup
-```bash
-cd backend
-npm install
-npm start          # or npm run dev for development
-```
-Backend runs on `http://localhost:5000`
 
 ### Frontend Setup
 ```bash
@@ -34,7 +24,7 @@ npm run dev        # Starts on http://localhost:5173
 
 | Feature | Description |
 |---------|-------------|
-| 🎵 **240+ Hits** | Multi-language collection in English, Hindi & Bengali |
+| 🎵 **150+ Hits** | Multi-language collection in English, Hindi & Bengali |
 | 🎭 **6 Mood Vibes** | Happy, Sad, Energetic, Romantic, Chill, Angry |
 | 🤖 **AI DJ Mode** | Webcam detects your mood & auto-generates playlists |
 | 💕 **Crush Mode** | Fun quiz to create the perfect playlist for your bae |
@@ -57,93 +47,48 @@ Music-Mood-Matcher/
 │   │   ├── api/
 │   │   │   └── apiClient.js          # Axios API client
 │   │   ├── components/
-│   │   │   ├── CrushMode.jsx         # Lazy loaded
-│   │   │   ├── MoodWebcam.jsx        # Lazy loaded
-│   │   │   ├── ProfileNav.jsx        # User profile panel
+│   │   │   ├── DemoGuide.jsx         # Demo guide component
+│   │   │   ├── Loader.jsx            # Loading spinner
+│   │   │   ├── Login.jsx             # User authentication
+│   │   │   ├── MoodWebcam.jsx        # AI mood detection
+│   │   │   ├── ProfileNav.jsx        # User profile navigation
 │   │   │   └── tabs/
+│   │   │       ├── FavoritesTab.jsx  # User's favorite songs
+│   │   │       ├── HistoryTab.jsx    # Mood history
+│   │   │       └── HomeTab.jsx       # Main interface
 │   │   ├── context/
-│   │   │   └── AuthContext.jsx       # Auth state + JWT tokens
+│   │   │   └── AuthContext.jsx       # Authentication state
+│   │   ├── data/
+│   │   │   └── songs.js              # Song database
 │   │   ├── test/
 │   │   │   ├── setup.js              # Vitest configuration
 │   │   │   └── App.test.jsx          # Sample tests
 │   │   └── serviceWorkerRegister.js  # PWA service worker
 │   ├── public/
 │   │   ├── sw.js                     # Service worker script
-│   │   └── manifest.json             # PWA manifest
+│   │   ├── manifest.json             # PWA manifest
+│   │   └── models/                   # AI model files (if present)
 │   ├── vitest.config.js              # Testing configuration
-│   └── package.json
-# 🎵 Music Mood Matcher
-
-Lightweight README — updated 2025-12-21 to reflect repository cleanup.
-
-Quick summary: a full‑stack React + Express app that matches songs to detected moods.
-
-What's in this repo (kept):
-
-- [frontend](frontend): Vite + React frontend (source in frontend/src)
-- [frontend/package.json](frontend/package.json) and configuration files (`vite.config.js`, `vitest.config.js`)
-- [frontend/public](frontend/public) (PWA assets and manifest; large unused model shards removed)
-- [README.md](README.md), [INSTRUCTIONS.md](INSTRUCTIONS.md), [LICENSE](LICENSE)
-
-Removed or ignored items:
-
-- Large prebuilt model shard files under `frontend/public/models/removed/` were removed to keep the repo lightweight. If you need them, re-download from the original model provider and place them into `public/models/` at build/deploy time.
-- `node_modules/` is not tracked here (remove locally to reclaim space and reinstall as needed).
-
-Quick start
-
-1) Backend (if present in `backend/`)
-
-```bash
-cd backend
-npm install
-npm run dev
+│   ├── vite.config.js                # Build configuration
+│   ├── eslint.config.js              # Linting configuration
+│   ├── vercel.json                   # Vercel deployment config
+│   ├── index.html                    # Main HTML file
+│   └── package.json                  # Dependencies and scripts
+├── INSTRUCTIONS.md                   # Setup and cleanup notes
+├── LICENSE                           # MIT License
+└── README.md                         # This file
 ```
 
-2) Frontend
+## 🎸 Setup Your Stage
 
+### Frontend Setup
 ```bash
 cd frontend
 npm install
-npm run dev
+npm run dev        # Starts on http://localhost:5173
 ```
 
-Tips
-
-- To fully clear local dependencies (Windows):
-
-```powershell
-rmdir /s /q node_modules
-del package-lock.json
-```
-
-- To clear on Unix/macOS:
-
-```bash
-rm -rf node_modules package-lock.json
-```
-
-If you'd like, I can remove other large, unnecessary files or help re-add model assets to `public/models/` as a separate step.
-
-### Step 1: Setup the Amplifier (Backend)
-```bash
-cd backend
-npm install
-cp .env.example .env
-# Edit .env with your MongoDB URI and JWT secret
-npm run dev
-```
-
-### Step 2: Plug In the Microphone (Frontend)
-```bash
-cd frontend
-npm install
-cp .env.example .env
-# Update VITE_API_URL if backend is on different port
-npm run dev
-```
-
-🎵 Both instruments are now playing in harmony!
+🎵 Your personal DJ is ready to rock!
 
 ---
 
@@ -169,16 +114,13 @@ describe('App', () => {
 
 ---
 
-## � Fort Knox: Security
+## 🔒 Data Security
 
-- ✅ VIP Passes expire every 7 days
-- ✅ Passwords locked in a vault (bcryptjs)
-- ✅ Only authorized remixes allowed (CORS)
-- ✅ Armed guards on duty (Helmet.js)
-- ✅ Bouncer at the door (Rate limiting)
-- ✅ Secret setlist in .env
-- ✅ Sensitive lyrics protected
-- ✅ Indexed catalog for speed
+- ✅ User data stored locally in browser (localStorage)
+- ✅ No server-side data transmission
+- ✅ AI processing happens client-side
+- ✅ PWA caching for offline functionality
+- ✅ EmailJS for contact forms (external service)
 
 ---
 
@@ -194,17 +136,17 @@ describe('App', () => {
 
 ## 🎪 Going on Tour: Deployment
 
-### 🎸 Concert Venues (Frontend on Vercel/Netlify)
+### 🎸 Concert Venues (Deploy to Vercel/Netlify)
 ```bash
+cd frontend
 npm run build
-# 🎭 Send the master recording to the venue
+# 🎭 Deploy the dist/ folder to your hosting platform
 ```
 
-### 🥁 Traveling with Equipment (Backend on Heroku/Railway/Render)
-```bash
-# Pack your setlist (.env variables)
-# Ship the tour bus (MongoDB Atlas connection)
-```
+**Recommended platforms:**
+- **Vercel**: Connect GitHub repo, automatic deployments
+- **Netlify**: Drag & drop dist/ folder or connect Git
+- **GitHub Pages**: Use gh-pages package
 
 ---
 
@@ -356,7 +298,7 @@ happy: [
 | 🎹 Instruments | 10 components |
 | 💿 Album Size | ~70 KB |
 | ⏱️ Load Time | ~2.7s |
-| 🎵 Song Library | 240+ hits |
+| 🎵 Song Library | 150+ hits |
 | 🌍 Tour Stops | 3 languages |
 | 🎭 Mood Genres | 6 vibes |
 
@@ -407,4 +349,4 @@ Personal use - See [LICENSE](LICENSE) file
 
 ---
 
-🎵 **Last Updated:** December 21, 2025 | **Version:** 2.2 - Now 100% Music-Themed! 🎵
+🎵 **Last Updated:** January 16, 2026 | **Version:** 2.3 - Frontend-Only Update! 🎵
