@@ -1,9 +1,10 @@
 # 🎵 Music Mood Matcher - Setup & Cleanup Notes
 
-Last updated: 2025-12-21 — this file was edited to reflect repository cleanup.
+Last updated: 2026-01-16 — updated to reflect frontend-only project structure.
 
 Summary:
 
+- This is a frontend-only React application using Vite.
 - The repo has been cleaned to remove large, prebuilt model shard files from `frontend/public/models/removed/` to keep the repository lightweight.
 - `node_modules/` is intentionally not included; run `npm install` locally after cloning.
 
@@ -15,14 +16,6 @@ Quick setup
 
 ```bash
 cd frontend
-npm install
-npm run dev
-```
-
-2) Backend (if present)
-
-```bash
-cd backend
 npm install
 npm run dev
 ```
@@ -50,10 +43,9 @@ Tell me which and I will proceed.
 #### Step 3b: Configure Environment
 **File:** `frontend/.env`
 ```env
-VITE_API_URL=http://localhost:5000/api
-VITE_EMAILJS_SERVICE_ID=service_zfess1e
-VITE_EMAILJS_TEMPLATE_ID=template_hz19s08
-VITE_EMAILJS_PUBLIC_KEY=yvSwGRuksv7zAychI
+VITE_EMAILJS_SERVICE_ID=your_service_id
+VITE_EMAILJS_TEMPLATE_ID=your_template_id
+VITE_EMAILJS_PUBLIC_KEY=your_public_key
 ```
 
 **Status:** ✅ **Configured**
@@ -64,24 +56,20 @@ npm run dev
 # Expected: Vite server running on http://localhost:5173
 ```
 
-#### Step 3d: Verify API Connection
-In browser console (`http://localhost:5173`):
-```javascript
-// Test API connectivity
-fetch('http://localhost:5000/api/health')
-  .then(r => r.json())
-  .then(d => console.log(d))
-// Expected: {status: "Server is running"}
-```
+#### Step 3d: Verify Application
+In browser (`http://localhost:5173`):
+- Check that the app loads
+- Test login with demo credentials
+- Try mood detection (allow camera permissions)
+- Verify songs play in new tabs
 
 ---
 
-### **Phase 4: Frontend Integration**
+### **Phase 4: Frontend Features**
 
-#### Step 4a: Authentication Flow (JWT Integration)
-The frontend needs to connect to backend JWT auth. Current flow:
+#### Step 4a: Authentication Flow (localStorage)
+The frontend uses localStorage for user authentication. Current flow:
 
-**Before (localStorage only):**
 ```javascript
 // AuthContext stores user data in localStorage
 const login = (userData) => {
@@ -90,22 +78,10 @@ const login = (userData) => {
 }
 ```
 
-**After (with backend JWT - IMPLEMENT THIS):**
-```javascript
-// 1. Call backend /auth/register or /auth/login
-const { data } = await authAPI.login({ email, password })
+User data, favorites, and history are stored locally in the browser.
 
-// 2. Store JWT token
-localStorage.setItem('authToken', data.token)
-
-// 3. Set user in context
-login({ userId: data.user.userId, name: data.user.name, email: data.user.email })
-
-// 4. apiClient automatically injects token in requests
-```
-
-#### Step 4b: Backend API Endpoints Ready
-All endpoints documented in [backend/IMPLEMENTATION_SUMMARY.md](IMPLEMENTATION_SUMMARY.md):
+#### Step 4b: Data Storage
+All data is stored in browser localStorage:
 
 **Auth Endpoints:**
 ```
@@ -263,22 +239,10 @@ npm run preview        # Test production build locally
 ```
 
 **Deploy to:**
-- **Vercel** (recommended): `vercel deploy`
+- **Vercel** (recommended): Connect GitHub repo
 - **Netlify**: Connect GitHub, auto-deploy
+- **GitHub Pages**: Use gh-pages package
 - **Static hosting**: Upload `dist/` folder
-
-### Backend Deployment
-```bash
-# Deploy src/ to:
-# - Heroku: git push heroku main
-# - Railway.app: Connect GitHub
-# - Render.com: Connect GitHub
-```
-
-**Set environment variables on hosting platform:**
-```env
-MONGODB_URI=your_production_mongodb_uri
-JWT_SECRET=your_production_secret
 CORS_ORIGIN=your_frontend_production_url
 NODE_ENV=production
 ```
@@ -287,17 +251,12 @@ NODE_ENV=production
 
 ## 🔒 Security Checklist
 
-✅ JWT tokens with 7-day expiry  
-✅ Passwords hashed with bcryptjs (10 salt rounds)  
-✅ CORS restricted to frontend origin  
-✅ Helmet.js security headers  
-✅ Rate limiting (100 req/15 min)  
-✅ .env secrets protected  
-✅ .gitignore configured  
-✅ MongoDB unique indexes on email  
-✅ Input validation on backend  
-✅ Error handlers prevent info leaks  
-✅ TTL indexes auto-delete old mood history (90 days)  
+✅ User data stored locally in browser localStorage
+✅ No server-side data transmission
+✅ AI processing client-side only
+✅ EmailJS for secure contact forms
+✅ PWA with service worker for caching
+✅ No sensitive data stored or transmitted  
 
 ---
 
@@ -308,27 +267,26 @@ NODE_ENV=production
 | **Frontend Code** | ~4000 lines |
 | **Backend Code** | ~400 lines |
 | **Total Components** | 10 |
-| **API Endpoints** | 9 |
-| **Database Collections** | 2 (Users, MoodHistory) |
 | **Build Size** | ~70 KB (gzipped) |
-| **Songs Database** | 240+ tracks |
+| **Songs Database** | 150+ tracks |
 | **Supported Languages** | 3 (English, Hindi, Bengali) |
 | **Mood Categories** | 6 |
+| **Data Storage** | Browser localStorage |
 
 ---
 
 ## 🎯 Next Steps (QUICK WINS)
 
 ### Immediate (1-2 hours):
-- [ ] Test frontend → backend API connection (Step 4a)
-- [ ] Create test user via backend
-- [ ] Verify login flow works
-- [ ] Test favorites save/load from backend
+- [ ] Test application in different browsers
+- [ ] Verify PWA installation works
+- [ ] Check offline functionality
+- [ ] Test mood detection with webcam
 
 ### Short-term (4-6 hours):
-- [ ] Update Login component to use backend `/auth/login`
-- [ ] Connect ProfileNav to backend `/auth/profile`
-- [ ] Implement real mood history storage
+- [ ] Add more songs to database
+- [ ] Improve UI animations
+- [ ] Add dark mode toggle
 - [ ] Add error notifications for API failures
 
 ### Medium-term (1-2 weeks):
@@ -341,14 +299,19 @@ NODE_ENV=production
 
 ## 📝 File Checklist
 
-### Backend Files
+### Frontend Files
 ```
-✅ backend/package.json              - Dependencies (rate-limit removed)
-✅ backend/.env                       - MongoDB Atlas connection
-✅ backend/src/server.js              - Express app setup
-✅ backend/src/db.js                  - MongoDB connection
-✅ backend/src/models/User.js         - User schema
-✅ backend/src/models/MoodHistory.js  - Mood history schema
+✅ frontend/package.json             - Dependencies and scripts
+✅ frontend/src/App.jsx              - Main application component
+✅ frontend/src/api/apiClient.js     - Axios client (for EmailJS)
+✅ frontend/src/components/          - UI components
+✅ frontend/src/context/AuthContext.jsx - Authentication state
+✅ frontend/src/data/songs.js        - Song database
+✅ frontend/src/test/                - Test files
+✅ frontend/public/                  - Static assets and PWA files
+✅ frontend/vite.config.js           - Build configuration
+✅ frontend/vitest.config.js         - Testing configuration
+```
 ✅ backend/src/controllers/authController.js
 ✅ backend/src/controllers/userController.js
 ✅ backend/src/routes/authRoutes.js
