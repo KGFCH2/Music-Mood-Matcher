@@ -2,13 +2,13 @@
     position: fixed;
     inset: 0;
     display: flex;
-    align-items: flex-start;
     justify-content: center;
-    padding-top: 0.8rem;
+    padding: 1rem;
     background: radial-gradient(circle at 10% 10%, rgba(0, 255, 122, 0.03), transparent 10%), #030406;
     font-family: 'Cambria Math', Cambria, serif;
     z-index: 1000;
-    overflow: auto;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 .login-background {
@@ -116,6 +116,7 @@
 }
 
 .login-card {
+    margin: auto;
     position: relative;
     background: linear-gradient(180deg, rgba(0, 0, 0, 0.6), rgba(6, 6, 12, 0.7));
     backdrop-filter: blur(6px);
@@ -466,12 +467,16 @@
 }
 
 /* Responsive Design */
-@media (max-width: 480px) {
+@media (max-width: 768px) {
+    .login-container {
+        padding: 0.5rem;
+    }
+
     .login-card {
-        padding: 1.5rem 1.2rem;
-        max-width: 95%;
-        margin: 0.5rem;
-        max-height: 90vh;
+        padding: 1.2rem 1rem;
+        max-width: 98%;
+        margin: auto;
+        max-height: calc(100dvh - 1rem);
     }
 
     .login-header h1 {
@@ -483,17 +488,18 @@
     }
 
     .decorative-bars {
-        height: 40px;
+        height: 30px;
         gap: 6px;
-        margin-bottom: 1rem;
+        margin-bottom: 0.8rem;
     }
 
     .decorative-bars .bar {
         width: 6px;
+        min-height: 15px;
     }
 
     .form-input {
-        padding: 0.7rem 0.9rem;
+        padding: 0.7rem 0.8rem;
         font-size: 16px;
         /* Prevents zoom on iOS */
     }
@@ -501,14 +507,22 @@
     .login-btn {
         padding: 0.7rem 1rem;
         font-size: 0.9rem;
+        margin-top: 0.2rem;
     }
 
     .musical-note {
-        font-size: 1.5rem;
+        font-size: 1.4rem;
     }
 
     .forms-container {
-        min-height: 240px;
+        min-height: 220px;
+        margin-bottom: 4.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .login-card {
+        padding: 1rem 0.8rem;
     }
 }
 
