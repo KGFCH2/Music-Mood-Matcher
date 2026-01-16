@@ -119,17 +119,19 @@ const styles = {
     container: {
         maxWidth: '600px',
         margin: '0 auto',
-        padding: '2rem',
+        padding: '2rem 1rem',
     },
     title: {
         fontSize: '1.8rem',
         fontWeight: 'bold',
         marginBottom: '0.5rem',
+        textAlign: 'center',
     },
     count: {
         opacity: 0.7,
         marginBottom: '1.5rem',
         fontSize: '0.95rem',
+        textAlign: 'center',
     },
     emptyState: {
         textAlign: 'center',
@@ -161,6 +163,7 @@ const styles = {
         alignItems: 'center',
         gap: '1rem',
         flex: 1,
+        minWidth: 0,
     },
     songInfo: {
         flex: 1,
@@ -191,13 +194,14 @@ const styles = {
         fontWeight: '600',
         whiteSpace: 'nowrap',
         textTransform: 'capitalize',
+        flexShrink: 0,
     },
     removeBtn: {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        width: '2rem',
-        height: '2rem',
+        width: '2.5rem',
+        height: '2.5rem',
         borderRadius: '50%',
         border: 'none',
         background: 'rgba(220, 38, 38, 0.2)',
@@ -205,5 +209,6 @@ const styles = {
         cursor: 'pointer',
         fontSize: '1rem',
         transition: 'all 0.2s',
+        flexShrink: 0,
     },
 }
