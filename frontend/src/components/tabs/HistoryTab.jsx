@@ -109,12 +109,13 @@ const styles = {
     container: {
         maxWidth: '600px',
         margin: '0 auto',
-        padding: '2rem',
+        padding: '2rem 1rem',
     },
     title: {
         fontSize: '1.8rem',
         fontWeight: 'bold',
         marginBottom: '1.5rem',
+        textAlign: 'center',
     },
     emptyState: {
         textAlign: 'center',
@@ -144,9 +145,11 @@ const styles = {
     },
     moodEmoji: {
         fontSize: '2rem',
+        flexShrink: 0,
     },
     itemInfo: {
         flex: 1,
+        minWidth: 0,
     },
     itemMood: {
         margin: 0,
