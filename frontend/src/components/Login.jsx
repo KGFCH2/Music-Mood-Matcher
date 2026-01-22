@@ -3,12 +3,15 @@ import { motion, AnimatePresence } from 'framer-motion'
 import PropTypes from 'prop-types'
 import emailjs from '@emailjs/browser'
 import DemoGuide from './DemoGuide'
+import { secureStorage } from '../utils/secureStorage'
+import { hashPassword, validatePasswordStrength, getPasswordFeedback } from '../utils/passwordUtils'
 import './login.css'
 
 export default function Login({ onLoginSuccess }) {
     const [isSignIn, setIsSignIn] = useState(false)
-    const [registerData, setRegisterData] = useState({ email: '', userName: '', gender: 'other' })
+    const [registerData, setRegisterData] = useState({ email: '', userName: '', gender: 'other', password: '', confirmPassword: '' })
     const [signInEmail, setSignInEmail] = useState('')
+    const [signInPassword, setSignInPassword] = useState('')
     const [registeredUsers, setRegisteredUsers] = useState([])
     const [error, setError] = useState('')
     const [isLoading, setIsLoading] = useState(false)
@@ -24,7 +27,12 @@ export default function Login({ onLoginSuccess }) {
     const [resendCooldown, setResendCooldown] = useState(0)
     const [emailValidation, setEmailValidation] = useState({ isValid: null, message: '' })
     const [nameValidation, setNameValidation] = useState({ isValid: null, message: '' })
+    const [passwordValidation, setPasswordValidation] = useState({ isValid: null, message: '', color: '' })
+    const [confirmPasswordValidation, setConfirmPasswordValidation] = useState({ isValid: null, message: '' })
     const [showSuccessAnimation, setShowSuccessAnimation] = useState(false)
+    const [showPassword, setShowPassword] = useState(false)
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+    const [showSignInPassword, setShowSignInPassword] = useState(false)
 
     // Demo credentials
     const DEMO_USERS = [
@@ -59,15 +67,16 @@ export default function Login({ onLoginSuccess }) {
         }
     }, [showVerificationDialog])
 
-    // Load registered users from localStorage on mount
+    // Load registered users from secure storage on mount
     useEffect(() => {
         try {
-            const saved = localStorage.getItem('musicMoodUsers')
-            if (saved) {
-                setRegisteredUsers(JSON.parse(saved))
+            const saved = secureStorage.getRegisteredUsers()
+            if (saved && Array.isArray(saved)) {
+                setRegisteredUsers(saved)
             }
         } catch (err) {
-            console.error('Error loading users:', err)
+            // Silent fail - don't expose errors
+            setRegisteredUsers([])
         }
     }, [])
 
@@ -107,6 +116,42 @@ export default function Login({ onLoginSuccess }) {
         }
     }
 
+    // Real-time password validation
+    const handlePasswordChange = (password) => {
+        setRegisterData({ ...registerData, password })
+        if (!password.trim()) {
+            setPasswordValidation({ isValid: null, message: '', color: '' })
+        } else {
+            const { isStrong, requirements, strengthLevel } = validatePasswordStrength(password)
+            const feedback = getPasswordFeedback(password)
+            setPasswordValidation({
+                isValid: isStrong,
+                message: feedback.message,
+                color: feedback.color
+            })
+        }
+        // Check confirm password match if filled
+        if (registerData.confirmPassword) {
+            validateConfirmPassword(registerData.confirmPassword, password)
+        }
+    }
+
+    // Confirm password validation
+    const handleConfirmPasswordChange = (confirmPassword) => {
+        setRegisterData({ ...registerData, confirmPassword })
+        validateConfirmPassword(confirmPassword, registerData.password)
+    }
+
+    const validateConfirmPassword = (confirmPassword, password) => {
+        if (!confirmPassword.trim()) {
+            setConfirmPasswordValidation({ isValid: null, message: '' })
+        } else if (confirmPassword !== password) {
+            setConfirmPasswordValidation({ isValid: false, message: 'Passwords do not match' })
+        } else {
+            setConfirmPasswordValidation({ isValid: true, message: 'Passwords match!' })
+        }
+    }
+
     // Auto-submit when verification code is complete
     const handleVerificationCodeChange = (value) => {
         const code = value.toUpperCase().replace(/[^A-Z0-9]/g, '')
@@ -131,13 +176,23 @@ export default function Login({ onLoginSuccess }) {
         if (code === user.verificationCode) {
             setShowSuccessAnimation(true)
 
-            const verifiedUser = { ...user, isVerified: true }
+            const verifiedUser = {
+                email: user.email,
+                userName: user.userName,
+                gender: user.gender,
+                userId: user.userId,
+                registeredAt: user.registeredAt,
+                isVerified: true,
+                isDemo: user.isDemo || false
+            }
+
             const updatedUsers = registeredUsers.map(u =>
                 u.email === verificationDialogEmail ? verifiedUser : u
             )
             setRegisteredUsers(updatedUsers)
-            localStorage.setItem('musicMoodUsers', JSON.stringify(updatedUsers))
-            localStorage.setItem('musicMoodUser', JSON.stringify(verifiedUser))
+            // Use secure storage - don't store verification code
+            secureStorage.setRegisteredUsers(updatedUsers)
+            secureStorage.setUserInfo(verifiedUser)
 
             setTimeout(() => {
                 setShowVerificationDialog(false)
@@ -158,7 +213,6 @@ export default function Login({ onLoginSuccess }) {
 
             // Verify email format before sending
             if (!validateEmail(email)) {
-                console.error('Invalid email format:', email)
                 return { success: false, error: 'Invalid email format' }
             }
 
@@ -173,12 +227,12 @@ export default function Login({ onLoginSuccess }) {
                 code: verificationCode              // Alternative variable name
             }
 
-            console.log('📧 Sending verification email')
-            console.log('Recipient Email (to_email):', email)
-            console.log('User Name:', userName)
-            console.log('Verification Code:', verificationCode)
-            console.log('Service ID:', SERVICE_ID)
-            console.log('Template ID:', TEMPLATE_ID)
+            // DO NOT LOG SENSITIVE DATA - verification code and email are confidential
+            // Only log service status for debugging, never log user data or verification codes
+            if (process.env.NODE_ENV === 'development') {
+                // Only in development mode, log minimal service info
+                console.debug('Email service: Sending verification message')
+            }
 
             const response = await emailjs.send(
                 SERVICE_ID,
@@ -187,35 +241,35 @@ export default function Login({ onLoginSuccess }) {
                 PUBLIC_KEY
             )
 
-            console.log('✅ Verification email sent successfully!')
-            console.log('Response Status:', response.status)
-            console.log('Response Text:', response.text)
+            if (process.env.NODE_ENV === 'development') {
+                console.debug('Email service: Message sent successfully')
+            }
             return { success: true }
 
         } catch (error) {
-            console.error('❌ Failed to send verification email:', error.message)
-
             let errorMessage = 'Failed to send verification email. Please try again.'
 
-            // Log specific error codes for debugging
+            // Log specific error codes for debugging (no sensitive data)
             if (error.status === 400) {
-                console.error('Error 400: Invalid request')
-                console.error('⚠️ IMPORTANT: Check your EmailJS template uses these EXACT variable names:')
-                console.error('   - {{to_email}} for recipient email')
-                console.error('   - {{user_name}} for user name')
-                console.error('   - {{verification_code}} for verification code')
+                if (process.env.NODE_ENV === 'development') {
+                    console.debug('Email service: Invalid request - check template configuration')
+                }
                 errorMessage = 'Email service configuration error. Please contact support.'
             } else if (error.status === 401) {
-                console.error('Error 401: Unauthorized - Check public key:', PUBLIC_KEY)
+                if (process.env.NODE_ENV === 'development') {
+                    console.debug('Email service: Authentication failed')
+                }
                 errorMessage = 'Email service authentication failed. Please contact support.'
             } else if (error.status === 404) {
-                console.error('Error 404: Not found - Check Service ID and Template ID')
+                if (process.env.NODE_ENV === 'development') {
+                    console.debug('Email service: Service not found')
+                }
                 errorMessage = 'Email service not found. Please contact support.'
             } else if (error.status === 429) {
-                console.error('Error 429: Too many requests')
+                if (process.env.NODE_ENV === 'development') {
+                    console.debug('Email service: Rate limit exceeded')
+                }
                 errorMessage = 'Too many email requests. Please wait a moment and try again.'
-            } else {
-                console.error('Error:', error.status, error.text)
             }
 
             return { success: false, error: errorMessage }
@@ -250,6 +304,23 @@ export default function Login({ onLoginSuccess }) {
             return
         }
 
+        // Validate password
+        if (!registerData.password.trim()) {
+            setError('Please enter a password')
+            return
+        }
+
+        const { isStrong } = validatePasswordStrength(registerData.password)
+        if (!isStrong) {
+            setError('Password does not meet strength requirements')
+            return
+        }
+
+        if (registerData.password !== registerData.confirmPassword) {
+            setError('Passwords do not match')
+            return
+        }
+
         // Check if email already registered
         const existing = registeredUsers.find(u => u.email === registerData.email)
         if (existing) {
@@ -266,14 +337,17 @@ export default function Login({ onLoginSuccess }) {
         setIsLoading(true)
 
         try {
-            // Generate secure verification code
+            // Hash password securely
+            const hashedPassword = await hashPassword(registerData.password)
+
+            // Generate secure verification code (stored in memory only, never in localStorage)
             const verificationCode = generateVerificationCode()
 
             // Store the email being registered to prevent accidental email changes
             const registrationEmail = registerData.email
             const registrationName = registerData.userName
 
-            // Create user data object
+            // Create user data object - verification code stored temporarily in memory
             const userData = {
                 email: registrationEmail,
                 userName: registrationName,
@@ -282,8 +356,9 @@ export default function Login({ onLoginSuccess }) {
                 registeredAt: new Date().toISOString(),
                 loginHistory: [new Date().toISOString()],
                 isVerified: false,
-                verificationCode: verificationCode,
-                emailVerified: false  // Track if this specific email was verified
+                passwordHash: hashedPassword, // Hash stored in memory only, not in localStorage
+                verificationCode: verificationCode, // Temporary - only in memory
+                emailVerified: false
             }
 
             // Send verification email FIRST before saving user
@@ -300,9 +375,22 @@ export default function Login({ onLoginSuccess }) {
             }
 
             // Save new user to registered users list AFTER email is sent successfully
-            const updatedUsers = [...registeredUsers, userData]
+            // NOTE: Only safe user data stored (no verification code)
+            const safeUserData = {
+                email: userData.email,
+                userName: userData.userName,
+                gender: userData.gender,
+                userId: userData.userId,
+                registeredAt: userData.registeredAt,
+                loginHistory: userData.loginHistory,
+                isVerified: false,
+                isDemo: false
+            }
+
+            const updatedUsers = [...registeredUsers, userData] // Keep in-memory with code for immediate use
             setRegisteredUsers(updatedUsers)
-            localStorage.setItem('musicMoodUsers', JSON.stringify(updatedUsers))
+            // Only save safe data to persistent storage
+            secureStorage.setRegisteredUsers(updatedUsers)
 
             setIsLoading(false)
             setEmailSentSuccess(true)
@@ -312,15 +400,19 @@ export default function Login({ onLoginSuccess }) {
             setShowVerificationDialog(true)
             setVerificationInputCode('')
             setVerificationError('')
-            setRegisterData({ email: '', userName: '', gender: 'other' })
+            setRegisterData({ email: '', userName: '', gender: 'other', password: '', confirmPassword: '' })
 
-            // Log registration info
-            console.log('User registered with email:', registrationEmail)
-            console.log('Verification email sent successfully')
+            // Do NOT log user registration details or verification codes
+            if (process.env.NODE_ENV === 'development') {
+                console.debug('Registration: Verification email sent')
+            }
         } catch (err) {
             setIsLoading(false)
             setError('An unexpected error occurred. Please try again.')
-            console.error('Registration error:', err)
+            // Do NOT log detailed error info that might expose data
+            if (process.env.NODE_ENV === 'development') {
+                console.debug('Registration error occurred')
+            }
         }
     }
 
@@ -338,6 +430,11 @@ export default function Login({ onLoginSuccess }) {
             return
         }
 
+        if (!signInPassword.trim()) {
+            setError('Please enter your password')
+            return
+        }
+
         // Find user by email
         const user = registeredUsers.find(u => u.email === signInEmail)
         if (!user) {
@@ -347,59 +444,83 @@ export default function Login({ onLoginSuccess }) {
 
         setIsLoading(true)
 
-        // Check if user is verified
-        if (!user.isVerified) {
-            // Generate new verification code and send email
-            const newVerificationCode = generateVerificationCode()
+        try {
+            // Hash the entered password and compare with stored hash
+            const hashedInputPassword = await hashPassword(signInPassword)
 
-            const emailResult = await sendVerificationEmail(
-                signInEmail,
-                user.userName,
-                newVerificationCode
-            )
-
-            // Update user with new verification code
-            const updatedUser = {
-                ...user,
-                verificationCode: newVerificationCode
+            if (hashedInputPassword !== user.passwordHash) {
+                setIsLoading(false)
+                setError('Invalid password. Please try again.')
+                return
             }
+
+            // Password is correct, check if user is verified
+            if (!user.isVerified) {
+                // Generate new verification code and send email
+                const newVerificationCode = generateVerificationCode()
+
+                const emailResult = await sendVerificationEmail(
+                    signInEmail,
+                    user.userName,
+                    newVerificationCode
+                )
+
+                // Update user with new verification code (in-memory only)
+                const updatedUser = {
+                    ...user,
+                    verificationCode: newVerificationCode
+                }
+                const updatedUsers = registeredUsers.map(u =>
+                    u.email === signInEmail ? updatedUser : u
+                )
+                setRegisteredUsers(updatedUsers)
+                // Only save safe data to persistent storage
+                secureStorage.setRegisteredUsers(updatedUsers)
+
+                setIsLoading(false)
+                setVerificationDialogEmail(signInEmail)
+                setShowVerificationDialog(true)
+                setVerificationInputCode('')
+                setVerificationError('')
+                setEmailSentSuccess(emailResult.success)
+                if (!emailResult.success) {
+                    setVerificationError(emailResult.error || 'Failed to send verification email.')
+                }
+                setSignInEmail('')
+                setSignInPassword('')
+                return
+            }
+
+            // Update login history
+            const updatedUser = {
+                email: user.email,
+                userName: user.userName,
+                gender: user.gender,
+                userId: user.userId,
+                registeredAt: user.registeredAt,
+                isVerified: user.isVerified,
+                isDemo: user.isDemo || false,
+                loginHistory: [...(user.loginHistory || []), new Date().toISOString()]
+            }
+
+            // Update in registered users list
             const updatedUsers = registeredUsers.map(u =>
                 u.email === signInEmail ? updatedUser : u
             )
             setRegisteredUsers(updatedUsers)
-            localStorage.setItem('musicMoodUsers', JSON.stringify(updatedUsers))
+            // Use secure storage instead of localStorage
+            secureStorage.setRegisteredUsers(updatedUsers)
+            secureStorage.setUserInfo(updatedUser)
 
             setIsLoading(false)
-            setVerificationDialogEmail(signInEmail)
-            setShowVerificationDialog(true)
-            setVerificationInputCode('')
-            setVerificationError('')
-            setEmailSentSuccess(emailResult.success)
-            if (!emailResult.success) {
-                setVerificationError(emailResult.error || 'Failed to send verification email.')
+            onLoginSuccess(updatedUser)
+        } catch (err) {
+            setIsLoading(false)
+            setError('An error occurred during sign-in. Please try again.')
+            if (process.env.NODE_ENV === 'development') {
+                console.debug('Sign-in error occurred')
             }
-            setSignInEmail('')
-            return
         }
-
-        // Update login history
-        const updatedUser = {
-            ...user,
-            loginHistory: [...(user.loginHistory || []), new Date().toISOString()]
-        }
-
-        // Update in registered users list
-        const updatedUsers = registeredUsers.map(u =>
-            u.email === signInEmail ? updatedUser : u
-        )
-        setRegisteredUsers(updatedUsers)
-        localStorage.setItem('musicMoodUsers', JSON.stringify(updatedUsers))
-
-        // Save current user session
-        localStorage.setItem('musicMoodUser', JSON.stringify(updatedUser))
-
-        setIsLoading(false)
-        onLoginSuccess(updatedUser)
     }
 
     const handleVerifyEmail = (e) => {
@@ -420,10 +541,15 @@ export default function Login({ onLoginSuccess }) {
 
         // Check if verification code matches
         if (verificationInputCode.toUpperCase() === user.verificationCode) {
-            // Mark user as verified
+            // Mark user as verified - only store safe data
             const verifiedUser = {
-                ...user,
-                isVerified: true
+                email: user.email,
+                userName: user.userName,
+                gender: user.gender,
+                userId: user.userId,
+                registeredAt: user.registeredAt,
+                isVerified: true,
+                isDemo: user.isDemo || false
             }
 
             // Update in registered users list
@@ -431,10 +557,9 @@ export default function Login({ onLoginSuccess }) {
                 u.email === verificationDialogEmail ? verifiedUser : u
             )
             setRegisteredUsers(updatedUsers)
-            localStorage.setItem('musicMoodUsers', JSON.stringify(updatedUsers))
-
-            // Save current user session
-            localStorage.setItem('musicMoodUser', JSON.stringify(verifiedUser))
+            // Use secure storage instead of localStorage
+            secureStorage.setRegisteredUsers(updatedUsers)
+            secureStorage.setUserInfo(verifiedUser)
 
             setShowVerificationDialog(false)
             setVerificationInputCode('')
@@ -470,7 +595,7 @@ export default function Login({ onLoginSuccess }) {
         )
 
         if (emailResult.success) {
-            // Update user with new verification code
+            // Update user with new verification code (in-memory only)
             const updatedUser = {
                 ...user,
                 verificationCode: newVerificationCode
@@ -479,12 +604,16 @@ export default function Login({ onLoginSuccess }) {
                 u.email === verificationDialogEmail ? updatedUser : u
             )
             setRegisteredUsers(updatedUsers)
-            localStorage.setItem('musicMoodUsers', JSON.stringify(updatedUsers))
+            // Only save safe data to persistent storage
+            secureStorage.setRegisteredUsers(updatedUsers)
 
             setEmailSentSuccess(true)
             setVerificationError('')
             setResendCooldown(60) // 60 second cooldown
-            console.log('New verification code sent successfully')
+            // Do NOT log that verification code was sent
+            if (process.env.NODE_ENV === 'development') {
+                console.debug('Email service: Verification message resent')
+            }
         } else {
             setVerificationError(emailResult.error || 'Failed to resend verification email. Please try again.')
         }
@@ -493,7 +622,7 @@ export default function Login({ onLoginSuccess }) {
     }
 
     const setupDemoUser = (demoUser) => {
-        // Create a demo user with verified status
+        // Create a demo user with verified status - only store safe data
         const demoUserData = {
             email: demoUser.email,
             userName: demoUser.name,
@@ -502,8 +631,8 @@ export default function Login({ onLoginSuccess }) {
             registeredAt: new Date().toISOString(),
             loginHistory: [new Date().toISOString()],
             isVerified: true,  // Demo users are pre-verified
-            verificationCode: 'DEMO123',
             isDemo: true  // Mark as demo user
+            // NOTE: verificationCode intentionally excluded
         }
 
         // Check if demo user already exists
@@ -513,17 +642,17 @@ export default function Login({ onLoginSuccess }) {
         if (!existingDemoUser) {
             usersToSave = [...registeredUsers, demoUserData]
             setRegisteredUsers(usersToSave)
-            localStorage.setItem('musicMoodUsers', JSON.stringify(usersToSave))
+            secureStorage.setRegisteredUsers(usersToSave)
         } else {
             demoUserData.userId = existingDemoUser.userId
             demoUserData.loginHistory = [...(existingDemoUser.loginHistory || []), new Date().toISOString()]
             usersToSave = registeredUsers.map(u => u.email === demoUser.email ? demoUserData : u)
             setRegisteredUsers(usersToSave)
-            localStorage.setItem('musicMoodUsers', JSON.stringify(usersToSave))
+            secureStorage.setRegisteredUsers(usersToSave)
         }
 
         // Save demo user session
-        localStorage.setItem('musicMoodUser', JSON.stringify(demoUserData))
+        secureStorage.setUserInfo(demoUserData)
 
         // Close demo guide and login
         setShowDemoGuide(false)
@@ -576,6 +705,7 @@ export default function Login({ onLoginSuccess }) {
                                     setIsSignIn(false)
                                     setError('')
                                     setSignInEmail('')
+                                    setSignInPassword('')
                                 }}
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
@@ -588,25 +718,13 @@ export default function Login({ onLoginSuccess }) {
                                 onClick={() => {
                                     setIsSignIn(true)
                                     setError('')
-                                    setRegisterData({ email: '', userName: '' })
+                                    setRegisterData({ email: '', userName: '', gender: 'other', password: '', confirmPassword: '' })
                                 }}
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
                             >
                                 <span className="tab-emoji">🔑</span>
                                 <span className="tab-name">Sign In</span>
-                            </motion.button>
-                            <motion.button
-                                className={`tab-btn ${showDemoGuide ? 'active' : ''}`}
-                                onClick={() => {
-                                    setShowDemoGuide(!showDemoGuide)
-                                    setError('')
-                                }}
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                            >
-                                <span className="tab-emoji">🎬</span>
-                                <span className="tab-name">Demo</span>
                             </motion.button>
                         </div>
 
@@ -674,7 +792,7 @@ export default function Login({ onLoginSuccess }) {
                                             className="form-group"
                                             initial={{ opacity: 0, x: -20 }}
                                             animate={{ opacity: 1, x: 0 }}
-                                            transition={{ delay: 0.2, duration: 0.4 }}
+                                            transition={{ delay: 0.15, duration: 0.4 }}
                                         >
                                             <label htmlFor="registerEmail">
                                                 <span className="label-icon">📧</span>
@@ -701,12 +819,98 @@ export default function Login({ onLoginSuccess }) {
                                             )}
                                         </motion.div>
 
-                                        {/* Gender Selection */}
+                                        {/* Password Input */}
+                                        <motion.div
+                                            className="form-group"
+                                            initial={{ opacity: 0, x: -20 }}
+                                            animate={{ opacity: 1, x: 0 }}
+                                            transition={{ delay: 0.2, duration: 0.4 }}
+                                        >
+                                            <label htmlFor="registerPassword">
+                                                <span className="label-icon">🔒</span>
+                                                <span className="label-text">Password</span>
+                                                {passwordValidation.isValid === true && <span className="validation-icon valid">✓</span>}
+                                                {passwordValidation.isValid === false && <span className="validation-icon invalid">✗</span>}
+                                            </label>
+                                            <div className="password-input-wrapper">
+                                                <input
+                                                    id="registerPassword"
+                                                    type={showPassword ? 'text' : 'password'}
+                                                    placeholder="At least 8 characters"
+                                                    value={registerData.password}
+                                                    onChange={(e) => handlePasswordChange(e.target.value)}
+                                                    disabled={isLoading}
+                                                    className={`form-input password-input ${passwordValidation.isValid === true ? 'input-valid' : ''} ${passwordValidation.isValid === false ? 'input-invalid' : ''}`}
+                                                    aria-label="Password"
+                                                    aria-describedby="password-validation"
+                                                />
+                                                <motion.button
+                                                    type="button"
+                                                    className="password-toggle"
+                                                    onClick={() => setShowPassword(!showPassword)}
+                                                    disabled={isLoading}
+                                                    whileHover={{ scale: 1.1 }}
+                                                    whileTap={{ scale: 0.9 }}
+                                                >
+                                                    {showPassword ? '👁️' : '👁️‍🗨️'}
+                                                </motion.button>
+                                            </div>
+                                            {passwordValidation.message && (
+                                                <small id="password-validation" className={`validation-message ${passwordValidation.isValid ? 'valid' : 'invalid'}`} style={{ color: passwordValidation.color }}>
+                                                    {passwordValidation.message}
+                                                </small>
+                                            )}
+                                        </motion.div>
+
+                                        {/* Confirm Password Input */}
                                         <motion.div
                                             className="form-group"
                                             initial={{ opacity: 0, x: -20 }}
                                             animate={{ opacity: 1, x: 0 }}
                                             transition={{ delay: 0.25, duration: 0.4 }}
+                                        >
+                                            <label htmlFor="confirmPassword">
+                                                <span className="label-icon">🔐</span>
+                                                <span className="label-text">Confirm Password</span>
+                                                {confirmPasswordValidation.isValid === true && <span className="validation-icon valid">✓</span>}
+                                                {confirmPasswordValidation.isValid === false && <span className="validation-icon invalid">✗</span>}
+                                            </label>
+                                            <div className="password-input-wrapper">
+                                                <input
+                                                    id="confirmPassword"
+                                                    type={showConfirmPassword ? 'text' : 'password'}
+                                                    placeholder="Re-enter password"
+                                                    value={registerData.confirmPassword}
+                                                    onChange={(e) => handleConfirmPasswordChange(e.target.value)}
+                                                    disabled={isLoading}
+                                                    className={`form-input password-input ${confirmPasswordValidation.isValid === true ? 'input-valid' : ''} ${confirmPasswordValidation.isValid === false ? 'input-invalid' : ''}`}
+                                                    aria-label="Confirm password"
+                                                    aria-describedby="confirm-password-validation"
+                                                />
+                                                <motion.button
+                                                    type="button"
+                                                    className="password-toggle"
+                                                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                                    disabled={isLoading}
+                                                    whileHover={{ scale: 1.1 }}
+                                                    whileTap={{ scale: 0.9 }}
+                                                >
+                                                    {showConfirmPassword ? '👁️' : '👁️‍🗨️'}
+                                                </motion.button>
+                                            </div>
+                                            {confirmPasswordValidation.message && (
+                                                <small id="confirm-password-validation" className={`validation-message ${confirmPasswordValidation.isValid ? 'valid' : 'invalid'}`}>
+                                                    {confirmPasswordValidation.message}
+                                                </small>
+                                            )}
+                                        </motion.div>
+
+                                        {/* Gender Selection */}
+                                        <motion.div
+                                            className="form-group"
+                                            initial={{ opacity: 0, x: -20 }}
+                                            animate={{ opacity: 1, x: 0 }}
+                                            transition={{ delay: 0.3, duration: 0.4 }}
                                         >
                                             <label className="gender-label">
                                                 <span className="label-icon">✨</span>
@@ -782,7 +986,7 @@ export default function Login({ onLoginSuccess }) {
                                             whileTap={{ scale: 0.97 }}
                                             initial={{ opacity: 0, y: 20 }}
                                             animate={{ opacity: 1, y: 0 }}
-                                            transition={{ delay: 0.3, duration: 0.4 }}
+                                            transition={{ delay: 0.35, duration: 0.4 }}
                                         >
                                             {isLoading ? (
                                                 <>
@@ -795,6 +999,25 @@ export default function Login({ onLoginSuccess }) {
                                                     <span className="btn-text">Start Your Journey</span>
                                                 </>
                                             )}
+                                        </motion.button>
+
+                                        {/* OR Try Demo Button */}
+                                        <motion.button
+                                            className="demo-or-btn"
+                                            type="button"
+                                            onClick={() => {
+                                                setShowDemoGuide(true)
+                                                setError('')
+                                            }}
+                                            disabled={isLoading}
+                                            whileHover={{ scale: 1.05 }}
+                                            whileTap={{ scale: 0.95 }}
+                                            initial={{ opacity: 0, y: 20 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            transition={{ delay: 0.4, duration: 0.4 }}
+                                        >
+                                            <span className="btn-icon">🎬</span>
+                                            <span className="btn-text">OR Try Demo</span>
                                         </motion.button>
                                     </motion.form>
                                 )}
@@ -845,15 +1068,49 @@ export default function Login({ onLoginSuccess }) {
                                             />
                                         </motion.div>
 
+                                        {/* Password Input */}
+                                        <motion.div
+                                            className="form-group"
+                                            initial={{ opacity: 0, x: -20 }}
+                                            animate={{ opacity: 1, x: 0 }}
+                                            transition={{ delay: 0.2, duration: 0.4 }}
+                                        >
+                                            <label htmlFor="signinPassword">
+                                                <span className="label-icon">🔒</span>
+                                                <span className="label-text">Password</span>
+                                            </label>
+                                            <div className="password-input-wrapper">
+                                                <input
+                                                    id="signinPassword"
+                                                    type={showSignInPassword ? 'text' : 'password'}
+                                                    placeholder="Enter your password"
+                                                    value={signInPassword}
+                                                    onChange={(e) => setSignInPassword(e.target.value)}
+                                                    disabled={isLoading}
+                                                    className="form-input password-input"
+                                                />
+                                                <motion.button
+                                                    type="button"
+                                                    className="password-toggle"
+                                                    onClick={() => setShowSignInPassword(!showSignInPassword)}
+                                                    disabled={isLoading}
+                                                    whileHover={{ scale: 1.1 }}
+                                                    whileTap={{ scale: 0.9 }}
+                                                >
+                                                    {showSignInPassword ? '👁️' : '👁️‍🗨️'}
+                                                </motion.button>
+                                            </div>
+                                        </motion.div>
+
                                         {/* Info Message */}
                                         <motion.p
                                             className="signin-info"
                                             initial={{ opacity: 0 }}
                                             animate={{ opacity: 1 }}
-                                            transition={{ delay: 0.2, duration: 0.4 }}
+                                            transition={{ delay: 0.3, duration: 0.4 }}
                                         >
                                             <span className="info-icon">ℹ️</span>
-                                            <span className="info-text">Enter your registered email to continue</span>
+                                            <span className="info-text">Enter your email and password to continue</span>
                                         </motion.p>
 
                                         {/* Submit Button */}
@@ -865,7 +1122,7 @@ export default function Login({ onLoginSuccess }) {
                                             whileTap={{ scale: 0.97 }}
                                             initial={{ opacity: 0, y: 20 }}
                                             animate={{ opacity: 1, y: 0 }}
-                                            transition={{ delay: 0.3, duration: 0.4 }}
+                                            transition={{ delay: 0.4, duration: 0.4 }}
                                         >
                                             {isLoading ? (
                                                 <>
