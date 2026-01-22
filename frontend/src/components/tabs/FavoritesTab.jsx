@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
+import './tabs.css'
 
 export default function FavoritesTab({ user, onRemove }) {
     const [favorites, setFavorites] = useState([])
@@ -52,18 +53,18 @@ export default function FavoritesTab({ user, onRemove }) {
     }
 
     if (!user) {
-        return <div style={styles.container}>Please log in to view favorites</div>
+        return <div className="tab-container">Please log in to view favorites</div>
     }
 
     if (loading) {
-        return <div style={styles.container}>Loading...</div>
+        return <div className="tab-container">Loading...</div>
     }
 
     if (favorites.length === 0) {
         return (
-            <div style={styles.container}>
-                <div style={styles.emptyState}>
-                    <p style={styles.emptyEmoji}>⭐</p>
+            <div className="tab-container">
+                <div className="empty-state">
+                    <p className="empty-emoji">⭐</p>
                     <h3>No Favorites Yet</h3>
                     <p>Add songs to your favorites to see them here!</p>
                 </div>
@@ -72,31 +73,28 @@ export default function FavoritesTab({ user, onRemove }) {
     }
 
     return (
-        <div style={styles.container}>
-            <h2 style={styles.title}>❤️ Your Favorites</h2>
-            <p style={styles.count}>{favorites.length} favorite songs</p>
+        <div className="tab-container">
+            <h2 className="tab-title">❤️ Your Favorites</h2>
+            <p className="tab-subtitle">{favorites.length} favorite songs</p>
 
-            <div style={styles.favoritesList}>
+            <div className="song-list">
                 {favorites.map((song, idx) => (
-                    <div key={idx} style={styles.favoriteItem}>
-                        <div style={styles.itemContent}>
-                            <div style={styles.songInfo}>
-                                <p style={styles.songTitle}>{song.songName}</p>
-                                <p style={styles.songArtist}>{song.artist}</p>
-                            </div>
-                            <span
-                                style={{
-                                    ...styles.moodBadge,
-                                    borderColor: getMoodColor(song.mood),
-                                    color: getMoodColor(song.mood),
-                                }}
-                            >
-                                {song.mood}
-                            </span>
+                    <div key={idx} className="song-item">
+                        <div className="song-info">
+                            <p className="song-title">{song.songName || song.title}</p>
+                            <p className="song-artist">{song.artist}</p>
                         </div>
+                        <span
+                            className="mood-badge"
+                            style={{
+                                color: getMoodColor(song.mood),
+                            }}
+                        >
+                            {song.mood}
+                        </span>
                         <button
-                            onClick={() => handleRemove(song.songId)}
-                            style={styles.removeBtn}
+                            onClick={() => handleRemove(song.songId || song.id)}
+                            className="remove-btn"
                             title="Remove from favorites"
                         >
                             ✕
@@ -115,100 +113,4 @@ FavoritesTab.propTypes = {
     onRemove: PropTypes.func,
 }
 
-const styles = {
-    container: {
-        maxWidth: '600px',
-        margin: '0 auto',
-        padding: '2rem 1rem',
-    },
-    title: {
-        fontSize: '1.8rem',
-        fontWeight: 'bold',
-        marginBottom: '0.5rem',
-        textAlign: 'center',
-    },
-    count: {
-        opacity: 0.7,
-        marginBottom: '1.5rem',
-        fontSize: '0.95rem',
-        textAlign: 'center',
-    },
-    emptyState: {
-        textAlign: 'center',
-        padding: '3rem 1rem',
-        opacity: 0.6,
-    },
-    emptyEmoji: {
-        fontSize: '3rem',
-        marginBottom: '1rem',
-    },
-    favoritesList: {
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '1rem',
-    },
-    favoriteItem: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        gap: '1rem',
-        padding: '1.2rem',
-        borderRadius: '12px',
-        background: 'linear-gradient(135deg, rgba(124,77,255,0.1), rgba(0,229,255,0.05))',
-        border: '1px solid rgba(124,77,255,0.2)',
-        transition: 'all 0.3s ease',
-    },
-    itemContent: {
-        display: 'flex',
-        alignItems: 'center',
-        gap: '1rem',
-        flex: 1,
-        minWidth: 0,
-    },
-    songInfo: {
-        flex: 1,
-        minWidth: 0,
-    },
-    songTitle: {
-        margin: 0,
-        fontWeight: '600',
-        fontSize: '1rem',
-        overflow: 'hidden',
-        textOverflow: 'ellipsis',
-        whiteSpace: 'nowrap',
-    },
-    songArtist: {
-        margin: '0.3rem 0 0 0',
-        fontSize: '0.85rem',
-        opacity: 0.7,
-        overflow: 'hidden',
-        textOverflow: 'ellipsis',
-        whiteSpace: 'nowrap',
-    },
-    moodBadge: {
-        display: 'inline-block',
-        padding: '0.4rem 0.8rem',
-        borderRadius: '6px',
-        border: '2px solid',
-        fontSize: '0.75rem',
-        fontWeight: '600',
-        whiteSpace: 'nowrap',
-        textTransform: 'capitalize',
-        flexShrink: 0,
-    },
-    removeBtn: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: '2.5rem',
-        height: '2.5rem',
-        borderRadius: '50%',
-        border: 'none',
-        background: 'rgba(220, 38, 38, 0.2)',
-        color: '#DC2626',
-        cursor: 'pointer',
-        fontSize: '1rem',
-        transition: 'all 0.2s',
-        flexShrink: 0,
-    },
-}
+
