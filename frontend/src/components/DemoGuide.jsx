@@ -5,6 +5,7 @@ import './demo-guide.css'
 
 export default function DemoGuide({ onSelectDemo, onBack }) {
     const [selectedDemo, setSelectedDemo] = useState(null)
+    const [showFeatures, setShowFeatures] = useState(true)
 
     // Demo credentials
     const DEMO_USERS = [
@@ -173,47 +174,66 @@ export default function DemoGuide({ onSelectDemo, onBack }) {
                     ))}
                 </div>
 
-                {/* Features Section */}
-                <motion.div
-                    className="demo-features"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.5, duration: 0.4 }}
+                {/* Features Toggle Button (Mobile Only) */}
+                <motion.button
+                    className="demo-features-toggle"
+                    onClick={() => setShowFeatures(!showFeatures)}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.4, duration: 0.3 }}
                 >
-                    <h3 className="features-title">✨ Why Try Demo?</h3>
-                    <div className="features-grid">
-                        <div className="feature-item">
-                            <div className="feature-icon emoji-pop emoji-demo-instant">⚡</div>
-                            <p>Instant Access</p>
-                            <span>No verification needed</span>
-                        </div>
-                        <div className="feature-item">
-                            <div className="feature-icon emoji-pop emoji-demo-full">🎧</div>
-                            <p>Full Features</p>
-                            <span>All features unlocked</span>
-                        </div>
-                        <div className="feature-item">
-                            <div className="feature-icon emoji-pop emoji-demo-ui">🎨</div>
-                            <p>Beautiful UI</p>
-                            <span>Experience the design</span>
-                        </div>
-                        <div className="feature-item">
-                            <div className="feature-icon emoji-pop emoji-demo-reuse">♻️</div>
-                            <p>Reusable</p>
-                            <span>Use anytime you want</span>
-                        </div>
-                        <div className="feature-item">
-                            <div className="feature-icon emoji-pop emoji-demo-moods">🎵</div>
-                            <p>6 Moods</p>
-                            <span>Explore all emotions</span>
-                        </div>
-                        <div className="feature-item">
-                            <div className="feature-icon emoji-pop emoji-demo-lang">🌍</div>
-                            <p>Multi-Language</p>
-                            <span>English, Hindi & Bengali</span>
-                        </div>
-                    </div>
-                </motion.div>
+                    <span className="btn-icon">{showFeatures ? '🔽' : '🔼'}</span>
+                    <span className="btn-text">{showFeatures ? 'Hide Features' : 'Show Features'}</span>
+                </motion.button>
+
+                {/* Features Section */}
+                <AnimatePresence>
+                    {showFeatures && (
+                        <motion.div
+                            className="demo-features"
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: 'auto' }}
+                            exit={{ opacity: 0, height: 0 }}
+                            transition={{ duration: 0.3 }}
+                        >
+                            <h3 className="features-title">✨ Why Try Demo?</h3>
+                            <div className="features-grid">
+                                <div className="feature-item">
+                                    <div className="feature-icon emoji-pop emoji-demo-instant">⚡</div>
+                                    <p>Instant Access</p>
+                                    <span>No verification needed</span>
+                                </div>
+                                <div className="feature-item">
+                                    <div className="feature-icon emoji-pop emoji-demo-full">🎧</div>
+                                    <p>Full Features</p>
+                                    <span>All features unlocked</span>
+                                </div>
+                                <div className="feature-item">
+                                    <div className="feature-icon emoji-pop emoji-demo-ui">🎨</div>
+                                    <p>Beautiful UI</p>
+                                    <span>Experience the design</span>
+                                </div>
+                                <div className="feature-item">
+                                    <div className="feature-icon emoji-pop emoji-demo-reuse">♻️</div>
+                                    <p>Reusable</p>
+                                    <span>Use anytime you want</span>
+                                </div>
+                                <div className="feature-item">
+                                    <div className="feature-icon emoji-pop emoji-demo-moods">🎵</div>
+                                    <p>6 Moods</p>
+                                    <span>Explore all emotions</span>
+                                </div>
+                                <div className="feature-item">
+                                    <div className="feature-icon emoji-pop emoji-demo-lang">🌍</div>
+                                    <p>Multi-Language</p>
+                                    <span>English, Hindi & Bengali</span>
+                                </div>
+                            </div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
 
                 {/* Back Button */}
                 <motion.button
