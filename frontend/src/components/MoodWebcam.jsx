@@ -124,8 +124,11 @@ function MoodWebcam() {
           audio={false}
           ref={webcamRef}
           screenshotFormat="image/jpeg"
-          width={320}
-          height={240}
+          videoConstraints={{
+            width: 1280,
+            height: 720,
+            facingMode: "user"
+          }}
         />
       </div>
       <div style={{ margin: '1rem 0', color: '#ff1493', fontWeight: 600 }}>
