@@ -37,6 +37,23 @@
     border: 1px solid rgba(0, 255, 122, 0.06);
 }
 
+@media (max-width: 550px) {
+    .profile-nav-overlay {
+        padding: 0;
+    }
+
+    .profile-nav-panel {
+        max-width: 100%;
+        height: 100vh;
+        max-height: 100vh;
+        border-radius: 0;
+    }
+
+    .profile-content {
+        padding: 1rem;
+    }
+}
+
 [data-theme="light"] .profile-nav-panel {
     background: #f4f4ff;
     color: #000000;
