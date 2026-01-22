@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
+import './tabs.css'
 
 export default function HistoryTab({ user }) {
     const [moodHistory, setMoodHistory] = useState([])
@@ -55,18 +56,18 @@ export default function HistoryTab({ user }) {
     }
 
     if (!user) {
-        return <div style={styles.container}>Please log in to view mood history</div>
+        return <div className="tab-container">Please log in to view mood history</div>
     }
 
     if (loading) {
-        return <div style={styles.container}>Loading...</div>
+        return <div className="tab-container">Loading...</div>
     }
 
     if (moodHistory.length === 0) {
         return (
-            <div style={styles.container}>
-                <div style={styles.emptyState}>
-                    <p style={styles.emptyEmoji}>📊</p>
+            <div className="tab-container">
+                <div className="empty-state">
+                    <p className="empty-emoji">📊</p>
                     <h3>No Mood History Yet</h3>
                     <p>Start detecting your moods to build your history!</p>
                 </div>
@@ -75,21 +76,21 @@ export default function HistoryTab({ user }) {
     }
 
     return (
-        <div style={styles.container}>
-            <h2 style={styles.title}>Your Mood History</h2>
-            <div style={styles.historyList}>
+        <div className="tab-container">
+            <h2 className="tab-title">Your Mood History</h2>
+            <div className="history-list">
                 {moodHistory.map((entry, idx) => (
-                    <div key={idx} style={styles.historyItem}>
-                        <div style={styles.itemHeader}>
-                            <span style={styles.moodEmoji}>{getMoodEmoji(entry.mood)}</span>
-                            <div style={styles.itemInfo}>
-                                <p style={styles.itemMood}>{entry.mood.toUpperCase()}</p>
-                                <p style={styles.itemTime}>{formatDate(entry.timestamp)}</p>
+                    <div key={idx} className="history-item tab-section">
+                        <div className="item-header" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                            <span className="mood-emoji" style={{ fontSize: '2rem' }}>{getMoodEmoji(entry.mood)}</span>
+                            <div className="item-info">
+                                <p className="item-mood" style={{ margin: 0, fontWeight: 'bold' }}>{entry.mood.toUpperCase()}</p>
+                                <p className="item-time" style={{ margin: 0, fontSize: '0.8rem', opacity: 0.7 }}>{formatDate(entry.timestamp)}</p>
                             </div>
                         </div>
                         {entry.songs && entry.songs.length > 0 && (
-                            <div style={styles.itemSongs}>
-                                <p style={styles.songsLabel}>Songs played: {entry.songs.length}</p>
+                            <div className="item-songs" style={{ marginTop: '0.5rem', opacity: 0.8, fontSize: '0.9rem' }}>
+                                <p>Songs played: {entry.songs.length}</p>
                             </div>
                         )}
                     </div>
@@ -105,70 +106,4 @@ HistoryTab.propTypes = {
     }),
 }
 
-const styles = {
-    container: {
-        maxWidth: '600px',
-        margin: '0 auto',
-        padding: '2rem 1rem',
-    },
-    title: {
-        fontSize: '1.8rem',
-        fontWeight: 'bold',
-        marginBottom: '1.5rem',
-        textAlign: 'center',
-    },
-    emptyState: {
-        textAlign: 'center',
-        padding: '3rem 1rem',
-        opacity: 0.6,
-    },
-    emptyEmoji: {
-        fontSize: '3rem',
-        marginBottom: '1rem',
-    },
-    historyList: {
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '1rem',
-    },
-    historyItem: {
-        padding: '1.2rem',
-        borderRadius: '12px',
-        background: 'linear-gradient(135deg, rgba(124,77,255,0.1), rgba(0,229,255,0.05))',
-        border: '1px solid rgba(124,77,255,0.2)',
-        transition: 'all 0.3s ease',
-    },
-    itemHeader: {
-        display: 'flex',
-        alignItems: 'center',
-        gap: '1rem',
-    },
-    moodEmoji: {
-        fontSize: '2rem',
-        flexShrink: 0,
-    },
-    itemInfo: {
-        flex: 1,
-        minWidth: 0,
-    },
-    itemMood: {
-        margin: 0,
-        fontWeight: '600',
-        fontSize: '1rem',
-    },
-    itemTime: {
-        margin: '0.3rem 0 0 0',
-        fontSize: '0.85rem',
-        opacity: 0.7,
-    },
-    itemSongs: {
-        marginTop: '0.8rem',
-        paddingTop: '0.8rem',
-        borderTop: '1px solid rgba(124,77,255,0.1)',
-    },
-    songsLabel: {
-        margin: 0,
-        fontSize: '0.9rem',
-        opacity: 0.8,
-    },
-}
+
