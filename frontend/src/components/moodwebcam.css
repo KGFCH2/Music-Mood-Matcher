@@ -21,6 +21,15 @@
   margin-bottom: 1.2rem;
   display: flex;
   justify-content: center;
+  overflow: hidden;
+  border-radius: 12px;
+  background: #000;
+}
+
+.moodwebcam-cam>video {
+  width: 100% !important;
+  height: auto !important;
+  max-width: 400px;
 }
 
 .moodwebcam-btn {
