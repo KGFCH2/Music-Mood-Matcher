@@ -7,7 +7,7 @@
     justify-content: center;
     background: radial-gradient(circle at 10% 10%, rgba(0, 255, 122, 0.03), transparent 10%), #030406;
     color: #dfffdc;
-    font-family: 'Cambria Math', Cambria, serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, system-ui, sans-serif;
     overflow-y: auto;
     padding: 2rem 0;
 }
@@ -90,6 +90,9 @@
     padding: 2.4rem;
     box-shadow: 0 18px 40px rgba(0, 0, 0, 0.7);
     margin: auto;
+    /* Ensure demo card never exceeds viewport height and can scroll internally */
+    max-height: calc(100vh - 2rem);
+    overflow: auto;
 }
 
 .demo-header {
@@ -127,15 +130,15 @@
 /* Demo Users Grid */
 .demo-users-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2.2rem;
     margin-bottom: 3rem;
     max-width: 100%;
 }
 
 .demo-user-card {
     position: relative;
-    padding: 2rem;
+    padding: 1.25rem;
     background: linear-gradient(135deg, rgba(124, 77, 255, 0.1), rgba(0, 229, 255, 0.1));
     border: 1px solid rgba(124, 77, 255, 0.3);
     border-radius: 15px;
@@ -190,8 +193,8 @@
 }
 
 .demo-avatar {
-    width: 80px;
-    height: 80px;
+    width: 72px;
+    height: 72px;
     border-radius: 50%;
     background: linear-gradient(135deg, rgba(124, 77, 255, 0.3), rgba(0, 229, 255, 0.3));
     border: 3px solid;
@@ -299,7 +302,7 @@
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    margin-top: auto;
+    margin-top: 0.75rem;
 }
 
 .demo-login-btn:hover {
@@ -349,7 +352,7 @@
 
 /* Features Section */
 .demo-features {
-    padding: 2rem;
+    padding: 1.25rem;
     background: rgba(124, 77, 255, 0.08);
     border: 1px solid rgba(124, 77, 255, 0.2);
     border-radius: 15px;
@@ -421,6 +424,84 @@
     transform: scale(0.98);
 }
 
+/* Features Toggle Button (Mobile Only) */
+.demo-features-toggle {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    background: linear-gradient(135deg, rgba(124, 77, 255, 0.1), rgba(0, 229, 255, 0.1));
+    border: 1px solid rgba(124, 77, 255, 0.3);
+    border-radius: 10px;
+    color: #7c4dff;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: none;
+    /* Hidden by default, shown on mobile */
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.demo-features-toggle:hover {
+    background: linear-gradient(135deg, rgba(124, 77, 255, 0.15), rgba(0, 229, 255, 0.15));
+    border-color: rgba(124, 77, 255, 0.6);
+    color: #00e5ff;
+}
+
+.demo-features-toggle:active {
+    transform: scale(0.98);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .demo-card {
+        padding: 2rem 1.5rem;
+        margin: 1rem;
+    }
+
+    .demo-header h1 {
+        font-size: 2rem;
+    }
+
+    .demo-subtitle {
+        font-size: 0.9rem;
+    }
+
+    .demo-users-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .demo-avatar {
+        width: 70px;
+        height: 70px;
+        font-size: 2.5rem;
+    }
+
+    .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+
+    .feature-item {
+        padding: 0.8rem;
+    }
+
+    .feature-icon {
+        font-size: 1.5rem;
+    }
+
+    .feature-item p {
+        font-size: 0.9rem;
+    }
+
+    .feature-item span {
+        font-size: 0.75rem;
+    }
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .demo-card {
@@ -471,7 +552,10 @@
 
 @media (max-width: 480px) {
     .demo-card {
-        padding: 1.5rem 1rem;
+        padding: 1rem 0.75rem;
+        width: 95%;
+        max-width: 520px;
+        margin: 0.5rem auto;
     }
 
     .demo-header-icon {
@@ -502,6 +586,48 @@
 
     .demo-email-box {
         font-size: 0.75rem;
+    }
+
+    /* Show features toggle on mobile */
+    .demo-features-toggle {
+        display: flex;
+    }
+}
+
+/* Very small screens: hide decorative demo notes and compact layout */
+@media (max-width: 420px) {
+    .demo-note {
+        display: none;
+    }
+
+    .demo-card {
+        padding: 0.9rem;
+        max-height: calc(100vh - 1rem);
+    }
+
+    .demo-header h1 {
+        font-size: 1.25rem;
+    }
+
+    .demo-subtitle {
+        font-size: 0.85rem;
+    }
+
+    .demo-users-grid {
+        gap: 0.9rem;
+    }
+
+    .demo-user-card {
+        padding: 0.9rem;
+    }
+
+    .features-grid {
+        grid-template-columns: 1fr;
+        gap: 0.6rem;
+    }
+
+    .demo-features {
+        padding: 0.8rem;
     }
 }
 
