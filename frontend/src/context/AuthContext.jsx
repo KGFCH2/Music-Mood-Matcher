@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
+import { secureStorage } from '../utils/secureStorage'
 
 export const AuthContext = createContext()
 
@@ -7,46 +8,73 @@ export function AuthProvider({ children }) {
     const [user, setUser] = useState(null)
     const [isLoading, setIsLoading] = useState(true)
 
-    // Initialize - restore user session from localStorage on mount
+    // Initialize - restore user session from secure storage on mount
     useEffect(() => {
         try {
-            const savedUser = localStorage.getItem('musicMoodUser')
-            if (savedUser) {
-                setUser(JSON.parse(savedUser))
+            const savedUser = secureStorage.getUserInfo()
+            if (savedUser && savedUser.isVerified) {
+                setUser(savedUser)
+                // Keep user data in memory for quick access
+                secureStorage.setSessionData('currentUser', savedUser)
             }
         } catch (error) {
-            console.error('Error restoring user session:', error)
-            localStorage.removeItem('musicMoodUser')
+            // Silent fail - don't expose error details
+            secureStorage.clearAllStorage()
         } finally {
             setIsLoading(false)
         }
     }, [])
 
     const login = (userData) => {
-        setUser(userData)
-        localStorage.setItem('musicMoodUser', JSON.stringify(userData))
+        // Only store non-sensitive user info (email, userName, gender, etc.)
+        const safeUserData = {
+            email: userData.email,
+            userName: userData.userName,
+            gender: userData.gender,
+            userId: userData.userId,
+            registeredAt: userData.registeredAt,
+            isVerified: userData.isVerified,
+            isDemo: userData.isDemo || false
+        }
+
+        setUser(safeUserData)
+        secureStorage.setUserInfo(safeUserData)
+        secureStorage.setSessionData('currentUser', safeUserData)
     }
 
     const updateUser = (updatedData) => {
         const updated = { ...user, ...updatedData }
         setUser(updated)
-        localStorage.setItem('musicMoodUser', JSON.stringify(updated))
+
+        // Only store safe user info
+        const safeUserData = {
+            email: updated.email,
+            userName: updated.userName,
+            gender: updated.gender,
+            userId: updated.userId,
+            registeredAt: updated.registeredAt,
+            isVerified: updated.isVerified,
+            isDemo: updated.isDemo || false
+        }
+
+        secureStorage.setUserInfo(safeUserData)
+        secureStorage.setSessionData('currentUser', safeUserData)
+
         // Also update in the users list if email matches
         try {
-            const savedUsers = localStorage.getItem('musicMoodUsers')
+            const savedUsers = secureStorage.getRegisteredUsers()
             if (savedUsers) {
-                const users = JSON.parse(savedUsers)
-                const updatedUsers = users.map(u => u.email === user.email ? updated : u)
-                localStorage.setItem('musicMoodUsers', JSON.stringify(updatedUsers))
+                const updatedUsers = savedUsers.map(u => u.email === user.email ? safeUserData : u)
+                secureStorage.setRegisteredUsers(updatedUsers)
             }
         } catch (error) {
-            console.error('Error updating users list:', error)
+            // Silent fail - don't expose error details
         }
     }
 
     const logout = () => {
         setUser(null)
-        localStorage.removeItem('musicMoodUser')
+        secureStorage.clearAllStorage()
     }
 
     return (
