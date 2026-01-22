@@ -1517,109 +1517,119 @@ body.mood-angry .tab-content h2 .tab-text {
 
 /* Responsive Design */
 @media (max-width: 768px) {
+  .navbar {
+    position: sticky;
+    bottom: auto;
+    top: 0;
+  }
+
   .nav-container {
-    flex-direction: column;
-    gap: 0.8rem;
-    padding: 1rem;
+    padding: 0.6rem 0.8rem;
+    gap: 0.4rem;
+    justify-content: space-between;
+    flex-direction: row;
+  }
+
+  .nav-brand {
+    gap: 0.4rem;
   }
 
   .nav-brand h1 {
     font-size: 1rem;
+    white-space: nowrap;
+  }
+
+  .brand-icon {
+    font-size: 1.2rem;
   }
 
   .nav-menu {
-    width: 100%;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 0.5rem;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(11, 18, 32, 0.95);
+    backdrop-filter: blur(20px);
+    padding: 0.6rem 0.4rem;
+    display: flex;
+    justify-content: space-around;
+    gap: 0.2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    z-index: 1000;
   }
 
   .nav-btn {
-    padding: 0.5rem 0.8rem;
-    font-size: 0.85rem;
-    min-width: auto;
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 0.4rem 0.2rem;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.1rem;
+    min-width: unset;
   }
 
-  .user-profile-btn {
-    gap: 0.6rem;
-    padding: 0.7rem 1rem;
+  .nav-btn.active {
+    background: rgba(124, 77, 255, 0.15);
+    color: var(--accent);
+    box-shadow: none;
   }
 
-  .profile-avatar {
-    width: 2.2rem;
-    height: 2.2rem;
+  .nav-text {
+    font-size: 0.6rem;
+    font-weight: 600;
+    color: inherit;
   }
 
-  .profile-icon {
-    font-size: 1.1rem;
-  }
-
-  .profile-info {
-    display: none;
+  .emoji-pop {
+    font-size: 1.2rem;
   }
 
   .logout-btn {
-    padding: 0.5rem;
+    padding: 0.4rem;
+    margin-left: auto;
   }
 
-  .logout-icon {
-    font-size: 1rem;
+  .app-root {
+    padding-bottom: 5rem;
   }
 
-  .app-header h2 {
-    font-size: 1.5rem;
+  .floating-profile-btn {
+    bottom: 4.5rem;
+    right: 1rem;
   }
+}
 
-  .moods {
-    gap: 0.75rem;
-    padding: 1.5rem;
+@media (max-width: 480px) {
+  .nav-brand h1 {
+    display: none;
   }
+}
 
-  .mood-btn {
-    padding: 0.75rem 1rem;
-    font-size: 0.85rem;
-  }
+.mood-title {
+  font-size: 1.25rem;
+}
 
-  .mood-emoji {
-    font-size: 1.5rem;
-  }
+.history-item {
+  flex-wrap: wrap;
+}
 
-  .mood-controls {
-    flex-direction: column;
-    gap: 1rem;
-  }
+.history-time {
+  width: 100%;
+  margin-left: 0;
+  margin-top: 0.5rem;
+}
 
-  .songs-grid {
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 0;
-  }
+.history-grid {
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 1rem;
+}
 
-  .song-card {
-    padding: 1rem;
-  }
-
-  .mood-title {
-    font-size: 1.25rem;
-  }
-
-  .history-item {
-    flex-wrap: wrap;
-  }
-
-  .history-time {
-    width: 100%;
-    margin-left: 0;
-    margin-top: 0.5rem;
-  }
-
-  .history-grid {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 1rem;
-  }
-
-  .about-content {
-    padding: 1.5rem;
-  }
+.about-content {
+  padding: 1.5rem;
+}
 }
 
 @media (max-width: 480px) {
