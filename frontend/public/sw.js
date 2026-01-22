@@ -1,4 +1,4 @@
-/* eslint-disable no-undef */
+ 
 const CACHE_NAME = 'music-mood-matcher-v2' // Incremented version to force update
 const urlsToCache = [
   '/',
