@@ -120,7 +120,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout }) {
                 userName: editedName,
                 gender: editingGender
             }
-            onUpdateUser(updatedUser)
+            await onUpdateUser(updatedUser)
             setIsEditingName(false)
             setVerificationError('')
 
@@ -132,7 +132,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout }) {
         }
     }
 
-    const handleVerifyNewEmail = () => {
+    const handleVerifyNewEmail = async () => {
         if (!verificationInputCode.trim()) {
             setVerificationError('Please enter the verification code')
             return
@@ -152,7 +152,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout }) {
 
             console.log('Email verified successfully:', newEmail)
 
-            onUpdateUser(updatedUser)
+            await onUpdateUser(updatedUser)
             setShowVerificationDialog(false)
             setVerificationInputCode('')
             setIsEditingName(false)
@@ -221,7 +221,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout }) {
         console.log('Verification email sent to:', user.email)
     }
 
-    const handleVerifyEmail = () => {
+    const handleVerifyEmail = async () => {
         if (!emailVerificationCode.trim()) {
             setEmailVerificationError('Please enter the verification code')
             return
@@ -235,7 +235,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout }) {
                 emailVerified: true
             }
 
-            onUpdateUser(updatedUser)
+            await onUpdateUser(updatedUser)
             setShowEmailVerificationDialog(false)
             setEmailVerificationCode('')
             setEmailVerificationError('')
