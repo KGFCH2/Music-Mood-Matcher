@@ -194,10 +194,15 @@ body {
   cursor: pointer;
 }
 
-.nav-brand:focus {
+.nav-brand:focus-visible {
   outline: 3px solid rgba(124, 77, 255, 0.25);
   outline-offset: 4px;
   border-radius: 8px;
+}
+
+/* Hide the focus ring for mouse clicks but keep it for keyboard users */
+.nav-brand:focus {
+  outline: none;
 }
 
 .brand-icon {
