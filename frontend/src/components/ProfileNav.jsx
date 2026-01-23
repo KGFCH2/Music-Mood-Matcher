@@ -352,6 +352,21 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout }) {
                                 )}
                             </div>
                         </div>
+                        <div style={{ marginTop: '0.75rem' }}>
+                            <motion.button
+                                className="profile-logout-btn"
+                                onClick={() => {
+                                    if (onLogout) onLogout()
+                                    else onClose()
+                                }}
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.98 }}
+                                aria-label="Logout"
+                            >
+                                <span className="profile-logout-icon">👋</span>
+                                <span className="profile-logout-text">Logout</span>
+                            </motion.button>
+                        </div>
                     </motion.div>
 
                     {/* Verification Notice for Unverified Users */}
