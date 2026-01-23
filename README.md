@@ -9,6 +9,15 @@ Your personal DJ in a browser. 🎧 Discover the perfect soundtrack for every em
 
 ---
 
+## 🛠️ Recent Changes
+
+- 📱 Mobile Friendly Improvements Added Including Compact Navigation And Layout Tweaks
+- 🚪 Logout Button Moved Into Profile Details For Easier Access On Mobile
+- 🎯 Navbar Brand Focus Uses `:focus-visible` To Preserve Keyboard Accessibility While Removing Click Outline
+- ♿ Minor Styling And Accessibility Fixes
+
+---
+
 ## 🎸 Let's Jam: Quick Start
 
 ### Frontend Setup
@@ -16,6 +25,15 @@ Your personal DJ in a browser. 🎧 Discover the perfect soundtrack for every em
 cd frontend
 npm install
 npm run dev        # Starts on http://localhost:5173
+```
+
+### Backend Setup (Optional)
+```bash
+cd backend
+npm install
+cp .env.example .env
+# configure MONGODB_URI and JWT_SECRET in .env
+npm run dev        # Starts on http://localhost:5000
 ```
 
 ---
@@ -43,40 +61,50 @@ npm run dev        # Starts on http://localhost:5173
 Music-Mood-Matcher/
 ├── frontend/
 │   ├── src/
+│   │   ├── main.jsx                   # App bootstrap and root mounting
 │   │   ├── App.jsx                    # Main app with lazy loading
 │   │   ├── api/
-│   │   │   └── apiClient.js          # Axios API client
+│   │   │   └── apiClient.js           # Axios API client
 │   │   ├── components/
-│   │   │   ├── DemoGuide.jsx         # Demo guide component
-│   │   │   ├── Loader.jsx            # Loading spinner
-│   │   │   ├── Login.jsx             # User authentication
-│   │   │   ├── MoodWebcam.jsx        # AI mood detection
-│   │   │   ├── ProfileNav.jsx        # User profile navigation
+│   │   │   ├── DemoGuide.jsx          # Demo guide component
+│   │   │   ├── Loader.jsx             # Loading spinner
+│   │   │   ├── Login.jsx              # User authentication
+│   │   │   ├── MoodWebcam.jsx         # AI mood detection
+│   │   │   ├── ProfileNav.jsx         # User profile navigation
 │   │   │   └── tabs/
-│   │   │       ├── FavoritesTab.jsx  # User's favorite songs
-│   │   │       ├── HistoryTab.jsx    # Mood history
-│   │   │       └── HomeTab.jsx       # Main interface
+│   │   │       ├── FavoritesTab.jsx   # User's favorite songs
+│   │   │       ├── HistoryTab.jsx     # Mood history
+│   │   │       └── HomeTab.jsx        # Main interface
 │   │   ├── context/
-│   │   │   └── AuthContext.jsx       # Authentication state
+│   │   │   └── AuthContext.jsx        # Authentication state
 │   │   ├── data/
-│   │   │   └── songs.js              # Song database
+│   │   │   └── songs.js               # Song database
 │   │   ├── test/
-│   │   │   ├── setup.js              # Vitest configuration
-│   │   │   └── App.test.jsx          # Sample tests
-│   │   └── serviceWorkerRegister.js  # PWA service worker
+│   │   │   ├── setup.js               # Vitest configuration
+│   │   │   └── App.test.jsx           # Sample tests
+│   │   └── serviceWorkerRegister.js   # PWA service worker helper
 │   ├── public/
-│   │   ├── sw.js                     # Service worker script
-│   │   ├── manifest.json             # PWA manifest
-│   │   └── models/                   # AI model files (if present)
-│   ├── vitest.config.js              # Testing configuration
-│   ├── vite.config.js                # Build configuration
-│   ├── eslint.config.js              # Linting configuration
-│   ├── vercel.json                   # Vercel deployment config
-│   ├── index.html                    # Main HTML file
-│   └── package.json                  # Dependencies and scripts
-├── INSTRUCTIONS.md                   # Setup and cleanup notes
-├── LICENSE                           # MIT License
-└── README.md                         # This file
+│   │   ├── sw.js                      # Service worker script
+│   │   ├── manifest.json              # PWA manifest
+│   │   └── models/                    # AI model files (if present)
+│   ├── vitest.config.js               # Testing configuration
+│   ├── vite.config.js                 # Build configuration
+│   ├── eslint.config.js               # Linting configuration
+│   ├── vercel.json                    # Vercel deployment config
+│   ├── index.html                     # Main HTML file
+│   └── package.json                   # Dependencies and scripts
+├── backend/                           # Server side application
+│   ├── server.js                      # Express server entry point
+│   ├── db.js                          # MongoDB connection helper
+│   ├── package.json                   # Backend dependencies and scripts
+│   ├── controllers/                   # Route handlers
+│   ├── models/                        # Mongoose schemas
+│   ├── routes/                        # API route definitions
+│   ├── middleware/                    # Auth and error handlers
+│   └── README.md                      # Backend quick start
+├── INSTRUCTIONS.md                    # Setup and cleanup notes
+├── LICENSE                            # MIT License
+└── README.md                          # This file
 ```
 
 ## 🎸 Setup Your Stage
@@ -349,4 +377,4 @@ Personal use - See [LICENSE](LICENSE) file
 
 ---
 
-🎵 **Last Updated:** January 16, 2026 | **Version:** 2.3 - Frontend-Only Update! 🎵
+🎵 **Last Updated:** January 23, 2026 | **Version:** 2.4 - Frontend Mobile And Accessibility Updates 🎵
