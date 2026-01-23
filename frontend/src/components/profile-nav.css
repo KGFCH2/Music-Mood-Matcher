@@ -316,6 +316,30 @@
     border: 1px solid rgba(124, 77, 255, 0.2);
 }
 
+/* Logout button inside profile details */
+.profile-logout-btn {
+    margin: 0.5rem auto 0;
+    display: inline-flex;
+    gap: 0.6rem;
+    align-items: center;
+    padding: 10px 14px;
+    background: linear-gradient(135deg, rgba(255, 107, 107, 0.12), rgba(255, 69, 0, 0.06));
+    border: 1px solid rgba(255, 68, 68, 0.25);
+    color: var(--text-color, #fff);
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+
+.profile-logout-btn:hover {
+    box-shadow: 0 8px 28px rgba(255, 68, 68, 0.12);
+}
+
+.profile-logout-icon {
+    font-size: 1.05rem;
+}
+
 .profile-avatar-section {
     margin-bottom: 0.8rem;
 }
