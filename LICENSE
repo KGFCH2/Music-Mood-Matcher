@@ -21,6 +21,3 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 Contact: babinbid05@gmail.com, dbose272@gmail.com
-
----
-Cleanup note: repository cleaned on 2026-01-16 — large unused model shard files under `frontend/public/models/removed/` were removed to reduce repo size. If you require those artifacts, please request them separately and they will be provided as a downloadable release asset instead of being tracked in Git.
