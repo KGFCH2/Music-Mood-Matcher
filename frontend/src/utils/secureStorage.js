@@ -182,8 +182,8 @@ class SecureStorage {
                 const userData = { ...user }
                 if (user.encryptedPasswordHash) {
                     try {
-                            if (process.env.NODE_ENV === 'development') console.debug('[secureStorage] decrypting passwordHash for', user.email)
-                            userData.passwordHash = await decryptData(user.encryptedPasswordHash)
+                        if (process.env.NODE_ENV === 'development') console.debug('[secureStorage] decrypting passwordHash for', user.email)
+                        userData.passwordHash = await decryptData(user.encryptedPasswordHash)
                     } catch (error) {
                         console.error('Failed to decrypt password hash for user:', user.email)
                         // Keep user without password hash, they can't log in but data is preserved
