@@ -7,9 +7,11 @@
 const ALGORITHM = { name: 'AES-GCM', length: 256 }
 const DERIVATION_ALGORITHM = { name: 'PBKDF2', hash: 'SHA-256', iterations: 100000, salt: new Uint8Array(16) }
 
-// Generate a stable encryption key based on browser fingerprint
+// Generate a stable encryption key based on a stable browser fingerprint
+// Avoid using dynamic values (like screen size) which can change between
+// sessions and cause decryption to fail. Use userAgent, language and platform.
 const generateEncryptionKey = async () => {
-    const browserFingerprint = `${navigator.userAgent}${navigator.language}${screen.width}x${screen.height}`
+    const browserFingerprint = `${navigator.userAgent}${navigator.language}${navigator.platform}`
     const encoder = new TextEncoder()
     const data = encoder.encode(browserFingerprint)
 
@@ -146,26 +148,50 @@ class SecureStorage {
     }
 
     // Store registered users (non-sensitive data only)
-    setRegisteredUsers(users) {
-        // Only store: email, userName, gender, userId, registeredAt, isVerified, isDemo, loginHistory
-        const safeUsers = users.map(user => ({
-            email: user.email,
-            userName: user.userName,
-            gender: user.gender,
-            userId: user.userId,
-            registeredAt: user.registeredAt,
-            isVerified: user.isVerified,
-            isDemo: user.isDemo || false,
-            loginHistory: user.loginHistory || []
+    async setRegisteredUsers(users) {
+        // Store: email, userName, gender, userId, registeredAt, isVerified, isDemo, loginHistory, and encrypted passwordHash
+        if (process.env.NODE_ENV === 'development') console.debug('[secureStorage] setRegisteredUsers called with', users.map(u => u.email))
+        const safeUsers = await Promise.all(users.map(async user => {
+            const userData = {
+                email: user.email,
+                userName: user.userName,
+                gender: user.gender,
+                userId: user.userId,
+                registeredAt: user.registeredAt,
+                isVerified: user.isVerified,
+                isDemo: user.isDemo || false,
+                loginHistory: user.loginHistory || []
+            }
+            if (user.passwordHash) {
+                if (process.env.NODE_ENV === 'development') console.debug('[secureStorage] encrypting passwordHash for', user.email)
+                userData.encryptedPasswordHash = await encryptData(user.passwordHash)
+            }
+            return userData
         }))
         localStorage.setItem('musicMoodUsers', JSON.stringify(safeUsers))
     }
 
     // Retrieve registered users
-    getRegisteredUsers() {
+    async getRegisteredUsers() {
         try {
             const saved = localStorage.getItem('musicMoodUsers')
-            return saved ? JSON.parse(saved) : []
+            if (!saved) return []
+            const users = JSON.parse(saved)
+            // Decrypt password hashes
+            const decryptedUsers = await Promise.all(users.map(async user => {
+                const userData = { ...user }
+                if (user.encryptedPasswordHash) {
+                    try {
+                            if (process.env.NODE_ENV === 'development') console.debug('[secureStorage] decrypting passwordHash for', user.email)
+                            userData.passwordHash = await decryptData(user.encryptedPasswordHash)
+                    } catch (error) {
+                        console.error('Failed to decrypt password hash for user:', user.email)
+                        // Keep user without password hash, they can't log in but data is preserved
+                    }
+                }
+                return userData
+            }))
+            return decryptedUsers
         } catch (error) {
             console.error('Failed to retrieve registered users')
             return []
