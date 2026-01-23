@@ -69,15 +69,18 @@ export default function Login({ onLoginSuccess }) {
 
     // Load registered users from secure storage on mount
     useEffect(() => {
-        try {
-            const saved = secureStorage.getRegisteredUsers()
-            if (saved && Array.isArray(saved)) {
-                setRegisteredUsers(saved)
+        const loadUsers = async () => {
+            try {
+                const saved = await secureStorage.getRegisteredUsers()
+                if (saved && Array.isArray(saved)) {
+                    setRegisteredUsers(saved)
+                }
+            } catch (err) {
+                // Silent fail - don't expose errors
+                setRegisteredUsers([])
             }
-        } catch (err) {
-            // Silent fail - don't expose errors
-            setRegisteredUsers([])
         }
+        loadUsers()
     }, [])
 
     const validateEmail = (email) => {
@@ -169,7 +172,7 @@ export default function Login({ onLoginSuccess }) {
     }
 
     // Auto-verify handler
-    const handleAutoVerify = (code) => {
+    const handleAutoVerify = async (code) => {
         const user = registeredUsers.find(u => u.email === verificationDialogEmail)
         if (!user) return
 
@@ -183,7 +186,8 @@ export default function Login({ onLoginSuccess }) {
                 userId: user.userId,
                 registeredAt: user.registeredAt,
                 isVerified: true,
-                isDemo: user.isDemo || false
+                isDemo: user.isDemo || false,
+                passwordHash: user.passwordHash
             }
 
             const updatedUsers = registeredUsers.map(u =>
@@ -191,7 +195,7 @@ export default function Login({ onLoginSuccess }) {
             )
             setRegisteredUsers(updatedUsers)
             // Use secure storage - don't store verification code
-            secureStorage.setRegisteredUsers(updatedUsers)
+            await secureStorage.setRegisteredUsers(updatedUsers)
             secureStorage.setUserInfo(verifiedUser)
 
             setTimeout(() => {
@@ -337,15 +341,16 @@ export default function Login({ onLoginSuccess }) {
         setIsLoading(true)
 
         try {
-            // Hash password securely
-            const hashedPassword = await hashPassword(registerData.password)
-
-            // Generate secure verification code (stored in memory only, never in localStorage)
-            const verificationCode = generateVerificationCode()
-
             // Store the email being registered to prevent accidental email changes
             const registrationEmail = registerData.email
             const registrationName = registerData.userName
+
+            // Hash password securely
+            const hashedPassword = await hashPassword(registerData.password)
+            if (process.env.NODE_ENV === 'development') console.debug('[Login] register hashedPassword for', registrationEmail, hashedPassword)
+
+            // Generate secure verification code (stored in memory only, never in localStorage)
+            const verificationCode = generateVerificationCode()
 
             // Create user data object - verification code stored temporarily in memory
             const userData = {
@@ -390,7 +395,7 @@ export default function Login({ onLoginSuccess }) {
             const updatedUsers = [...registeredUsers, userData] // Keep in-memory with code for immediate use
             setRegisteredUsers(updatedUsers)
             // Only save safe data to persistent storage
-            secureStorage.setRegisteredUsers(updatedUsers)
+            await secureStorage.setRegisteredUsers(updatedUsers)
 
             setIsLoading(false)
             setEmailSentSuccess(true)
@@ -408,10 +413,12 @@ export default function Login({ onLoginSuccess }) {
             }
         } catch (err) {
             setIsLoading(false)
-            setError('An unexpected error occurred. Please try again.')
-            // Do NOT log detailed error info that might expose data
+            // Surface more helpful message in development for debugging
             if (process.env.NODE_ENV === 'development') {
-                console.debug('Registration error occurred')
+                console.debug('Registration error occurred:', err)
+                setError(`Registration failed: ${err?.message || 'Unknown error'}`)
+            } else {
+                setError('An unexpected error occurred. Please try again.')
             }
         }
     }
@@ -447,6 +454,7 @@ export default function Login({ onLoginSuccess }) {
         try {
             // Hash the entered password and compare with stored hash
             const hashedInputPassword = await hashPassword(signInPassword)
+            if (process.env.NODE_ENV === 'development') console.debug('[Login] sign-in compare for', signInEmail, { hashedInputPassword, stored: user.passwordHash })
 
             if (hashedInputPassword !== user.passwordHash) {
                 setIsLoading(false)
@@ -454,41 +462,28 @@ export default function Login({ onLoginSuccess }) {
                 return
             }
 
-            // Password is correct, check if user is verified
+            // Password is correct. If the user is not verified, do not block login —
+            // send verification email in background (non-blocking) but allow direct access.
             if (!user.isVerified) {
-                // Generate new verification code and send email
                 const newVerificationCode = generateVerificationCode()
 
-                const emailResult = await sendVerificationEmail(
-                    signInEmail,
-                    user.userName,
-                    newVerificationCode
-                )
-
-                // Update user with new verification code (in-memory only)
-                const updatedUser = {
-                    ...user,
-                    verificationCode: newVerificationCode
-                }
-                const updatedUsers = registeredUsers.map(u =>
-                    u.email === signInEmail ? updatedUser : u
-                )
-                setRegisteredUsers(updatedUsers)
-                // Only save safe data to persistent storage
-                secureStorage.setRegisteredUsers(updatedUsers)
-
-                setIsLoading(false)
-                setVerificationDialogEmail(signInEmail)
-                setShowVerificationDialog(true)
-                setVerificationInputCode('')
-                setVerificationError('')
-                setEmailSentSuccess(emailResult.success)
-                if (!emailResult.success) {
-                    setVerificationError(emailResult.error || 'Failed to send verification email.')
-                }
-                setSignInEmail('')
-                setSignInPassword('')
-                return
+                // Fire-and-forget: send verification email and update in-memory user entry.
+                sendVerificationEmail(signInEmail, user.userName, newVerificationCode)
+                    .then(async (emailResult) => {
+                        const updatedUser = { ...user, verificationCode: newVerificationCode }
+                        const updatedUsers = registeredUsers.map(u => u.email === signInEmail ? updatedUser : u)
+                        setRegisteredUsers(updatedUsers)
+                        // Persist safe user info and encrypted passwordHash
+                        try {
+                            await secureStorage.setRegisteredUsers(updatedUsers)
+                        } catch (e) {
+                            if (process.env.NODE_ENV === 'development') console.debug('Failed storing users after sending verification', e)
+                        }
+                    })
+                    .catch(() => {
+                        // Silent fail for email sending
+                    })
+                // Continue to login flow (do not force verification)
             }
 
             // Update login history
@@ -500,7 +495,8 @@ export default function Login({ onLoginSuccess }) {
                 registeredAt: user.registeredAt,
                 isVerified: user.isVerified,
                 isDemo: user.isDemo || false,
-                loginHistory: [...(user.loginHistory || []), new Date().toISOString()]
+                loginHistory: [...(user.loginHistory || []), new Date().toISOString()],
+                passwordHash: user.passwordHash
             }
 
             // Update in registered users list
@@ -509,7 +505,7 @@ export default function Login({ onLoginSuccess }) {
             )
             setRegisteredUsers(updatedUsers)
             // Use secure storage instead of localStorage
-            secureStorage.setRegisteredUsers(updatedUsers)
+            await secureStorage.setRegisteredUsers(updatedUsers)
             secureStorage.setUserInfo(updatedUser)
 
             setIsLoading(false)
@@ -523,7 +519,7 @@ export default function Login({ onLoginSuccess }) {
         }
     }
 
-    const handleVerifyEmail = (e) => {
+    const handleVerifyEmail = async (e) => {
         e.preventDefault()
         setVerificationError('')
 
@@ -549,7 +545,8 @@ export default function Login({ onLoginSuccess }) {
                 userId: user.userId,
                 registeredAt: user.registeredAt,
                 isVerified: true,
-                isDemo: user.isDemo || false
+                isDemo: user.isDemo || false,
+                passwordHash: user.passwordHash // Keep the password hash
             }
 
             // Update in registered users list
@@ -558,7 +555,7 @@ export default function Login({ onLoginSuccess }) {
             )
             setRegisteredUsers(updatedUsers)
             // Use secure storage instead of localStorage
-            secureStorage.setRegisteredUsers(updatedUsers)
+            await secureStorage.setRegisteredUsers(updatedUsers)
             secureStorage.setUserInfo(verifiedUser)
 
             setShowVerificationDialog(false)
@@ -605,7 +602,7 @@ export default function Login({ onLoginSuccess }) {
             )
             setRegisteredUsers(updatedUsers)
             // Only save safe data to persistent storage
-            secureStorage.setRegisteredUsers(updatedUsers)
+            await secureStorage.setRegisteredUsers(updatedUsers)
 
             setEmailSentSuccess(true)
             setVerificationError('')
@@ -621,7 +618,7 @@ export default function Login({ onLoginSuccess }) {
         setIsResending(false)
     }
 
-    const setupDemoUser = (demoUser) => {
+    const setupDemoUser = async (demoUser) => {
         // Create a demo user with verified status - only store safe data
         const demoUserData = {
             email: demoUser.email,
@@ -642,13 +639,13 @@ export default function Login({ onLoginSuccess }) {
         if (!existingDemoUser) {
             usersToSave = [...registeredUsers, demoUserData]
             setRegisteredUsers(usersToSave)
-            secureStorage.setRegisteredUsers(usersToSave)
+            await secureStorage.setRegisteredUsers(usersToSave)
         } else {
             demoUserData.userId = existingDemoUser.userId
             demoUserData.loginHistory = [...(existingDemoUser.loginHistory || []), new Date().toISOString()]
             usersToSave = registeredUsers.map(u => u.email === demoUser.email ? demoUserData : u)
             setRegisteredUsers(usersToSave)
-            secureStorage.setRegisteredUsers(usersToSave)
+            await secureStorage.setRegisteredUsers(usersToSave)
         }
 
         // Save demo user session
@@ -1199,19 +1196,22 @@ export default function Login({ onLoginSuccess }) {
                                                     className="option-btn use-new"
                                                     onClick={() => {
                                                         // Update user with new details
-                                                        const updatedUser = {
-                                                            ...existingUser,
-                                                            userName: registerData.userName,
-                                                            gender: registerData.gender
-                                                        }
-                                                        const updatedUsers = registeredUsers.map(u =>
-                                                            u.email === registerData.email ? updatedUser : u
-                                                        )
-                                                        setRegisteredUsers(updatedUsers)
-                                                        localStorage.setItem('musicMoodUsers', JSON.stringify(updatedUsers))
-                                                        localStorage.setItem('musicMoodUser', JSON.stringify(updatedUser))
-                                                        setShowConflictDialog(false)
-                                                        onLoginSuccess(updatedUser)
+                                                        (async () => {
+                                                            const updatedUser = {
+                                                                ...existingUser,
+                                                                userName: registerData.userName,
+                                                                gender: registerData.gender,
+                                                                passwordHash: existingUser.passwordHash
+                                                            }
+                                                            const updatedUsers = registeredUsers.map(u =>
+                                                                u.email === registerData.email ? updatedUser : u
+                                                            )
+                                                            setRegisteredUsers(updatedUsers)
+                                                            await secureStorage.setRegisteredUsers(updatedUsers)
+                                                            secureStorage.setUserInfo(updatedUser)
+                                                            setShowConflictDialog(false)
+                                                            onLoginSuccess(updatedUser)
+                                                        })()
                                                     }}
                                                     whileHover={{ scale: 1.05 }}
                                                     whileTap={{ scale: 0.95 }}
