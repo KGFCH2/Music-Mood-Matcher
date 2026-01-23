@@ -1,14 +1,18 @@
 # 🎵 Music Mood Matcher - Setup & Cleanup Notes
 
-Last updated: 2026-01-16 — updated to reflect frontend-only project structure.
+Last updated: 2026-01-23 — frontend mobile and accessibility updates
 
 Summary:
 
-- This is a frontend-only React application using Vite.
-- The repo has been cleaned to remove large, prebuilt model shard files from `frontend/public/models/removed/` to keep the repository lightweight.
-- `node_modules/` is intentionally not included; run `npm install` locally after cloning.
+- 🔧 This repository contains a frontend React application (Vite) and an optional backend scaffold for API endpoints.
+- 📁 Large model files are not tracked to keep the repository lightweight; if you need them, place them in `frontend/public/models/`.
 
-If you need the removed model files for local AI experiments, download them from the original model provider and place them into `frontend/public/models/` before running the app.
+Recent Changes
+
+- 📱 Mobile layout and navigation improved for small screens
+- 🚪 Logout action moved into the profile details panel for better mobile access
+- 🎯 Navbar brand focus updated to use `:focus-visible` to avoid click outlines while preserving keyboard focus
+- ♿ Small CSS and accessibility fixes
 
 Quick setup
 
@@ -19,26 +23,6 @@ cd frontend
 npm install
 npm run dev
 ```
-
-Repository cleanup notes
-
-- Removed files:
-  - `frontend/public/models/removed/face_expression_model-shard1`
-  - `frontend/public/models/removed/face_expression_model-weights_manifest.json`
-  - `frontend/public/models/removed/tiny_face_detector_model-shard1`
-  - `frontend/public/models/removed/tiny_face_detector_model-weights_manifest.json`
-
-- Recommendation: After cloning, remove `node_modules` and reinstall to reclaim space, or simply run `npm install` to recreate them locally.
-
-Want me to also:
-
-- Remove other large artifacts (e.g., local caches) from the repo?  
-- Re-add model files into a release asset instead of tracking them in Git?  
-Tell me which and I will proceed.
-| vite | 7.1.7 | Build tool |
-| vitest | 1.0.4 | Testing framework |
-
-**Status:** ✅ **Dependencies fixed** (React 18 ↓ from 19 for compatibility)
 
 #### Step 3b: Configure Environment
 **File:** `frontend/.env`
@@ -312,12 +296,12 @@ NODE_ENV=production
 ✅ frontend/vite.config.js           - Build configuration
 ✅ frontend/vitest.config.js         - Testing configuration
 ```
-✅ backend/src/controllers/authController.js
-✅ backend/src/controllers/userController.js
-✅ backend/src/routes/authRoutes.js
-✅ backend/src/routes/userRoutes.js
-✅ backend/src/middleware/auth.js
-✅ backend/src/middleware/errorHandler.js
+✅ backend/controllers/authController.js
+✅ backend/controllers/userController.js
+✅ backend/routes/authRoutes.js
+✅ backend/routes/userRoutes.js
+✅ backend/middleware/auth.js
+✅ backend/middleware/errorHandler.js
 ```
 
 ### Frontend Files
