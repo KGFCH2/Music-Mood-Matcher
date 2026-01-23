@@ -42,7 +42,7 @@ export function AuthProvider({ children }) {
         secureStorage.setSessionData('currentUser', safeUserData)
     }
 
-    const updateUser = (updatedData) => {
+    const updateUser = async (updatedData) => {
         const updated = { ...user, ...updatedData }
         setUser(updated)
 
@@ -62,10 +62,10 @@ export function AuthProvider({ children }) {
 
         // Also update in the users list if email matches
         try {
-            const savedUsers = secureStorage.getRegisteredUsers()
+            const savedUsers = await secureStorage.getRegisteredUsers()
             if (savedUsers) {
-                const updatedUsers = savedUsers.map(u => u.email === user.email ? safeUserData : u)
-                secureStorage.setRegisteredUsers(updatedUsers)
+                const updatedUsers = savedUsers.map(u => u.email === user.email ? { ...u, ...safeUserData } : u)
+                await secureStorage.setRegisteredUsers(updatedUsers)
             }
         } catch (error) {
             // Silent fail - don't expose error details
