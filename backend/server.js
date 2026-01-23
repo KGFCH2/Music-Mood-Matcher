@@ -12,8 +12,8 @@ app.use(express.json())
 
 // Connect to database
 connectDB().catch(err => {
-  console.error('Database connection error', err)
-  process.exit(1)
+    console.error('Database connection error', err)
+    process.exit(1)
 })
 
 app.use('/api/auth', authRoutes)
