@@ -1,18 +1,9 @@
-# 🎵 Music Mood Matcher - Setup Guide
-
-Last updated: 2026-01-23 — frontend mobile and accessibility updates
+# Music Mood Matcher - Setup Guide
 
 Summary:
 
-- 🔧 This repository contains a frontend React application (Vite) and an optional backend scaffold for API endpoints.
-- 📁 Large model files are not tracked to keep the repository lightweight; if you need them, place them in `frontend/public/models/`.
-
-Recent Changes
-
-- 📱 Mobile layout and navigation improved for small screens
-- 🚪 Logout action moved into the profile details panel for better mobile access
-- 🎯 Navbar brand focus updated to use `:focus-visible` to avoid click outlines while preserving keyboard focus
-- ♿ Small CSS and accessibility fixes
+- This repository contains a frontend React application (Vite) and an optional backend scaffold for API endpoints.
+- Large model files are not tracked to keep the repository lightweight; if you need them, place them in `frontend/public/models/`.
 
 Quick setup
 
@@ -92,16 +83,15 @@ GET    /api/user/favorites      → Get all favorites
 
 | Component | File | Status | Notes |
 |-----------|------|--------|-------|
-| **App** | `App.jsx` | ✅ Complete | Main app, lazy loads CrushMode & MoodWebcam |
-| **Login** | `Login.jsx` | ✅ Complete | Email-based auth + demo accounts |
+| **App** | `App.jsx` | ✅ Complete | Main app, lazy loads MoodWebcam |
+| **Login** | `Login.jsx` | ✅ Complete | Email-based authentication with demo accounts |
 | **MoodWebcam** | `MoodWebcam.jsx` | ✅ Complete | Face detection with face-api.js |
-| **CrushMode** | `CrushMode.jsx` | ✅ Complete | Quiz-based playlist generator |
 | **ProfileNav** | `ProfileNav.jsx` | ✅ Complete | User profile panel with editable name and gender, email verification flow, theme toggle, login history, logout and delete account actions |
 | **DemoGuide** | `DemoGuide.jsx` | ✅ Complete | Demo mode selector |
 | **Loader** | `Loader.jsx` | ✅ Complete | Intro animation |
-| **HomeTab** | `HomeTab.jsx` | ✅ **FIXED** | Implemented basic mood selector |
-| **HistoryTab** | `HistoryTab.jsx` | ✅ **FIXED** | Implemented mood history display |
-| **FavoritesTab** | `FavoritesTab.jsx` | ✅ **FIXED** | Implemented favorites list |
+| **HomeTab** | `HomeTab.jsx` | ✅ Complete | Basic mood selector |
+| **HistoryTab** | `HistoryTab.jsx` | ✅ Complete | Mood history display |
+| **FavoritesTab** | `FavoritesTab.jsx` | ✅ Complete | Favorites list |
 
 ### Backend Services
 
@@ -313,7 +303,6 @@ NODE_ENV=production
 ✅ frontend/src/api/apiClient.js      - Axios API client with JWT
 ✅ frontend/src/components/Login.jsx
 ✅ frontend/src/components/MoodWebcam.jsx
-✅ frontend/src/components/CrushMode.jsx
 ✅ frontend/src/components/ProfileNav.jsx
 ✅ frontend/src/components/tabs/HomeTab.jsx - ✅ FIXED
 ✅ frontend/src/components/tabs/HistoryTab.jsx - ✅ FIXED
@@ -353,4 +342,4 @@ NODE_ENV=production
 
 ---
 
-**Version:** 2.1 | **Updated:** January 23, 2026 | **Status:** Ready for Development ✅
+**Status:** Ready for Development ✅
