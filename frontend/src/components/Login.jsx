@@ -1637,7 +1637,6 @@ export default function Login({ onLoginSuccess }) {
         </>
     )
 }
-
 Login.propTypes = {
     onLoginSuccess: PropTypes.func.isRequired
 }
