@@ -15,6 +15,17 @@ const examples = [
     'Music can change the world because it can change people. — Bono',
 ]
 
+const musicImages = [
+    'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60', // Vinyl
+    'https://images.unsplash.com/photo-1493225255756-d9584f8606e9?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60', // Concert
+    'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60', // Headphones
+    'https://images.unsplash.com/photo-1520529623861-12cd2948b89e?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60', // Piano
+    'https://images.unsplash.com/photo-1510915363390-11756585ddc1?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60', // Guitar
+    'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60', // Microphone
+    'https://images.unsplash.com/photo-1459749411177-042180ce6742?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60', // Turntables
+    'https://images.unsplash.com/photo-1514525253344-a812da99ff2f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60'  // Festival
+]
+
 const moodDetails = {
     happy: 'Major keys, bright instrumentation, faster tempos (120+ BPM). It triggers dopamine release, creating a sense of reward and joy.',
     sad: 'Minor keys, slower tempos (60-90 BPM), melancholic melodies. It allows for emotional release and can actually provide comfort through empathy.',
@@ -33,7 +44,7 @@ export default function HomeTab({ songs, onMoodSelect, currentMood }) {
         sad: '😢',
         energetic: '⚡',
         romantic: '💕',
-        chill: '😌',
+        chill: '😎',
         angry: '😠',
     }
 
@@ -95,6 +106,17 @@ export default function HomeTab({ songs, onMoodSelect, currentMood }) {
         <div className="tab-container">
             <h2 className="tab-title">What's Your Mood?</h2>
             <p className="tab-subtitle">Select a mood to get personalized song recommendations</p>
+
+            <div className="music-marquee">
+                <div className="marquee-content">
+                    {/* Double the images for seamless loop */}
+                    {[...musicImages, ...musicImages].map((img, index) => (
+                        <div key={index} className="marquee-image-container">
+                            <img src={img} alt={`Music ${index}`} className="marquee-image" loading="lazy" />
+                        </div>
+                    ))}
+                </div>
+            </div>
 
             <section aria-labelledby="home-intro" className="tab-section">
                 <h3 id="home-intro" className="section-heading">Find music that fits your moment</h3>
@@ -171,7 +193,7 @@ export default function HomeTab({ songs, onMoodSelect, currentMood }) {
                             backgroundColor: currentMood === mood ? moodActiveColors[mood] : hoveredMood === mood ? moodHoverColors[mood] : 'transparent',
                         }}
                     >
-                        <span className="mood-emoji" style={{ transform: hoveredMood === mood ? 'scale(1.3) rotate(10deg)' : 'scale(1)', filter: hoveredMood === mood ? 'drop-shadow(0 0 10px rgba(255,255,255,0.5))' : 'none' }}>{moodEmojis[mood]}</span>
+                        <span className="mood-emoji" style={{ transform: hoveredMood === mood ? 'scale(1.3)' : 'scale(1)' }}>{moodEmojis[mood]}</span>
                         <span className="mood-label">{mood.charAt(0).toUpperCase() + mood.slice(1)}</span>
                     </button>
                 ))}
