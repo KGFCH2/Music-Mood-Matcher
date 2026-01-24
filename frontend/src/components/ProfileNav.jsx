@@ -1,42 +1,36 @@
 import { useState, useEffect } from 'react'
+import { hashPassword, validatePasswordStrength, getPasswordFeedback } from '../utils/passwordUtils'
 import { motion, AnimatePresence } from 'framer-motion'
 import PropTypes from 'prop-types'
 import emailjs from '@emailjs/browser'
 import './profile-nav.css'
 
-export default function ProfileNav({ user, onClose, onUpdateUser, onLogout }) {
+export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, openInEdit }) {
+    const [newPassword, setNewPassword] = useState('')
+    const [confirmNewPassword, setConfirmNewPassword] = useState('')
+    const [passwordValidation, setPasswordValidation] = useState({ isValid: null, message: '' })
     const [expandedSection, setExpandedSection] = useState(null)
     const [isEditingName, setIsEditingName] = useState(false)
     const [editedName, setEditedName] = useState(user?.userName || '')
     const [editingGender, setEditingGender] = useState(user?.gender || 'other')
-    const [verificationDialogEmail, setVerificationDialogEmail] = useState('')
-    const [showVerificationDialog, setShowVerificationDialog] = useState(false)
-    const [verificationInputCode, setVerificationInputCode] = useState('')
-    const [verificationError, setVerificationError] = useState('')
     const [newEmail, setNewEmail] = useState('')
     const [newVerificationCode, setNewVerificationCode] = useState('')
-    const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
-    const [deleteConfirmText, setDeleteConfirmText] = useState('')
-    const [showEmailVerificationDialog, setShowEmailVerificationDialog] = useState(false)
+    const [verificationInputCode, setVerificationInputCode] = useState('')
+    const [verificationError, setVerificationError] = useState('')
+    const [showVerificationDialog, setShowVerificationDialog] = useState(false)
     const [emailVerificationCode, setEmailVerificationCode] = useState('')
     const [emailVerificationError, setEmailVerificationError] = useState('')
     const [emailVerificationSent, setEmailVerificationSent] = useState(false)
-    const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light')
+    const [showEmailVerificationDialog, setShowEmailVerificationDialog] = useState(false)
+    const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
+    const [deleteConfirmText, setDeleteConfirmText] = useState('')
 
     // Initialize EmailJS
     useEffect(() => {
         emailjs.init('yvSwGRuksv7zAychI')
     }, [])
 
-    // Theme effect
-    useEffect(() => {
-        document.documentElement.setAttribute('data-theme', theme)
-        localStorage.setItem('theme', theme)
-    }, [theme])
-
-    const toggleTheme = () => {
-        setTheme(prev => prev === 'light' ? 'dark' : 'light')
-    }
+    // (Theme toggle removed from profile panel)
 
     const generateVerificationCode = () => {
         return Math.random().toString(36).substring(2, 8).toUpperCase()
@@ -120,9 +114,35 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout }) {
                 userName: editedName,
                 gender: editingGender
             }
+
+            // If user provided a new password, validate and hash it
+            if (newPassword && newPassword.trim()) {
+                const { isStrong } = validatePasswordStrength(newPassword)
+                if (!isStrong) {
+                    setVerificationError('New password does not meet strength requirements')
+                    return
+                }
+                if (newPassword !== confirmNewPassword) {
+                    setVerificationError('New passwords do not match')
+                    return
+                }
+                try {
+                    const hashed = await hashPassword(newPassword)
+                    updatedUser.passwordHash = hashed
+                } catch (err) {
+                    console.error('Failed to hash new password', err)
+                    setVerificationError('Failed to update password. Please try again.')
+                    return
+                }
+            }
+
             await onUpdateUser(updatedUser)
             setIsEditingName(false)
             setVerificationError('')
+
+            // clear password fields
+            setNewPassword('')
+            setConfirmNewPassword('')
 
             // Show success message via error state (acts as info message)
             setTimeout(() => {
@@ -179,6 +199,15 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout }) {
                 return '🧑' // default neutral avatar
         }
     }
+
+    // If parent requests opening profile in edit mode, enable editing
+    useEffect(() => {
+        if (openInEdit) {
+            setIsEditingName(true)
+            setEditedName(user?.userName || '')
+            setEditingGender(user?.gender || 'other')
+        }
+    }, [openInEdit, user])
 
     const formatDate = (dateString) => {
         if (!dateString) return 'N/A'
@@ -299,17 +328,8 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout }) {
                 >
                     {/* Header */}
                     <div className="profile-header">
-                        <h2>👤 My Profile</h2>
+                        <h2>👤 Profile</h2>
                         <div className="header-actions">
-                            <motion.button
-                                className="theme-toggle-btn"
-                                onClick={toggleTheme}
-                                whileHover={{ scale: 1.1 }}
-                                whileTap={{ scale: 0.9 }}
-                                aria-label="Toggle theme"
-                            >
-                                {theme === 'light' ? '🌙' : '☀️'}
-                            </motion.button>
                             <motion.button
                                 className="close-btn-stylish"
                                 onClick={onClose}
@@ -427,21 +447,12 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout }) {
                                         exit={{ opacity: 0, height: 0 }}
                                         transition={{ duration: 0.2 }}
                                     >
-                                        <div className="info-row">
-                                            <span className="info-label">📧 Email:</span>
-                                            {isEditingName ? (
-                                                <input
-                                                    type="email"
-                                                    placeholder="New email (optional)"
-                                                    value={newEmail}
-                                                    onChange={(e) => setNewEmail(e.target.value)}
-                                                    className="form-input"
-                                                    style={{ maxWidth: '200px', marginLeft: '10px' }}
-                                                />
-                                            ) : (
+                                        {!isEditingName && (
+                                            <div className="info-row">
+                                                <span className="info-label">📧 Email:</span>
                                                 <span className="info-value">{user?.email || 'N/A'}</span>
-                                            )}
-                                        </div>
+                                            </div>
+                                        )}
                                         <div className="info-row">
                                             <span className="info-label">👤 Name:</span>
                                             {isEditingName ? (
@@ -457,6 +468,38 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout }) {
                                                 <span className="info-value">{user?.userName || 'N/A'}</span>
                                             )}
                                         </div>
+                                        {isEditingName && (
+                                            <div className="info-row">
+                                                <span className="info-label">🔒 New Password:</span>
+                                                <div style={{ display: 'flex', flexDirection: 'column', marginLeft: '10px', gap: '0.5rem' }}>
+                                                    <input
+                                                        type="password"
+                                                        placeholder="New password (optional)"
+                                                        color="#ffffff"
+                                                        value={newPassword}
+                                                        onChange={(e) => setNewPassword(e.target.value)}
+                                                        className="form-input new-password-input"
+                                                        style={{ maxWidth: '240px' }}
+                                                    />
+                                                    <input
+                                                        type="password"
+                                                        placeholder="Confirm new password"
+                                                        color="#ffffff"
+                                                        value={confirmNewPassword}
+                                                        onChange={(e) => setConfirmNewPassword(e.target.value)}
+                                                        className="form-input new-password-input"
+                                                        style={{ maxWidth: '240px' }}
+                                                    />
+                                                    {passwordValidation.message && (
+                                                        <small className={`validation-message ${passwordValidation.isValid ? 'valid' : 'invalid'}`}>{passwordValidation.message}</small>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        )}
+                                        {/* Password strength warning under Account Information */}
+                                        {newPassword && !validatePasswordStrength(newPassword).isStrong && (
+                                            <div className="password-warning">▲&nbsp;New password does not meet strength requirements</div>
+                                        )}
                                         <div className="info-row">
                                             <span className="info-label">✨ Gender:</span>
                                             {isEditingName ? (
@@ -514,6 +557,8 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout }) {
                                                             setEditedName(user?.userName || '')
                                                             setEditingGender(user?.gender || 'other')
                                                             setNewEmail('')
+                                                            setNewPassword('')
+                                                            setConfirmNewPassword('')
                                                         }}
                                                         className="edit-btn cancel-btn"
                                                         whileHover={{ scale: 1.05 }}
@@ -696,19 +741,19 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout }) {
                                         <div className="privacy-info">
                                             <div className="privacy-item">
                                                 <span className="privacy-icon">🔐</span>
-                                                <span className="privacy-text">Your data is stored locally in your browser</span>
+                                                <span className="privacy-text">Profile data is stored locally and can be synced to the backend when authenticated</span>
                                             </div>
                                             <div className="privacy-item">
                                                 <span className="privacy-icon">🛡️</span>
-                                                <span className="privacy-text">No data is sent to external servers</span>
+                                                <span className="privacy-text">Authentication and profile endpoints communicate with the backend if configured</span>
                                             </div>
                                             <div className="privacy-item">
                                                 <span className="privacy-icon">👤</span>
-                                                <span className="privacy-text">Only you can access your profile data</span>
+                                                <span className="privacy-text">Only you can access your local profile data; remote data follows server policies</span>
                                             </div>
                                             <div className="privacy-item">
                                                 <span className="privacy-icon">📊</span>
-                                                <span className="privacy-text">Your preferences and favorites are private</span>
+                                                <span className="privacy-text">Your preferences and favorites are private by default</span>
                                             </div>
                                         </div>
                                     </motion.div>
@@ -764,7 +809,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout }) {
                                                     borderRadius: '6px'
                                                 }}
                                             >
-                                                Deleting your account will permanently remove all your profile data. However, you can re-register with the same email address anytime.
+                                                Deleting your account removes local profile data. If you use the backend, server-side account deletion must be performed through the API and may remove remote records.
                                             </p>
                                         </div>
 
