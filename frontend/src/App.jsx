@@ -696,7 +696,6 @@ function App() {
                       <button className="footer-nav-btn" onClick={() => setActiveTab('terms')}><span className="emoji-pop emoji-terms">📋</span> <span>Terms of Service</span></button>
                       <button className="footer-nav-btn" onClick={() => setActiveTab('faq')}><span className="emoji-pop emoji-faq">❓</span> <span>FAQ</span></button>
                     </div>
-                    <p className="footer-copyright">© 2026 Music Mood Matcher. All rights reserved.</p>
                   </div>
                 </motion.div>
               )}
@@ -775,7 +774,6 @@ function App() {
                       <button className="footer-nav-btn" onClick={() => setActiveTab('faq')}>❓ FAQ</button>
                       <button className="footer-nav-btn" onClick={() => setActiveTab('about')}>ℹ️ About</button>
                     </div>
-                    <p className="footer-copyright">© 2026 Music Mood Matcher. All rights reserved.</p>
                   </div>
                 </motion.div>
               )}
@@ -844,7 +842,6 @@ function App() {
                       <button className="footer-nav-btn" onClick={() => setActiveTab('faq')}>❓ FAQ</button>
                       <button className="footer-nav-btn" onClick={() => setActiveTab('about')}>ℹ️ About</button>
                     </div>
-                    <p className="footer-copyright">© 2026 Music Mood Matcher. All rights reserved.</p>
                   </div>
                 </motion.div>
               )}
@@ -955,7 +952,6 @@ function App() {
                       <button className="footer-nav-btn" onClick={() => setActiveTab('terms')}>📋 Terms of Service</button>
                       <button className="footer-nav-btn" onClick={() => setActiveTab('about')}>ℹ️ About</button>
                     </div>
-                    <p className="footer-copyright">© 2026 Music Mood Matcher. All rights reserved.</p>
                   </div>
                 </motion.div>
               )}
@@ -997,6 +993,7 @@ function App() {
                     </span>
                   </div>
                 </div>
+                <p className="footer-copyright">© 2026 Music Mood Matcher. All rights reserved.</p>
               </footer>
             </div>
           )}
