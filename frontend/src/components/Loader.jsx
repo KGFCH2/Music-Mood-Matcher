@@ -40,7 +40,7 @@ export default function Loader({ onDone, introDuration = 1200 }) {
 
         <div className="loader-text">
           <h1>Music Mood Matcher</h1>
-          <p className="creators">Made by <strong>Debasmita Bose</strong> & <strong>Babin Bid</strong></p>
+          <p className="creators">Made by <strong>Babin Bid</strong> & <strong>Debasmita Bose</strong></p>
         </div>
       </div>
     </div>
