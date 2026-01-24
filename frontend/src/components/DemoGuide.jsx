@@ -7,7 +7,6 @@ export default function DemoGuide({ onSelectDemo, onBack }) {
     const [selectedDemo, setSelectedDemo] = useState(null)
     const [showFeatures, setShowFeatures] = useState(true)
 
-    // Demo credentials
     const DEMO_USERS = [
         {
             id: 1,
