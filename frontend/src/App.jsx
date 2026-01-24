@@ -60,14 +60,14 @@ const musicFacts = [
 ];
 
 const musicImages = [
-  'https://images.squarespace-cdn.com/content/v1/58125982e58c62bc08948096/1502130562840-XIPRQ7TNS7VUH25ZGLF6/image-asset.jpeg', 
-  'https://www.beatoven.ai/blog/wp-content/uploads/2024/11/20241115-125147-768x768.jpeg', 
-  'https://res.cloudinary.com/jerrick/image/upload/d_642250b563292b35f27461a7.png,f_jpg,fl_progressive,q_auto,w_1024/6746ec796cc045001dc39b5a.jpg', 
-  'https://live-production.wcms.abc-cdn.net.au/a362273509f7eccdcf362bb73b3b006d?impolicy=wcms_crop_resize&cropH=788&cropW=1400&xPos=0&yPos=0&width=862&height=485', 
-  'https://img.freepik.com/free-photo/3d-music-related-scene_23-2151124956.jpg?t=st=1769270576~exp=1769274176~hmac=96882f278d6c39641178ddf8021c2bd86791a3173d99842e9ab53011ab3b17d6', 
-  'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60', 
-  'https://img.freepik.com/premium-photo/glowing-neon-lines-tunnel-3d-rendering_778569-3582.jpg?semt=ais_user_personalization&w=740&q=80', 
-  'https://www.wipo.int/documents/102028/103632/creative+industries-blog-music-sampling-960.jpg'  
+  'https://images.squarespace-cdn.com/content/v1/58125982e58c62bc08948096/1502130562840-XIPRQ7TNS7VUH25ZGLF6/image-asset.jpeg',
+  'https://www.beatoven.ai/blog/wp-content/uploads/2024/11/20241115-125147-768x768.jpeg',
+  'https://res.cloudinary.com/jerrick/image/upload/d_642250b563292b35f27461a7.png,f_jpg,fl_progressive,q_auto,w_1024/6746ec796cc045001dc39b5a.jpg',
+  'https://live-production.wcms.abc-cdn.net.au/a362273509f7eccdcf362bb73b3b006d?impolicy=wcms_crop_resize&cropH=788&cropW=1400&xPos=0&yPos=0&width=862&height=485',
+  'https://img.freepik.com/free-photo/3d-music-related-scene_23-2151124956.jpg?t=st=1769270576~exp=1769274176~hmac=96882f278d6c39641178ddf8021c2bd86791a3173d99842e9ab53011ab3b17d6',
+  'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60',
+  'https://img.freepik.com/premium-photo/glowing-neon-lines-tunnel-3d-rendering_778569-3582.jpg?semt=ais_user_personalization&w=740&q=80',
+  'https://www.wipo.int/documents/102028/103632/creative+industries-blog-music-sampling-960.jpg'
 ]
 
 function App() {
@@ -354,12 +354,12 @@ function App() {
                       {/* Image Carousel */}
                       <div className="image-carousel">
                         <div className="carousel-container">
-                          <img 
+                          <img
                             key={currentImageIndex}
-                            src={musicImages[currentImageIndex]} 
-                            alt="Music visualization" 
-                            className="carousel-image" 
-                            loading="lazy" 
+                            src={musicImages[currentImageIndex]}
+                            alt="Music visualization"
+                            className="carousel-image"
+                            loading="lazy"
                           />
                         </div>
                       </div>
@@ -661,6 +661,7 @@ function App() {
                     <h2>
                       <span className="tab-emoji emoji-pop emoji-about">ℹ️</span>
                       <span className="tab-text">About Music Mood Matcher</span>
+                      <span className="tab-emoji emoji-pop emoji-about">ℹ️</span>
                     </h2>
                     <button className="back-btn" onClick={() => setActiveTab('home')} title="Back to Home">
                       <span className="back-icon">⬅️</span>
@@ -687,12 +688,6 @@ function App() {
                       <li>Add songs to your favorites by clicking the heart icon</li>
                       <li>Check your history and favorites anytime</li>
                     </ol>
-                    <p className="footer-text">
-                      <span className="made-emoji emoji-pop">🎶</span>
-                      <span className="made-text">Made with</span>
-                      <span className="heart-emoji emoji-pop">❤️</span>
-                      <span className="made-text">by Babin & Debasmita</span>
-                    </p>
                   </div>
                   <div className="page-footer">
                     <div className="footer-divider"></div>
@@ -701,7 +696,7 @@ function App() {
                       <button className="footer-nav-btn" onClick={() => setActiveTab('terms')}><span className="emoji-pop emoji-terms">📋</span> <span>Terms of Service</span></button>
                       <button className="footer-nav-btn" onClick={() => setActiveTab('faq')}><span className="emoji-pop emoji-faq">❓</span> <span>FAQ</span></button>
                     </div>
-                    <p className="footer-copyright">© 2025 Music Mood Matcher. All rights reserved.</p>
+                    <p className="footer-copyright">© 2026 Music Mood Matcher. All rights reserved.</p>
                   </div>
                 </motion.div>
               )}
@@ -719,13 +714,14 @@ function App() {
                     <h2>
                       <span className="tab-emoji emoji-pop emoji-privacy">🔒</span>
                       <span className="tab-text">Privacy Policy</span>
+                      <span className="tab-emoji emoji-pop emoji-privacy">🔒</span>
                     </h2>
                     <button className="back-btn" onClick={() => setActiveTab('home')} title="Back to Home">
                       <span className="back-icon">⬅️</span>
                     </button>
                   </div>
                   <div className="about-content">
-                    <p><strong>Last Updated: December 2025</strong></p>
+                    <p><strong>Last Updated: December 2026</strong></p>
 
                     <h3>1. Introduction</h3>
                     <p>Music Mood Matcher ("we," "us," or "our") operates the Music Mood Matcher application. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our application.</p>
@@ -779,7 +775,7 @@ function App() {
                       <button className="footer-nav-btn" onClick={() => setActiveTab('faq')}>❓ FAQ</button>
                       <button className="footer-nav-btn" onClick={() => setActiveTab('about')}>ℹ️ About</button>
                     </div>
-                    <p className="footer-copyright">© 2025 Music Mood Matcher. All rights reserved.</p>
+                    <p className="footer-copyright">© 2026 Music Mood Matcher. All rights reserved.</p>
                   </div>
                 </motion.div>
               )}
@@ -797,6 +793,7 @@ function App() {
                     <h2>
                       <span className="tab-emoji emoji-pop emoji-terms">📋</span>
                       <span className="tab-text">Terms of Service</span>
+                      <span className="tab-emoji emoji-pop emoji-terms">📋</span>
                     </h2>
                     <button className="back-btn" onClick={() => setActiveTab('home')} title="Back to Home">
                       <span className="back-icon">⬅️</span>
@@ -847,7 +844,7 @@ function App() {
                       <button className="footer-nav-btn" onClick={() => setActiveTab('faq')}>❓ FAQ</button>
                       <button className="footer-nav-btn" onClick={() => setActiveTab('about')}>ℹ️ About</button>
                     </div>
-                    <p className="footer-copyright">© 2025 Music Mood Matcher. All rights reserved.</p>
+                    <p className="footer-copyright">© 2026 Music Mood Matcher. All rights reserved.</p>
                   </div>
                 </motion.div>
               )}
@@ -865,6 +862,7 @@ function App() {
                     <h2>
                       <span className="tab-emoji emoji-pop emoji-faq">❓</span>
                       <span className="tab-text">Frequently Asked Questions</span>
+                      <span className="tab-emoji emoji-pop emoji-faq">❓</span>
                     </h2>
                     <button className="back-btn" onClick={() => setActiveTab('home')} title="Back to Home">
                       <span className="back-icon">⬅️</span>
@@ -957,7 +955,7 @@ function App() {
                       <button className="footer-nav-btn" onClick={() => setActiveTab('terms')}>📋 Terms of Service</button>
                       <button className="footer-nav-btn" onClick={() => setActiveTab('about')}>ℹ️ About</button>
                     </div>
-                    <p className="footer-copyright">© 2025 Music Mood Matcher. All rights reserved.</p>
+                    <p className="footer-copyright">© 2026 Music Mood Matcher. All rights reserved.</p>
                   </div>
                 </motion.div>
               )}
