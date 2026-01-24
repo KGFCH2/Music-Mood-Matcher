@@ -9,7 +9,7 @@ cd backend
 npm install
 cp .env.example .env
 # configure MONGODB_URI and JWT_SECRET in .env
-npm run dev
+npm start
 ```
 
 This scaffold provides basic routes under `/api/auth` and `/api/user` to mirror the frontend expectations. It uses MongoDB via Mongoose
