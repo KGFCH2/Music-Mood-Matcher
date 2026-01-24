@@ -1251,10 +1251,34 @@ body {
   display: flex;
   align-items: center;
   gap: 0.8rem;
+  flex: 1;
+  /* allow heading to take available space and stay centered */
+  justify-content: center;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1px;
   transition: var(--transition);
+}
+
+/* Ensure header containers can position the back button without affecting centering */
+.tab-content>div {
+  position: relative;
+}
+
+/* Place back button absolutely so the H2 remains centered */
+.tab-content>div>.back-btn {
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* If there is a left spacer div, keep it aligned left for symmetry */
+.tab-content>div>div:first-child {
+  position: absolute;
+  left: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .tab-emoji {
@@ -1262,11 +1286,72 @@ body {
   flex-shrink: 0;
 }
 
+/* Responsive: keep heading and emojis on one line where possible */
+@media (max-width: 600px) {
+  .tab-content h2 {
+    font-size: 1.15rem;
+    gap: 0.4rem;
+  }
+
+  .tab-emoji {
+    font-size: 1.4rem;
+  }
+
+  .tab-text {
+    white-space: nowrap;
+    /* keep text from splitting around emojis */
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+@media (max-width: 380px) {
+  .tab-content h2 {
+    font-size: 1rem;
+    gap: 0.3rem;
+  }
+
+  .tab-emoji {
+    font-size: 1.2rem;
+  }
+}
+
 .tab-text {
   background: linear-gradient(135deg, #FFD700, #00e5ff);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+/* Slightly reduce heading text for specific informational tabs */
+.emoji-privacy+.tab-text,
+.emoji-terms+.tab-text,
+.emoji-faq+.tab-text,
+.emoji-about+.tab-text {
+  font-size: 1.4rem;
+  /* a bit smaller than the main h2 */
+  line-height: 1.05;
+}
+
+@media (max-width: 600px) {
+
+  .emoji-privacy+.tab-text,
+  .emoji-terms+.tab-text,
+  .emoji-faq+.tab-text,
+  .emoji-about+.tab-text {
+    font-size: 1.05rem;
+    /* reduce further on small screens */
+  }
+}
+
+@media (max-width: 380px) {
+
+  .emoji-privacy+.tab-text,
+  .emoji-terms+.tab-text,
+  .emoji-faq+.tab-text,
+  .emoji-about+.tab-text {
+    font-size: 0.95rem;
+  }
 }
 
 .tab-subtitle {
@@ -1413,12 +1498,14 @@ body {
 /* Footer */
 .footer {
   text-align: center;
-  padding: 2.5rem 2rem;
+  padding: 1.2rem 2rem;
+  /* reduced top/bottom padding to tighten spacing */
   border: none;
   background: transparent;
   color: var(--text-muted);
   font-size: 0.95rem;
-  margin-top: 2rem;
+  margin-top: 1rem;
+  /* reduce gap above footer */
   position: relative;
   z-index: 2;
 }
@@ -1428,7 +1515,8 @@ body {
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.4rem;
+  /* tightened spacing between footer rows */
 }
 
 .footer-main {
@@ -1459,10 +1547,11 @@ body {
 .footer-links {
   display: flex;
   justify-content: center;
-  gap: 1.5rem;
+  gap: 1.2rem;
   flex-wrap: wrap;
-  margin-top: 1rem;
-  padding-top: 1rem;
+  margin-top: 0.5rem;
+  /* reduce vertical gap above links */
+  padding-top: 0.5rem;
   border-top: 1px solid rgba(0, 229, 255, 0.2);
 }
 
@@ -1551,7 +1640,8 @@ body {
   color: var(--text-muted);
   font-size: 0.85rem;
   font-weight: 500;
-  margin-top: 1rem;
+  margin-top: 0.5rem;
+  /* smaller space to copyright */
 }
 
 .heart-emoji {
