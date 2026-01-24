@@ -81,7 +81,7 @@ export default function HistoryTab({ user }) {
             <div className="history-list">
                 {moodHistory.map((entry, idx) => (
                     <div key={idx} className="history-item tab-section">
-                        <div className="item-header" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                        <div className="item-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem' }}>
                             <span className="mood-emoji" style={{ fontSize: '2rem' }}>{getMoodEmoji(entry.mood)}</span>
                             <div className="item-info">
                                 <p className="item-mood" style={{ margin: 0, fontWeight: 'bold' }}>{entry.mood.toUpperCase()}</p>
