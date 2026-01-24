@@ -8,7 +8,6 @@ Quick start
 cd backend
 npm install
 cp .env.example .env
-# configure MONGODB_URI and JWT_SECRET in .env
 npm start
 ```
 
