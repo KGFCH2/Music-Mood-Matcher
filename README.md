@@ -27,15 +27,6 @@ npm install
 npm run dev        # Starts on http://localhost:5173
 ```
 
-### Backend Setup (Optional)
-```bash
-cd backend
-npm install
-cp .env.example .env
-# configure MONGODB_URI and JWT_SECRET in .env
-npm run dev        # Starts on http://localhost:5000
-```
-
 ---
 
 ## 🎼 The Greatest Hits
@@ -119,6 +110,15 @@ npm run dev        # Starts on http://localhost:5173
 🎵 Your personal DJ is ready to rock!
 
 ---
+
+## 👤 Profile
+
+- View and edit your profile details (name, email, gender). Email changes require verification via a one-time code sent by EmailJS.
+- Theme toggle for light/dark mode is available inside the profile panel.
+- Logout action is available in the profile details for easy access on mobile devices.
+- View registration date, verification status, and recent login history.
+- Delete account option removes local user data (confirmation required).
+
 
 ## 🔊 Soundcheck: Testing
 
