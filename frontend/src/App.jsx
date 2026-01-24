@@ -8,7 +8,6 @@ import { useAuth } from './context/AuthContext'
 import ProfileNav from './components/ProfileNav'
 import './App.css'
 
-// Typewriter effect for music ↔ mood examples
 const typewriterExamples = [
   'Happy — Upbeat Pop & Indie',
   'Sad — Soulful Ballads & Piano',
@@ -82,17 +81,14 @@ function App() {
   const [openProfileEdit, setOpenProfileEdit] = useState(false)
   const [randomFact, setRandomFact] = useState('')
 
-  // Debug user state changes - removed for production
   const [titleHover, setTitleHover] = useState(false)
 
-  // Image carousel state
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
 
   useEffect(() => {
     setRandomFact(musicFacts[Math.floor(Math.random() * musicFacts.length)])
   }, [])
 
-  // Image carousel effect
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentImageIndex((prevIndex) => (prevIndex + 1) % musicImages.length)
@@ -101,7 +97,6 @@ function App() {
     return () => clearInterval(interval)
   }, [])
 
-  // Typewriter state
   const [typeText, setTypeText] = useState('')
   const [exampleIndex, setExampleIndex] = useState(0)
   const [charIndex, setCharIndex] = useState(0)
@@ -116,7 +111,6 @@ function App() {
         setCharIndex((i) => i + 1)
       }, 80)
     } else {
-      // finished typing this example, move to next
       timeout = setTimeout(() => {
         setTypeText('')
         setCharIndex(0)
@@ -127,7 +121,6 @@ function App() {
     return () => clearTimeout(timeout)
   }, [charIndex, exampleIndex])
 
-  // Load user-specific favorites when user changes
   useEffect(() => {
     if (user?.userId) {
       try {
@@ -136,13 +129,11 @@ function App() {
       } catch {
         setFavorites([])
       }
-      // Reset to home tab when user changes
       setActiveTab('home')
       setCurrentMood(null)
     }
   }, [user?.userId])
 
-  // Load user-specific history when user changes
   useEffect(() => {
     if (user?.userId) {
       try {
@@ -154,21 +145,18 @@ function App() {
     }
   }, [user?.userId])
 
-  // Save user-specific favorites
   useEffect(() => {
     if (user?.userId) {
       localStorage.setItem(`musicMoodFavorites-${user.userId}`, JSON.stringify(favorites))
     }
   }, [favorites, user?.userId])
 
-  // Save user-specific history
   useEffect(() => {
     if (user?.userId) {
       localStorage.setItem(`musicMoodHistory-${user.userId}`, JSON.stringify(moodHistory))
     }
   }, [moodHistory, user?.userId])
 
-  // Scroll to top whenever activeTab changes
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }, [activeTab])
@@ -243,14 +231,12 @@ function App() {
   return (
     <>
       {(showLoader || authLoading) && <Loader onDone={() => {
-        // console.log('Loader done, hiding loader')
         setShowLoader(false)
       }} introDuration={800} />}
       {!showLoader && !authLoading ? (
         <>
           {!user ? (
             <Login onLoginSuccess={(userData, options) => {
-              // console.log('App: onLoginSuccess called with:', userData, options)
               login(userData)
               setActiveTab('home')
               setCurrentMood(null)
@@ -258,7 +244,6 @@ function App() {
                 setOpenProfileEdit(true)
                 setShowProfileNav(true)
               }
-              // console.log('App: After login, user should be set')
             }} />
           ) : (
             <div className="app-root music-hacker">
@@ -1017,7 +1002,6 @@ function App() {
             <p>user: {user ? 'logged in' : 'null'}</p>
             <p>user details: {user ? JSON.stringify(user, null, 2) : 'N/A'}</p>
             <button onClick={() => {
-              // console.log('Manual debug - current state:', { showLoader, authLoading, user })
             }}>Log Debug Info</button>
           </div>
         </div>
