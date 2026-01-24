@@ -89,7 +89,11 @@ export const decryptData = async (encryptedData) => {
         const decoder = new TextDecoder()
         return JSON.parse(decoder.decode(decryptedData))
     } catch (error) {
-        console.error('Decryption failed - data may be corrupted or from different device')
+        // Silently fail - data may be from different device/browser
+        // This is expected behavior when browser fingerprint changes
+        if (import.meta.env.DEV) {
+            console.debug('Decryption failed - data may be corrupted or from different device')
+        }
         throw new Error('Failed to decrypt data')
     }
 }
@@ -150,7 +154,7 @@ class SecureStorage {
     // Store registered users (non-sensitive data only)
     async setRegisteredUsers(users) {
         // Store: email, userName, gender, userId, registeredAt, isVerified, isDemo, loginHistory, and encrypted passwordHash
-        if (process.env.NODE_ENV === 'development') console.debug('[secureStorage] setRegisteredUsers called with', users.map(u => u.email))
+        if (import.meta.env.DEV) console.debug('[secureStorage] setRegisteredUsers called with', users.map(u => u.email))
         const safeUsers = await Promise.all(users.map(async user => {
             const userData = {
                 email: user.email,
@@ -163,7 +167,7 @@ class SecureStorage {
                 loginHistory: user.loginHistory || []
             }
             if (user.passwordHash) {
-                if (process.env.NODE_ENV === 'development') console.debug('[secureStorage] encrypting passwordHash for', user.email)
+                if (import.meta.env.DEV) console.debug('[secureStorage] encrypting passwordHash for', user.email)
                 userData.encryptedPasswordHash = await encryptData(user.passwordHash)
             }
             return userData
@@ -182,18 +186,22 @@ class SecureStorage {
                 const userData = { ...user }
                 if (user.encryptedPasswordHash) {
                     try {
-                        if (process.env.NODE_ENV === 'development') console.debug('[secureStorage] decrypting passwordHash for', user.email)
+                        if (import.meta.env.DEV) console.debug('[secureStorage] decrypting passwordHash for', user.email)
                         userData.passwordHash = await decryptData(user.encryptedPasswordHash)
                     } catch (error) {
-                        console.error('Failed to decrypt password hash for user:', user.email)
-                        // Keep user without password hash, they can't log in but data is preserved
+                        // Silently skip - user data is preserved but they'll need to reset password
+                        if (import.meta.env.DEV) {
+                            console.debug('Failed to decrypt password hash for user:', user.email)
+                        }
                     }
                 }
                 return userData
             }))
             return decryptedUsers
         } catch (error) {
-            console.error('Failed to retrieve registered users')
+            if (import.meta.env.DEV) {
+                console.debug('Failed to retrieve registered users')
+            }
             return []
         }
     }
