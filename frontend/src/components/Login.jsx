@@ -34,22 +34,18 @@ export default function Login({ onLoginSuccess }) {
     const [showConfirmPassword, setShowConfirmPassword] = useState(false)
     const [showSignInPassword, setShowSignInPassword] = useState(false)
 
-    // Demo credentials
     const DEMO_USERS = [
         { email: 'demo.music.lover@example.com', name: 'Music Lover', gender: 'male' },
         { email: 'demo.happy.vibes@example.com', name: 'Happy Vibes', gender: 'female' },
         { email: 'demo.chill.mode@example.com', name: 'Chill Mode', gender: 'other' }
     ]
 
-    // Ref for auto-focus on verification input
     const verificationInputRef = React.useRef(null)
 
-    // Initialize EmailJS
     useEffect(() => {
         emailjs.init(import.meta.env.VITE_EMAILJS_PUBLIC_KEY || 'yvSwGRuksv7zAychI') // Public key from env
     }, [])
 
-    // Cooldown timer for resend button
     useEffect(() => {
         let timer
         if (resendCooldown > 0) {
@@ -60,7 +56,6 @@ export default function Login({ onLoginSuccess }) {
         return () => clearInterval(timer)
     }, [resendCooldown])
 
-    // Prevent escape key from closing verification dialog
     useEffect(() => {
         const handleKeyDown = (e) => {
             if (e.key === 'Escape' && showVerificationDialog) {
@@ -78,7 +73,6 @@ export default function Login({ onLoginSuccess }) {
         }
     }, [showVerificationDialog])
 
-    // Load registered users from secure storage on mount
     useEffect(() => {
         const loadUsers = async () => {
             try {
@@ -99,7 +93,6 @@ export default function Login({ onLoginSuccess }) {
         return emailRegex.test(email)
     }
 
-    // Real-time email validation
     const handleEmailChange = (email) => {
         setRegisterData({ ...registerData, email })
         if (!email.trim()) {
@@ -116,7 +109,6 @@ export default function Login({ onLoginSuccess }) {
         }
     }
 
-    // Real-time name validation
     const handleNameChange = (name) => {
         setRegisterData({ ...registerData, userName: name })
         if (!name.trim()) {
@@ -130,7 +122,6 @@ export default function Login({ onLoginSuccess }) {
         }
     }
 
-    // Real-time password validation
     const handlePasswordChange = (password) => {
         setRegisterData({ ...registerData, password })
         if (!password.trim()) {
@@ -144,13 +135,12 @@ export default function Login({ onLoginSuccess }) {
                 color: feedback.color
             })
         }
-        // Check confirm password match if filled
+        
         if (registerData.confirmPassword) {
             validateConfirmPassword(registerData.confirmPassword, password)
         }
     }
 
-    // Confirm password validation
     const handleConfirmPasswordChange = (confirmPassword) => {
         setRegisterData({ ...registerData, confirmPassword })
         validateConfirmPassword(confirmPassword, registerData.password)
@@ -166,12 +156,11 @@ export default function Login({ onLoginSuccess }) {
         }
     }
 
-    // Auto-submit when verification code is complete
     const handleVerificationCodeChange = (value) => {
         const code = value.toUpperCase().replace(/[^A-Z0-9]/g, '')
         setVerificationInputCode(code)
 
-        // Auto-submit when 6 characters entered
+        
         if (code.length === 6) {
             setTimeout(() => {
                 const user = registeredUsers.find(u => u.email === verificationDialogEmail)
@@ -182,7 +171,6 @@ export default function Login({ onLoginSuccess }) {
         }
     }
 
-    // Auto-verify handler
     const handleAutoVerify = async (code) => {
         const user = registeredUsers.find(u => u.email === verificationDialogEmail)
         if (!user) return
@@ -205,7 +193,7 @@ export default function Login({ onLoginSuccess }) {
                 u.email === verificationDialogEmail ? verifiedUser : u
             )
             setRegisteredUsers(updatedUsers)
-            // Use secure storage - don't store verification code
+            
             await secureStorage.setRegisteredUsers(updatedUsers)
             secureStorage.setUserInfo(verifiedUser)
 
