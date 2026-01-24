@@ -2205,54 +2205,37 @@ html {
 }
 
 .beauty-card {
-  background: linear-gradient(135deg, rgba(124, 77, 255, 0.12), rgba(0, 229, 255, 0.08));
-  border: none;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 20px;
   padding: 2rem 1.5rem;
   text-align: center;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.5s ease;
   backdrop-filter: blur(12px);
   position: relative;
   overflow: hidden;
   cursor: pointer;
+  z-index: 0;
 }
 
-.beauty-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(circle at 30% 30%, rgba(0, 229, 255, 0.15) 0%, transparent 50%);
-  opacity: 0;
-  transition: opacity 0.4s ease;
-  pointer-events: none;
-}
-
+/* Overlay that becomes visible on hover - per-card gradients set below */
 .beauty-card::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, transparent 0%, rgba(124, 77, 255, 0.1) 100%);
   opacity: 0;
-  transition: opacity 0.4s ease;
+  transition: opacity 0.5s ease, transform 0.5s ease;
   pointer-events: none;
+  z-index: 1;
+  /* sits below content */
 }
 
 .beauty-card:hover {
   transform: translateY(-10px) scale(1.02);
-  box-shadow: 0 12px 40px rgba(0, 229, 255, 0.4);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.18);
 }
 
-.beauty-card:hover .beauty-icon {
-  transform: scale(1.2);
-}
-
-.beauty-card:hover::after {
-  opacity: 1;
-}
-
+/* White circular backdrop that scales behind the icon */
 .beauty-icon {
   font-size: 3rem;
   margin-bottom: 1rem;
@@ -2260,23 +2243,53 @@ html {
   margin-left: auto;
   margin-right: auto;
   position: relative;
-  z-index: 1;
-  color: rgba(8, 214, 190, 0.804);
-  transition: transform 0.3s linear;
+  z-index: 3;
+  /* above overlay */
+  color: rgba(255, 255, 255, 0.9);
+  transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), color 0.4s ease;
+}
+
+.beauty-icon::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 84px;
+  height: 84px;
+  background: #fff;
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.3s ease;
+  opacity: 0;
+  z-index: 2;
+  /* between overlay and icon */
+}
+
+.beauty-card:hover .beauty-icon::before {
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+}
+
+/* Slight icon shrink on hover to give the 'inserted into circle' effect */
+.beauty-card:hover .beauty-icon {
+  transform: scale(0.85);
+  color: #000;
+  /* icon color over the white circle */
 }
 
 .beauty-card h3 {
   font-size: 1.2rem;
   font-weight: 900;
-  color: white;
+  color: rgba(255, 255, 255, 0.9);
   margin-bottom: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 1px;
-  transition: all 0.4s ease;
+  transition: all 0.5s ease;
   position: relative;
-  z-index: 1;
+  z-index: 3;
 }
 
+/* Keep the previous gradient heading effect on hover */
 .beauty-card:hover h3 {
   background: linear-gradient(15000deg, #00ff62, #ffffff, #ff7b00);
   -webkit-background-clip: text;
@@ -2286,15 +2299,47 @@ html {
 
 .beauty-card p {
   font-size: 0.95rem;
-  color: var(--text-muted);
+  color: rgba(255, 255, 255, 0.75);
   line-height: 1.6;
-  transition: all 0.4s ease;
+  transition: color 0.5s ease;
   position: relative;
-  z-index: 1;
+  z-index: 3;
 }
 
+/* On hover, text becomes darker to match the example */
 .beauty-card:hover p {
-  color: var(--text-light);
+  color: #000;
+}
+
+/* Per-card gradient overlays */
+.music-card:hover::after {
+  opacity: 1;
+  background: linear-gradient(135deg, rgb(234, 67, 53) 0%, rgb(251, 188, 4) 100%);
+}
+
+.ai-card:hover::after {
+  opacity: 1;
+  background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
+}
+
+.heart-card:hover::after {
+  opacity: 1;
+  background: linear-gradient(135deg, #ff9ff3 0%, #f368e0 100%);
+}
+
+.globe-card:hover::after {
+  opacity: 1;
+  background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+}
+
+.playlist-card:hover::after {
+  opacity: 1;
+  background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%);
+}
+
+.lock-card:hover::after {
+  opacity: 1;
+  background: linear-gradient(135deg, #fd79a8 0%, #e84393 100%);
 }
 
 @media (max-width: 768px) {

@@ -380,7 +380,7 @@ function App() {
                     {/* Beauty Cards Grid */}
                     <div className="beauty-grid">
                       <motion.div
-                        className="beauty-card"
+                        className="beauty-card music-card"
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5 }}
@@ -392,7 +392,7 @@ function App() {
                       </motion.div>
 
                       <motion.div
-                        className="beauty-card"
+                        className="beauty-card ai-card"
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5, delay: 0.1 }}
@@ -404,7 +404,7 @@ function App() {
                       </motion.div>
 
                       <motion.div
-                        className="beauty-card"
+                        className="beauty-card heart-card"
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5, delay: 0.2 }}
@@ -416,7 +416,7 @@ function App() {
                       </motion.div>
 
                       <motion.div
-                        className="beauty-card"
+                        className="beauty-card globe-card"
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5, delay: 0.3 }}
@@ -428,7 +428,7 @@ function App() {
                       </motion.div>
 
                       <motion.div
-                        className="beauty-card"
+                        className="beauty-card playlist-card"
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5, delay: 0.4 }}
@@ -440,7 +440,7 @@ function App() {
                       </motion.div>
 
                       <motion.div
-                        className="beauty-card"
+                        className="beauty-card lock-card"
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5, delay: 0.5 }}
