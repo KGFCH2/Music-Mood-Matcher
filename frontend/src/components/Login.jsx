@@ -60,10 +60,21 @@ export default function Login({ onLoginSuccess }) {
         return () => clearInterval(timer)
     }, [resendCooldown])
 
-    // Auto-focus verification input when dialog opens
+    // Prevent escape key from closing verification dialog
     useEffect(() => {
-        if (showVerificationDialog && verificationInputRef.current) {
-            setTimeout(() => verificationInputRef.current?.focus(), 100)
+        const handleKeyDown = (e) => {
+            if (e.key === 'Escape' && showVerificationDialog) {
+                e.preventDefault()
+                e.stopPropagation()
+            }
+        }
+
+        if (showVerificationDialog) {
+            document.addEventListener('keydown', handleKeyDown)
+        }
+
+        return () => {
+            document.removeEventListener('keydown', handleKeyDown)
         }
     }, [showVerificationDialog])
 
@@ -284,6 +295,95 @@ export default function Login({ onLoginSuccess }) {
         return Math.random().toString(36).substring(2, 8).toUpperCase()
     }
 
+    // Custom blocking choice dialog (returns true for Keep Existing, false for Use New Details)
+    const showConflictChoiceDialog = () => {
+        return new Promise((resolve) => {
+            try {
+                if (typeof document === 'undefined') return resolve(false)
+
+                const container = document.createElement('div')
+                container.style.position = 'fixed'
+                container.style.inset = '0'
+                container.style.display = 'flex'
+                container.style.alignItems = 'center'
+                container.style.justifyContent = 'center'
+                container.style.background = 'rgba(0,0,0,0.45)'
+                container.style.zIndex = '99999'
+
+                const box = document.createElement('div')
+                box.style.background = 'linear-gradient(135deg,#ffffff,#f3f3ff)'
+                box.style.padding = '20px'
+                box.style.borderRadius = '12px'
+                box.style.maxWidth = '420px'
+                box.style.width = '90%'
+                box.style.boxShadow = '0 10px 30px rgba(0,0,0,0.4)'
+                box.style.textAlign = 'center'
+
+                const msg = document.createElement('p')
+                msg.textContent = 'This email is already registered. Choose which information to keep:'
+                msg.style.marginBottom = '18px'
+                msg.style.color = '#111'
+                msg.style.fontWeight = '600'
+
+                const btnRow = document.createElement('div')
+                btnRow.style.display = 'flex'
+                btnRow.style.gap = '12px'
+                btnRow.style.justifyContent = 'center'
+
+                const keepBtn = document.createElement('button')
+                keepBtn.textContent = 'Keep Existing'
+                keepBtn.style.padding = '10px 14px'
+                keepBtn.style.borderRadius = '8px'
+                keepBtn.style.border = 'none'
+                keepBtn.style.cursor = 'pointer'
+                keepBtn.style.background = '#28a745'
+                keepBtn.style.color = '#fff'
+
+                const useNewBtn = document.createElement('button')
+                useNewBtn.textContent = 'Use the new Details'
+                useNewBtn.style.padding = '10px 14px'
+                useNewBtn.style.borderRadius = '8px'
+                useNewBtn.style.border = '1px solid rgba(0,0,0,0.08)'
+                useNewBtn.style.cursor = 'pointer'
+                useNewBtn.style.background = '#ffffff'
+                useNewBtn.style.color = '#111'
+
+                btnRow.appendChild(keepBtn)
+                btnRow.appendChild(useNewBtn)
+                box.appendChild(msg)
+                box.appendChild(btnRow)
+                container.appendChild(box)
+                document.body.appendChild(container)
+
+                const cleanup = () => {
+                    try { document.body.removeChild(container) } catch (e) { }
+                    window.removeEventListener('keydown', onKey)
+                }
+
+                const onKey = (ev) => {
+                    if (ev.key === 'Escape') {
+                        cleanup()
+                        resolve(false)
+                    }
+                }
+
+                keepBtn.addEventListener('click', () => {
+                    cleanup()
+                    resolve(true)
+                })
+
+                useNewBtn.addEventListener('click', () => {
+                    cleanup()
+                    resolve(false)
+                })
+
+                window.addEventListener('keydown', onKey)
+            } catch (err) {
+                resolve(false)
+            }
+        })
+    }
+
     const handleRegister = async (e) => {
         e.preventDefault()
         setError('')
@@ -325,24 +425,62 @@ export default function Login({ onLoginSuccess }) {
             return
         }
 
-        // Check if email already registered
-        const existing = registeredUsers.find(u => u.email === registerData.email)
+        // Normalize email for reliable comparisons
+        const normalizedEmail = (registerData.email || '').trim().toLowerCase()
+
+        // Check if email already registered (normalize stored emails too)
+        const existing = registeredUsers.find(u => ((u.email || '').trim().toLowerCase()) === normalizedEmail)
         if (existing) {
-            if (existing.userName !== registerData.userName || existing.gender !== registerData.gender) {
-                setExistingUser(existing)
-                setShowConflictDialog(true)
-                return
-            } else {
-                setError('This email is already registered. Please sign in instead.')
-                return
+            console.debug('[Login] register conflict for email', registerData.email, 'existing user:', existing)
+            setExistingUser(existing)
+            setShowConflictDialog(true)
+            // visible fallback for cases where the dialog might be blocked by CSS/stacking
+            setError('This email is already registered. Choose "Keep Existing" or "Use New Details".')
+            // Fallback: show a custom choice dialog so user always sees a choice
+            try {
+                if (typeof window !== 'undefined') {
+                    const keep = await showConflictChoiceDialog()
+                    if (keep) {
+                        localStorage.setItem('musicMoodUser', JSON.stringify(existing))
+                        setShowConflictDialog(false)
+                        setExistingUser(null)
+                        onLoginSuccess(existing)
+                        return
+                    } else {
+                        if (!registerData.password.trim()) {
+                            setError('Please enter a new password to update your details')
+                            return
+                        }
+                        const hashedPassword = await hashPassword(registerData.password)
+                        const updatedUser = {
+                            ...existing,
+                            userName: registerData.userName,
+                            gender: registerData.gender,
+                            passwordHash: hashedPassword
+                        }
+                        const updatedUsers = registeredUsers.map(u =>
+                            ((u.email || '').trim().toLowerCase()) === ((registerData.email || '').trim().toLowerCase()) ? updatedUser : u
+                        )
+                        setRegisteredUsers(updatedUsers)
+                        await secureStorage.setRegisteredUsers(updatedUsers)
+                        secureStorage.setUserInfo(updatedUser)
+                        setShowConflictDialog(false)
+                        setExistingUser(null)
+                        onLoginSuccess(updatedUser)
+                        return
+                    }
+                }
+            } catch (e) {
+                // ignore fallback errors
             }
+            return
         }
 
         setIsLoading(true)
 
         try {
             // Store the email being registered to prevent accidental email changes
-            const registrationEmail = registerData.email
+            const registrationEmail = normalizedEmail || registerData.email
             const registrationName = registerData.userName
 
             // Hash password securely
@@ -462,28 +600,38 @@ export default function Login({ onLoginSuccess }) {
                 return
             }
 
-            // Password is correct. If the user is not verified, do not block login —
-            // send verification email in background (non-blocking) but allow direct access.
+            // Password is correct. Check if user is verified
             if (!user.isVerified) {
+                // Generate new verification code and show verification dialog
                 const newVerificationCode = generateVerificationCode()
 
-                // Fire-and-forget: send verification email and update in-memory user entry.
-                sendVerificationEmail(signInEmail, user.userName, newVerificationCode)
-                    .then(async (emailResult) => {
-                        const updatedUser = { ...user, verificationCode: newVerificationCode }
-                        const updatedUsers = registeredUsers.map(u => u.email === signInEmail ? updatedUser : u)
-                        setRegisteredUsers(updatedUsers)
-                        // Persist safe user info and encrypted passwordHash
-                        try {
-                            await secureStorage.setRegisteredUsers(updatedUsers)
-                        } catch (e) {
-                            if (process.env.NODE_ENV === 'development') console.debug('Failed storing users after sending verification', e)
-                        }
-                    })
-                    .catch(() => {
-                        // Silent fail for email sending
-                    })
-                // Continue to login flow (do not force verification)
+                // Send verification email
+                const emailResult = await sendVerificationEmail(signInEmail, user.userName, newVerificationCode)
+
+                if (emailResult.success) {
+                    // Update user with new verification code (in-memory only)
+                    const updatedUser = { ...user, verificationCode: newVerificationCode }
+                    const updatedUsers = registeredUsers.map(u => u.email === signInEmail ? updatedUser : u)
+                    setRegisteredUsers(updatedUsers)
+                    // Persist safe user info
+                    try {
+                        await secureStorage.setRegisteredUsers(updatedUsers)
+                    } catch (e) {
+                        if (process.env.NODE_ENV === 'development') console.debug('Failed storing users after sending verification', e)
+                    }
+
+                    setIsLoading(false)
+                    setEmailSentSuccess(true)
+                    setVerificationDialogEmail(signInEmail)
+                    setShowVerificationDialog(true)
+                    setVerificationInputCode('')
+                    setVerificationError('')
+                    return // Do not proceed to login
+                } else {
+                    setIsLoading(false)
+                    setError('Failed to send verification email. Please try again.')
+                    return
+                }
             }
 
             // Update login history
@@ -505,10 +653,15 @@ export default function Login({ onLoginSuccess }) {
             )
             setRegisteredUsers(updatedUsers)
             // Use secure storage instead of localStorage
-            await secureStorage.setRegisteredUsers(updatedUsers)
+            try {
+                await secureStorage.setRegisteredUsers(updatedUsers)
+            } catch (storageError) {
+                console.error('Login: Failed to save registered users:', storageError)
+            }
             secureStorage.setUserInfo(updatedUser)
 
             setIsLoading(false)
+            console.log('Login: Calling onLoginSuccess with:', updatedUser)
             onLoginSuccess(updatedUser)
         } catch (err) {
             setIsLoading(false)
@@ -537,6 +690,9 @@ export default function Login({ onLoginSuccess }) {
 
         // Check if verification code matches
         if (verificationInputCode.toUpperCase() === user.verificationCode) {
+            // Show success animation first
+            setShowSuccessAnimation(true)
+
             // Mark user as verified - only store safe data
             const verifiedUser = {
                 email: user.email,
@@ -558,10 +714,14 @@ export default function Login({ onLoginSuccess }) {
             await secureStorage.setRegisteredUsers(updatedUsers)
             secureStorage.setUserInfo(verifiedUser)
 
-            setShowVerificationDialog(false)
-            setVerificationInputCode('')
-            setEmailSentSuccess(false)
-            onLoginSuccess(verifiedUser)
+            // Wait for success animation, then close modal and login
+            setTimeout(() => {
+                setShowVerificationDialog(false)
+                setVerificationInputCode('')
+                setEmailSentSuccess(false)
+                setShowSuccessAnimation(false)
+                onLoginSuccess(verifiedUser)
+            }, 1500)
         } else {
             setVerificationError('Invalid verification code. Please check your email and try again.')
         }
@@ -681,6 +841,7 @@ export default function Login({ onLoginSuccess }) {
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6, ease: 'easeOut' }}
+                        style={{ display: showConflictDialog ? 'none' : 'block' }}
                     >
                         {/* Animated Header */}
                         <motion.div
@@ -703,6 +864,11 @@ export default function Login({ onLoginSuccess }) {
                                     setError('')
                                     setSignInEmail('')
                                     setSignInPassword('')
+                                    // Reset validation states
+                                    setEmailValidation({ isValid: null, message: '' })
+                                    setNameValidation({ isValid: null, message: '' })
+                                    setPasswordValidation({ isValid: null, message: '', color: '' })
+                                    setConfirmPasswordValidation({ isValid: null, message: '' })
                                 }}
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
@@ -716,6 +882,11 @@ export default function Login({ onLoginSuccess }) {
                                     setIsSignIn(true)
                                     setError('')
                                     setRegisterData({ email: '', userName: '', gender: 'other', password: '', confirmPassword: '' })
+                                    // Reset validation states
+                                    setEmailValidation({ isValid: null, message: '' })
+                                    setNameValidation({ isValid: null, message: '' })
+                                    setPasswordValidation({ isValid: null, message: '', color: '' })
+                                    setConfirmPasswordValidation({ isValid: null, message: '' })
                                 }}
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
@@ -1195,13 +1366,14 @@ export default function Login({ onLoginSuccess }) {
                                                 <motion.button
                                                     className="option-btn use-new"
                                                     onClick={() => {
-                                                        // Update user with new details
+                                                        // Update user with new details including new password
                                                         (async () => {
+                                                            const hashedPassword = await hashPassword(registerData.password)
                                                             const updatedUser = {
                                                                 ...existingUser,
                                                                 userName: registerData.userName,
                                                                 gender: registerData.gender,
-                                                                passwordHash: existingUser.passwordHash
+                                                                passwordHash: hashedPassword
                                                             }
                                                             const updatedUsers = registeredUsers.map(u =>
                                                                 u.email === registerData.email ? updatedUser : u
@@ -1210,7 +1382,7 @@ export default function Login({ onLoginSuccess }) {
                                                             await secureStorage.setRegisteredUsers(updatedUsers)
                                                             secureStorage.setUserInfo(updatedUser)
                                                             setShowConflictDialog(false)
-                                                            onLoginSuccess(updatedUser)
+                                                            onLoginSuccess(updatedUser, { openProfile: true })
                                                         })()
                                                     }}
                                                     whileHover={{ scale: 1.05 }}
@@ -1251,6 +1423,7 @@ export default function Login({ onLoginSuccess }) {
                                     role="dialog"
                                     aria-modal="true"
                                     aria-labelledby="verification-title"
+                                    onClick={(e) => e.stopPropagation()} // Prevent closing by clicking outside
                                 >
                                     {/* Floating music notes */}
                                     <div className="floating-notes">
@@ -1319,10 +1492,10 @@ export default function Login({ onLoginSuccess }) {
 
                                         <div className="dialog-header">
                                             <span className="dialog-icon">📧</span>
-                                            <h3 id="verification-title">Verify Your Email</h3>
+                                            <h3 id="verification-title">Email Verification Required</h3>
                                             <p>Code sent to <strong>{verificationDialogEmail}</strong></p>
                                             <p style={{ fontSize: '0.75rem', marginTop: '0.25rem', color: '#b0b0b0' }}>
-                                                📨 Check inbox or spam folder
+                                                📨 Check inbox or spam folder • Verification required to continue
                                             </p>
                                         </div>
 
@@ -1451,24 +1624,6 @@ export default function Login({ onLoginSuccess }) {
                                                         <span>Resend Code</span>
                                                     </>
                                                 )}
-                                            </motion.button>
-
-                                            <motion.button
-                                                className="cancel-btn"
-                                                type="button"
-                                                onClick={() => {
-                                                    setShowVerificationDialog(false)
-                                                    setVerificationInputCode('')
-                                                    setVerificationError('')
-                                                    setEmailSentSuccess(false)
-                                                    setResendCooldown(0)
-                                                }}
-                                                whileHover={{ scale: 1.05 }}
-                                                whileTap={{ scale: 0.95 }}
-                                                style={{ marginTop: '0.6rem', padding: '0.5rem 1rem', fontSize: '0.85rem' }}
-                                            >
-                                                <span className="btn-icon">❌</span>
-                                                <span className="btn-text">Cancel</span>
                                             </motion.button>
                                         </form>
                                     </motion.div>
