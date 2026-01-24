@@ -80,6 +80,7 @@
 
 .moodwebcam-result {
   margin-top: 2rem;
+  text-align: center;
 }
 
 .moodwebcam-mood {
@@ -91,7 +92,11 @@
 .moodwebcam-playlist {
   list-style: none;
   padding: 0;
-  margin: 1rem 0;
+  margin: 1rem auto;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .moodwebcam-song {
@@ -101,8 +106,11 @@
   padding: 0.7rem 1rem;
   box-shadow: 0 2px 8px rgba(124, 77, 255, 0.07);
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  text-align: center;
+  gap: 0.5rem;
 }
 
 .moodwebcam-song-title {
@@ -112,11 +120,11 @@
 
 .moodwebcam-song-artist {
   color: #888;
-  margin-left: 0.5rem;
+  margin: 0;
 }
 
 .moodwebcam-play-btn {
-  margin-left: 1rem;
+  margin: 0.5rem 0 0 0;
   background: #FFD700;
   color: #7c4dff;
   border-radius: 0.7rem;
@@ -154,12 +162,12 @@
 
   .moodwebcam-song {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     gap: 0.5rem;
+    text-align: center;
   }
 
   .moodwebcam-play-btn {
-    align-self: flex-end;
     margin-left: 0;
   }
 }
