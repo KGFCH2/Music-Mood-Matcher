@@ -1,5 +1,6 @@
 import { useEffect, useState, lazy, Suspense } from 'react'
 import { motion } from 'framer-motion'
+import { FaHeadphones, FaRobot, FaHeart, FaGlobe, FaMusic, FaLock } from 'react-icons/fa'
 import { songs, moods } from './data/songs'
 import Loader from './components/Loader'
 import Login from './components/Login'
@@ -58,6 +59,17 @@ const musicFacts = [
   "Flowers can grow faster if you play music around them."
 ];
 
+const musicImages = [
+  'https://images.squarespace-cdn.com/content/v1/58125982e58c62bc08948096/1502130562840-XIPRQ7TNS7VUH25ZGLF6/image-asset.jpeg', 
+  'https://www.beatoven.ai/blog/wp-content/uploads/2024/11/20241115-125147-768x768.jpeg', 
+  'https://res.cloudinary.com/jerrick/image/upload/d_642250b563292b35f27461a7.png,f_jpg,fl_progressive,q_auto,w_1024/6746ec796cc045001dc39b5a.jpg', 
+  'https://live-production.wcms.abc-cdn.net.au/a362273509f7eccdcf362bb73b3b006d?impolicy=wcms_crop_resize&cropH=788&cropW=1400&xPos=0&yPos=0&width=862&height=485', 
+  'https://img.freepik.com/free-photo/3d-music-related-scene_23-2151124956.jpg?t=st=1769270576~exp=1769274176~hmac=96882f278d6c39641178ddf8021c2bd86791a3173d99842e9ab53011ab3b17d6', 
+  'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60', 
+  'https://img.freepik.com/premium-photo/glowing-neon-lines-tunnel-3d-rendering_778569-3582.jpg?semt=ais_user_personalization&w=740&q=80', 
+  'https://www.wipo.int/documents/102028/103632/creative+industries-blog-music-sampling-960.jpg'  
+]
+
 function App() {
   const { user, login, logout, updateUser, isLoading: authLoading } = useAuth()
   const [showLoader, setShowLoader] = useState(true)
@@ -67,12 +79,31 @@ function App() {
   const [favorites, setFavorites] = useState([])
   const [moodHistory, setMoodHistory] = useState([])
   const [showProfileNav, setShowProfileNav] = useState(false)
+  const [openProfileEdit, setOpenProfileEdit] = useState(false)
   const [randomFact, setRandomFact] = useState('')
+
+  // Debug user state changes
+  useEffect(() => {
+    console.log('App: user state changed to:', user)
+    console.log('App: user is truthy?', !!user)
+    console.log('App: showLoader =', showLoader, 'authLoading =', authLoading)
+  }, [user, showLoader, authLoading])
   const [titleHover, setTitleHover] = useState(false)
-  const [typewriterHover, setTypewriterHover] = useState(false)
+
+  // Image carousel state
+  const [currentImageIndex, setCurrentImageIndex] = useState(0)
 
   useEffect(() => {
     setRandomFact(musicFacts[Math.floor(Math.random() * musicFacts.length)])
+  }, [])
+
+  // Image carousel effect
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % musicImages.length)
+    }, 4000) // Change image every 4 seconds
+
+    return () => clearInterval(interval)
   }, [])
 
   // Typewriter state
@@ -170,11 +201,11 @@ function App() {
   }
 
   const moodEmojis = {
-    happy: '😊',
-    sad: '😢',
-    energetic: '⚡',
-    romantic: '💘',
-    chill: '🌙',
+    happy: '🤠',
+    sad: '🥺',
+    energetic: '🥳',
+    romantic: '🥰',
+    chill: '😎',
     angry: '😤'
   }
 
@@ -223,19 +254,32 @@ function App() {
       {!showLoader && !authLoading ? (
         <>
           {!user ? (
-            <Login onLoginSuccess={(userData) => {
+            <Login onLoginSuccess={(userData, options) => {
+              console.log('App: onLoginSuccess called with:', userData, options)
               login(userData)
               setActiveTab('home')
               setCurrentMood(null)
+              if (options && options.openProfile) {
+                setOpenProfileEdit(true)
+                setShowProfileNav(true)
+              }
+              console.log('App: After login, user should be set')
             }} />
           ) : (
             <div className="app-root music-hacker">
               {/* Profile Navigation Sidebar */}
               {showProfileNav && (
-                <ProfileNav user={user} onClose={() => setShowProfileNav(false)} onUpdateUser={updateUser} onLogout={() => {
-                  logout()
-                  setShowProfileNav(false)
-                }} />
+                <ProfileNav
+                  user={user}
+                  openInEdit={openProfileEdit}
+                  onClose={() => { setShowProfileNav(false); setOpenProfileEdit(false) }}
+                  onUpdateUser={updateUser}
+                  onLogout={() => {
+                    logout()
+                    setShowProfileNav(false)
+                    setOpenProfileEdit(false)
+                  }}
+                />
               )}
 
               {/* Background animated elements - Only music notes */}
@@ -306,16 +350,29 @@ function App() {
                 <>
                   <div className="home-details-container" style={{ maxWidth: '1200px', margin: '0 auto', padding: '2rem 1rem' }}>
                     {/* Hero Section with Context */}
-                    <div style={{ textAlign: 'center', padding: '3rem 2rem', marginBottom: '2rem' }}>
-                      <h1 className="home-hero-title" onMouseEnter={() => setTitleHover(true)} onMouseLeave={() => setTitleHover(false)} style={{ transform: titleHover ? 'scale(1.05)' : 'scale(1)', transition: 'transform 0.3s ease' }}>🎵 Music Mood Matcher 🎵</h1>
+                    <div style={{ textAlign: 'center', padding: '1.5rem 2rem', marginBottom: '2rem' }}>
+                      <h1 className="home-hero-title aurora-text" onMouseEnter={() => setTitleHover(true)} onMouseLeave={() => setTitleHover(false)} style={{ transform: titleHover ? 'scale(1.05)' : 'scale(1)', transition: 'transform 0.3s ease' }}>🎵 Music Mood Matcher 🎵</h1>
                       <p className="home-hero-subtitle">
                         Discover the perfect music for your mood. Select how you feel or let our AI detect your emotion, and we'll suggest songs tailored just for you.
                       </p>
 
+                      {/* Image Carousel */}
+                      <div className="image-carousel">
+                        <div className="carousel-container">
+                          <img 
+                            key={currentImageIndex}
+                            src={musicImages[currentImageIndex]} 
+                            alt="Music visualization" 
+                            className="carousel-image" 
+                            loading="lazy" 
+                          />
+                        </div>
+                      </div>
+
                       {/* Typewriter Section */}
                       <h2 className="typewriter-label">Did you know?</h2>
-                      <div className="typewriter-container" onMouseEnter={() => setTypewriterHover(true)} onMouseLeave={() => setTypewriterHover(false)}>
-                        <span className="typewriter-text" style={{ filter: typewriterHover ? 'drop-shadow(0 0 10px rgba(0, 229, 255, 0.8))' : 'none', transition: 'filter 0.3s ease' }}>{typeText}</span>
+                      <div className="typewriter-container">
+                        <span className="typewriter-text">{typeText}</span>
                         <span className="typewriter-cursor">▌</span>
                       </div>
                     </div>
@@ -329,7 +386,7 @@ function App() {
                         transition={{ duration: 0.5 }}
                         viewport={{ once: true }}
                       >
-                        <div className="beauty-icon emoji-pop">🎧</div>
+                        <FaHeadphones className="beauty-icon" />
                         <h3>Discover Music</h3>
                         <p>Select a mood and find songs that match your vibe</p>
                       </motion.div>
@@ -341,7 +398,7 @@ function App() {
                         transition={{ duration: 0.5, delay: 0.1 }}
                         viewport={{ once: true }}
                       >
-                        <div className="beauty-icon emoji-pop">🤖</div>
+                        <FaRobot className="beauty-icon" />
                         <h3>AI Detection</h3>
                         <p>Let your webcam detect your mood automatically</p>
                       </motion.div>
@@ -353,7 +410,7 @@ function App() {
                         transition={{ duration: 0.5, delay: 0.2 }}
                         viewport={{ once: true }}
                       >
-                        <div className="beauty-icon emoji-pop">❤️</div>
+                        <FaHeart className="beauty-icon" />
                         <h3>Save Favorites</h3>
                         <p>Build your personal music collection</p>
                       </motion.div>
@@ -365,7 +422,7 @@ function App() {
                         transition={{ duration: 0.5, delay: 0.3 }}
                         viewport={{ once: true }}
                       >
-                        <div className="beauty-icon emoji-pop">🌍</div>
+                        <FaGlobe className="beauty-icon" />
                         <h3>3 Languages</h3>
                         <p>English, Hindi & Bengali songs available</p>
                       </motion.div>
@@ -377,7 +434,7 @@ function App() {
                         transition={{ duration: 0.5, delay: 0.4 }}
                         viewport={{ once: true }}
                       >
-                        <div className="beauty-icon emoji-pop">🎵</div>
+                        <FaMusic className="beauty-icon" />
                         <h3>Perfect Playlists</h3>
                         <p>Curated songs for every emotional state</p>
                       </motion.div>
@@ -389,7 +446,7 @@ function App() {
                         transition={{ duration: 0.5, delay: 0.5 }}
                         viewport={{ once: true }}
                       >
-                        <div className="beauty-icon emoji-pop">🔒</div>
+                        <FaLock className="beauty-icon" />
                         <h3>Private & Fast</h3>
                         <p>Your data stays on your device, always</p>
                       </motion.div>
@@ -397,10 +454,10 @@ function App() {
                   </div>
 
                   <div className="mood-selection-header" style={{ textAlign: 'center', marginTop: '4rem', marginBottom: '2rem' }}>
-                    <h2 style={{ fontSize: '2.2rem', color: 'var(--primary)', fontWeight: '800', textTransform: 'uppercase', letterSpacing: '2px' }}>
-                      Select Your Current Mood
+                    <h2 className="aurora-text-2" style={{ fontSize: '2.2rem' }}>
+                      <img src="https://cdn-icons-png.flaticon.com/128/10190/10190892.png" alt="music icon" style={{ width: '24px', height: '24px', marginRight: '8px' }} /> Select Your Current Mood <img src="https://cdn-icons-png.flaticon.com/128/10190/10190892.png" alt="music icon" style={{ width: '24px', height: '24px', marginLeft: '8px' }} />
                     </h2>
-                    <p style={{ color: 'var(--text-muted)', marginTop: '0.5rem' }}>Choose a vibe to get personalized song recommendations</p>
+                    <p style={{ color: 'var(--text-muted)', marginTop: '0.5rem' }}>🔥 Choose a vibe to get personalized song recommendations 🔥</p>
                   </div>
 
                   <section className="moods">
@@ -438,13 +495,14 @@ function App() {
                   )}
 
                   <main className="songs-area">
-                    {!currentMood && <p className="hint">🎧 Select a mood above to explore songs</p>}
+                    {!currentMood && <p className="hint aurora-text-2">🎧 Select a mood above to explore songs 🎧</p>}
 
                     {currentMood && (
                       <>
                         <h2 className="mood-title">
                           <span className="mood-emoji-header emoji-pop">{moodEmojis[currentMood]}</span>
                           <span className="mood-text">{currentMood.toUpperCase()} Vibes</span>
+                          <span className="mood-emoji-header emoji-pop">{moodEmojis[currentMood]}</span>
                         </h2>
                         <p className="mood-description-text">
                           {moodDetails[currentMood]}
@@ -889,7 +947,7 @@ function App() {
               <footer className="footer">
                 <div className="footer-content">
                   <p className="footer-creators">
-                    Made with <span className="heart-emoji">❤️</span> by Babin & Debasmita
+                    Made with <span className="heart-emoji">❤️</span> by <span className="aurora-text-3">Babin</span> &amp; <span className="aurora-text-3">Debasmita</span>
                   </p>
                   <div className="footer-links">
                     <span
@@ -938,7 +996,16 @@ function App() {
           fontSize: '1.5rem',
           zIndex: 1
         }}>
-          Loading...
+          <div style={{ textAlign: 'center' }}>
+            <h2>Debug Info</h2>
+            <p>showLoader: {showLoader ? 'true' : 'false'}</p>
+            <p>authLoading: {authLoading ? 'true' : 'false'}</p>
+            <p>user: {user ? 'logged in' : 'null'}</p>
+            <p>user details: {user ? JSON.stringify(user, null, 2) : 'N/A'}</p>
+            <button onClick={() => {
+              console.log('Manual debug - current state:', { showLoader, authLoading, user })
+            }}>Log Debug Info</button>
+          </div>
         </div>
       )}
     </>
