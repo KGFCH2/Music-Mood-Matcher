@@ -6,7 +6,6 @@ import App from './App.jsx'
 import { AuthProvider } from './context/AuthContext'
 import './serviceWorkerRegister'
 
-// Force global dark mode for the app
 document.documentElement.setAttribute('data-theme', 'dark')
 
 createRoot(document.getElementById('root')).render(

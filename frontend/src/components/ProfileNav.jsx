@@ -25,12 +25,9 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
     const [deleteConfirmText, setDeleteConfirmText] = useState('')
 
-    // Initialize EmailJS
     useEffect(() => {
         emailjs.init('yvSwGRuksv7zAychI')
     }, [])
-
-    // (Theme toggle removed from profile panel)
 
     const generateVerificationCode = () => {
         return Math.random().toString(36).substring(2, 8).toUpperCase()
@@ -42,13 +39,11 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
             const TEMPLATE_ID = 'template_hz19s08'
             const PUBLIC_KEY = 'yvSwGRuksv7zAychI'
 
-            // Validate email before sending
             if (!email || !email.includes('@')) {
                 console.error('Invalid email format:', email)
                 return false
             }
 
-            // Template variables with multiple names for compatibility
             const templateParams = {
                 to_email: email,
                 recipient_email: email,
@@ -94,9 +89,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
 
         setVerificationError('')
 
-        // Check if email changed
         if (newEmail && newEmail !== user?.email && newEmail.trim()) {
-            // Send verification email for new email
             const code = generateVerificationCode()
             setNewVerificationCode(code)
             setVerificationInputCode('')
@@ -108,14 +101,13 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
             setVerificationDialogEmail(newEmail)
             setShowVerificationDialog(true)
         } else {
-            // No email change, just update other details
+            
             const updatedUser = {
                 ...user,
                 userName: editedName,
                 gender: editingGender
             }
 
-            // If user provided a new password, validate and hash it
             if (newPassword && newPassword.trim()) {
                 const { isStrong } = validatePasswordStrength(newPassword)
                 if (!isStrong) {
@@ -140,7 +132,6 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
             setIsEditingName(false)
             setVerificationError('')
 
-            // clear password fields
             setNewPassword('')
             setConfirmNewPassword('')
 
@@ -158,9 +149,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
             return
         }
 
-        // Verify code matches
         if (verificationInputCode.toUpperCase() === newVerificationCode) {
-            // Email verified successfully
             const updatedUser = {
                 ...user,
                 userName: editedName,
@@ -200,7 +189,6 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
         }
     }
 
-    // If parent requests opening profile in edit mode, enable editing
     useEffect(() => {
         if (openInEdit) {
             setIsEditingName(true)
@@ -281,19 +269,13 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
     }
 
     const handleDeleteAccount = () => {
-        // Verify user typed "DELETE"
         if (deleteConfirmText.toUpperCase() !== 'DELETE') {
             setVerificationError('Please type "DELETE" to confirm account deletion')
             return
         }
 
-        // Get all registered users from localStorage
         const registeredUsers = JSON.parse(localStorage.getItem('musicMoodUsers') || '[]')
-
-        // Remove current user from the list
         const updatedUsers = registeredUsers.filter(u => u.email !== user?.email)
-
-        // Update localStorage with remaining users
         localStorage.setItem('musicMoodUsers', JSON.stringify(updatedUsers))
 
         // Remove current user session
