@@ -135,7 +135,7 @@ export default function Login({ onLoginSuccess }) {
                 color: feedback.color
             })
         }
-        
+
         if (registerData.confirmPassword) {
             validateConfirmPassword(registerData.confirmPassword, password)
         }
@@ -160,7 +160,7 @@ export default function Login({ onLoginSuccess }) {
         const code = value.toUpperCase().replace(/[^A-Z0-9]/g, '')
         setVerificationInputCode(code)
 
-        
+
         if (code.length === 6) {
             setTimeout(() => {
                 const user = registeredUsers.find(u => u.email === verificationDialogEmail)
@@ -193,7 +193,7 @@ export default function Login({ onLoginSuccess }) {
                 u.email === verificationDialogEmail ? verifiedUser : u
             )
             setRegisteredUsers(updatedUsers)
-            
+
             await secureStorage.setRegisteredUsers(updatedUsers)
             secureStorage.setUserInfo(verifiedUser)
 
