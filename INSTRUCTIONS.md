@@ -2,8 +2,8 @@
 
 Summary:
 
-- This repository contains a frontend React application (Vite) and an optional backend scaffold for API endpoints.
-- Large model files are not tracked to keep the repository lightweight; if you need them, place them in `frontend/public/models/`.
+- 🔧 This repository contains a frontend React application (Vite) and an optional backend scaffold for API endpoints.
+- 📁 Large model files are not tracked to keep the repository lightweight; if you need them, place them in `frontend/public/models/`.
 
 Quick setup
 
@@ -84,28 +84,28 @@ GET    /api/user/favorites      → Get all favorites
 | Component | File | Status | Notes |
 |-----------|------|--------|-------|
 | **App** | `App.jsx` | ✅ Complete | Main app, lazy loads MoodWebcam |
-| **Login** | `Login.jsx` | ✅ Complete | Email-based authentication with demo accounts |
-| **MoodWebcam** | `MoodWebcam.jsx` | ✅ Complete | Face detection with face-api.js |
-| **ProfileNav** | `ProfileNav.jsx` | ✅ Complete | User profile panel with editable name and gender, email verification flow, theme toggle, login history, logout and delete account actions |
-| **DemoGuide** | `DemoGuide.jsx` | ✅ Complete | Demo mode selector |
-| **Loader** | `Loader.jsx` | ✅ Complete | Intro animation |
-| **HomeTab** | `HomeTab.jsx` | ✅ Complete | Basic mood selector |
-| **HistoryTab** | `HistoryTab.jsx` | ✅ Complete | Mood history display |
-| **FavoritesTab** | `FavoritesTab.jsx` | ✅ Complete | Favorites list |
+| **Login** | `Login.jsx` | ✅ Complete | 📧 Email-based authentication with demo accounts |
+| **MoodWebcam** | `MoodWebcam.jsx` | ✅ Complete | 🤖 Face detection with face-api.js |
+| **ProfileNav** | `ProfileNav.jsx` | ✅ Complete | 👤 User profile panel with editable name and gender, email verification flow, theme toggle, login history, logout and delete account actions |
+| **DemoGuide** | `DemoGuide.jsx` | ✅ Complete | 🎭 Demo mode selector |
+| **Loader** | `Loader.jsx` | ✅ Complete | ⏳ Intro animation |
+| **HomeTab** | `HomeTab.jsx` | ✅ Complete | 🎵 Basic mood selector |
+| **HistoryTab** | `HistoryTab.jsx` | ✅ Complete | 📊 Mood history display |
+| **FavoritesTab** | `FavoritesTab.jsx` | ✅ Complete | ❤️ Favorites list |
 
 ### Backend Services
 
 | Service | File | Status | Notes |
 |---------|------|--------|-------|
-| **Database** | `db.js` | ✅ Complete | MongoDB connection via Mongoose |
-| **Auth Controller** | `authController.js` | ✅ Complete | Register, login, profile |
-| **User Controller** | `userController.js` | ✅ Complete | Favorites, mood history, stats |
-| **Auth Middleware** | `middleware/auth.js` | ✅ Complete | JWT verification |
-| **Error Handler** | `middleware/errorHandler.js` | ✅ Complete | Consistent error responses |
-| **User Model** | `models/User.js` | ✅ Complete | Schema with favorites & preferences |
-| **MoodHistory Model** | `models/MoodHistory.js` | ✅ Complete | Schema with auto-delete (90 days) |
-| **Auth Routes** | `routes/authRoutes.js` | ✅ Complete | Register, login, profile endpoints |
-| **User Routes** | `routes/userRoutes.js` | ✅ Complete | Favorites, mood history endpoints |
+| **Database** | `db.js` | ✅ Complete | 🗄️ MongoDB connection via Mongoose |
+| **Auth Controller** | `authController.js` | ✅ Complete | 🔐 Register, login, profile |
+| **User Controller** | `userController.js` | ✅ Complete | 👤 Favorites, mood history, stats |
+| **Auth Middleware** | `middleware/auth.js` | ✅ Complete | 🛡️ JWT verification |
+| **Error Handler** | `middleware/errorHandler.js` | ✅ Complete | ⚠️ Consistent error responses |
+| **User Model** | `models/User.js` | ✅ Complete | 📋 Schema with favorites & preferences |
+| **MoodHistory Model** | `models/MoodHistory.js` | ✅ Complete | 📈 Schema with auto-delete (90 days) |
+| **Auth Routes** | `routes/authRoutes.js` | ✅ Complete | 🚪 Register, login, profile endpoints |
+| **User Routes** | `routes/userRoutes.js` | ✅ Complete | 🎵 Favorites, mood history endpoints |
 
 ---
 
@@ -236,16 +236,16 @@ NODE_ENV=production
 
 ## 📊 Project Stats
 
-| Metric | Value |
+| 📊 Metric | Value |
 |--------|-------|
-| **Frontend Code** | ~4000 lines |
-| **Backend Code** | ~400 lines |
-| **Total Components** | 10 |
-| **Build Size** | ~70 KB (gzipped) |
-| **Songs Database** | 150+ tracks |
-| **Supported Languages** | 3 (English, Hindi, Bengali) |
-| **Mood Categories** | 6 |
-| **Data Storage** | Browser localStorage |
+| Frontend Code | ~4000 lines |
+| Backend Code | ~400 lines |
+| Total Components | 10 |
+| Build Size | ~70 KB (gzipped) |
+| Songs Database | 150+ tracks |
+| Supported Languages | 3 (English, Hindi, Bengali) |
+| Mood Categories | 6 |
+| Data Storage | Browser localStorage |
 
 ---
 
