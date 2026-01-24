@@ -37,9 +37,15 @@ export function AuthProvider({ children }) {
             isDemo: userData.isDemo || false
         }
 
+        console.log('AuthContext: Setting user to:', safeUserData)
         setUser(safeUserData)
-        secureStorage.setUserInfo(safeUserData)
-        secureStorage.setSessionData('currentUser', safeUserData)
+
+        try {
+            secureStorage.setUserInfo(safeUserData)
+            secureStorage.setSessionData('currentUser', safeUserData)
+        } catch (error) {
+            console.error('AuthContext: Failed to persist user data:', error)
+        }
     }
 
     const updateUser = async (updatedData) => {
@@ -60,11 +66,13 @@ export function AuthProvider({ children }) {
         secureStorage.setUserInfo(safeUserData)
         secureStorage.setSessionData('currentUser', safeUserData)
 
-        // Also update in the users list if email matches
+        // Also update in the users list if email matches; include any sensitive fields (like passwordHash) so secureStorage can encrypt them
         try {
             const savedUsers = await secureStorage.getRegisteredUsers()
             if (savedUsers) {
-                const updatedUsers = savedUsers.map(u => u.email === user.email ? { ...u, ...safeUserData } : u)
+                const updatedUsers = savedUsers.map(u =>
+                    u.email === user.email ? { ...u, ...updated } : u
+                )
                 await secureStorage.setRegisteredUsers(updatedUsers)
             }
         } catch (error) {
