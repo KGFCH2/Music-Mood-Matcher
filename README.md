@@ -11,10 +11,11 @@ Your personal DJ in a browser. 🎧 Discover the perfect soundtrack for every em
 
 ## 🛠️ Recent Changes
 
-- 📱 Mobile Friendly Improvements Added Including Compact Navigation And Layout Tweaks
-- 🚪 Logout Button Moved Into Profile Details For Easier Access On Mobile
-- 🎯 Navbar Brand Focus Uses `:focus-visible` To Preserve Keyboard Accessibility While Removing Click Outline
-- ♿ Minor Styling And Accessibility Fixes
+- 🎨 Added multiple aurora text effects for enhanced visual appeal
+- 📱 Adjusted hero section positioning for better layout
+- 🔧 Improved CSS with additional aurora variations and styling fixes
+- 📝 Updated documentation and project structure
+- 🚀 Enhanced user interface with smooth animations and effects
 
 ---
 
@@ -36,8 +37,7 @@ npm run dev        # Starts on http://localhost:5173
 | 🎵 **150+ Hits** | Multi-language collection in English, Hindi & Bengali |
 | 🎭 **6 Mood Vibes** | Happy, Sad, Energetic, Romantic, Chill, Angry |
 | 🤖 **AI DJ Mode** | Webcam detects your mood & auto-generates playlists |
-| 💕 **Crush Mode** | Fun quiz to create the perfect playlist for your bae |
-| 👤 **VIP Access** | Secure login with encrypted credentials |
+|  **VIP Access** | Secure login with encrypted credentials |
 | ⭐ **Your Collection** | Save favorites, track your mood over time |
 | 📊 **Mood Analytics** | See your emotional music journey |
 | 📻 **Offline Radio** | Works offline with service worker caching |
@@ -106,7 +106,12 @@ cd frontend
 npm install
 npm run dev        # Starts on http://localhost:5173
 ```
-
+### Backend Setup
+```bash
+cd backend
+npm install
+npm start          # Starts the server on port 5000
+```
 🎵 Your personal DJ is ready to rock!
 
 ---
@@ -242,11 +247,6 @@ Each user has **completely isolated data**.
 - Privacy-focused (no data sent to servers)
 - Models loaded from CDN (jsDelivr) automatically
 
-### Crush Mode
-- Answer 4 fun questions
-- AI maps answers to mood
-- Creates personalized playlist
-
 ---
 
 ## 📦 Building & Deployment
@@ -377,4 +377,4 @@ Personal use - See [LICENSE](LICENSE) file
 
 ---
 
-🎵 **Last Updated:** January 23, 2026 | **Version:** 2.4 - Frontend Mobile And Accessibility Updates 🎵
+🎵 **Last Updated:** January 24, 2026 | **Version:** 2.5 - Aurora Effects and UI Enhancements 🎵
