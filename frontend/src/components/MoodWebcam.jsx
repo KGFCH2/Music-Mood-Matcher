@@ -67,26 +67,39 @@ function MoodWebcam() {
     }
 
     try {
-      const detections = await faceapi.detectSingleFace(
+      const detections = await faceapi.detectAllFaces(
         video,
         new faceapi.TinyFaceDetectorOptions()
       ).withFaceExpressions();
 
-      if (!detections) {
+      if (!detections || detections.length === 0) {
         setDetectedMood(null);
         setPlaylist([]);
         setFeedback('No face detected. Please face the camera.');
         return;
       }
 
-      // Check for valid box dimensions to prevent face-api internal errors
-      if (!detections.detection || !detections.detection.box ||
-        detections.detection.box.width === 0 ||
-        detections.detection.box.height === 0) {
+      // Take the first detection and validate it
+      const detection = detections[0];
+
+      if (!detection || !detection.detection || !detection.detection.box) {
+        setDetectedMood(null);
+        setPlaylist([]);
+        setFeedback('Invalid face detection. Please try again.');
         return;
       }
-      if (detections && detections.expressions) {
-        const sorted = Object.entries(detections.expressions).sort((a, b) => b[1] - a[1]);
+
+      const box = detection.detection.box;
+      if (typeof box.x !== 'number' || typeof box.y !== 'number' ||
+        typeof box.width !== 'number' || typeof box.height !== 'number' ||
+        box.width <= 0 || box.height <= 0 || box.x < 0 || box.y < 0) {
+        setDetectedMood(null);
+        setPlaylist([]);
+        setFeedback('Invalid face detection data. Try adjusting your position.');
+        return;
+      }
+      if (detection && detection.expressions) {
+        const sorted = Object.entries(detection.expressions).sort((a, b) => b[1] - a[1]);
         const topExpression = sorted[0][0];
         // show the raw detected expression (happy, sad, neutral, etc.) to the user
         setDetectedMood(topExpression);

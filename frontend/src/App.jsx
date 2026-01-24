@@ -1,6 +1,6 @@
 import { useEffect, useState, lazy, Suspense } from 'react'
 import { motion } from 'framer-motion'
-import { FaHeadphones, FaRobot, FaHeart, FaGlobe, FaMusic, FaLock } from 'react-icons/fa'
+import { FaHeadphones, FaRobot, FaHeart, FaGlobe, FaMusic, FaLock, FaHome, FaHistory } from 'react-icons/fa'
 import { songs, moods } from './data/songs'
 import Loader from './components/Loader'
 import Login from './components/Login'
@@ -82,12 +82,7 @@ function App() {
   const [openProfileEdit, setOpenProfileEdit] = useState(false)
   const [randomFact, setRandomFact] = useState('')
 
-  // Debug user state changes
-  useEffect(() => {
-    console.log('App: user state changed to:', user)
-    console.log('App: user is truthy?', !!user)
-    console.log('App: showLoader =', showLoader, 'authLoading =', authLoading)
-  }, [user, showLoader, authLoading])
+  // Debug user state changes - removed for production
   const [titleHover, setTitleHover] = useState(false)
 
   // Image carousel state
@@ -248,14 +243,14 @@ function App() {
   return (
     <>
       {(showLoader || authLoading) && <Loader onDone={() => {
-        console.log('Loader done, hiding loader')
+        // console.log('Loader done, hiding loader')
         setShowLoader(false)
       }} introDuration={800} />}
       {!showLoader && !authLoading ? (
         <>
           {!user ? (
             <Login onLoginSuccess={(userData, options) => {
-              console.log('App: onLoginSuccess called with:', userData, options)
+              // console.log('App: onLoginSuccess called with:', userData, options)
               login(userData)
               setActiveTab('home')
               setCurrentMood(null)
@@ -263,7 +258,7 @@ function App() {
                 setOpenProfileEdit(true)
                 setShowProfileNav(true)
               }
-              console.log('App: After login, user should be set')
+              // console.log('App: After login, user should be set')
             }} />
           ) : (
             <div className="app-root music-hacker">
@@ -307,19 +302,19 @@ function App() {
                   </div>
                   <div className="nav-menu">
                     <button className={`nav-btn ${activeTab === 'home' ? 'active' : ''}`} onClick={() => { setActiveTab('home'); setCurrentMood(null); }}>
-                      <span className="emoji-pop emoji-home">🏠</span>
+                      <FaHome className="nav-icon" />
                       <span className="nav-text">Home</span>
                     </button>
                     <button className={`nav-btn ${activeTab === 'favorites' ? 'active' : ''}`} onClick={() => setActiveTab('favorites')}>
-                      <span className="emoji-pop emoji-favorites">❤️</span>
+                      <FaHeart className="nav-icon" />
                       <span className="nav-text">Favorites ({favorites.length})</span>
                     </button>
                     <button className={`nav-btn ${activeTab === 'history' ? 'active' : ''}`} onClick={() => setActiveTab('history')}>
-                      <span className="emoji-pop emoji-stats">📊</span>
+                      <FaHistory className="nav-icon" />
                       <span className="nav-text">History</span>
                     </button>
                     <button className={`nav-btn ${activeTab === 'ai-mood' ? 'active' : ''}`} onClick={() => setActiveTab('ai-mood')}>
-                      <span className="emoji-pop emoji-ai">🤖</span>
+                      <FaRobot className="nav-icon" />
                       <span className="nav-text">AI Mood</span>
                     </button>
                     {/* Crush Mode removed */}
@@ -661,10 +656,16 @@ function App() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <h2>
-                    <span className="tab-emoji emoji-pop emoji-about">ℹ️</span>
-                    <span className="tab-text">About Music Mood Matcher</span>
-                  </h2>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
+                    <div></div> {/* spacer */}
+                    <h2>
+                      <span className="tab-emoji emoji-pop emoji-about">ℹ️</span>
+                      <span className="tab-text">About Music Mood Matcher</span>
+                    </h2>
+                    <button className="back-btn" onClick={() => setActiveTab('home')} title="Back to Home">
+                      <span className="back-icon">⬅️</span>
+                    </button>
+                  </div>
                   <div className="about-content">
                     <p>
                       🎵 <strong>Music Mood Matcher</strong> is your personal music companion that matches your mood with curated songs!
@@ -713,10 +714,16 @@ function App() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <h2>
-                    <span className="tab-emoji emoji-pop emoji-privacy">🔒</span>
-                    <span className="tab-text">Privacy Policy</span>
-                  </h2>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
+                    <div></div> {/* spacer */}
+                    <h2>
+                      <span className="tab-emoji emoji-pop emoji-privacy">🔒</span>
+                      <span className="tab-text">Privacy Policy</span>
+                    </h2>
+                    <button className="back-btn" onClick={() => setActiveTab('home')} title="Back to Home">
+                      <span className="back-icon">⬅️</span>
+                    </button>
+                  </div>
                   <div className="about-content">
                     <p><strong>Last Updated: December 2025</strong></p>
 
@@ -785,10 +792,16 @@ function App() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <h2>
-                    <span className="tab-emoji emoji-pop emoji-terms">📋</span>
-                    <span className="tab-text">Terms of Service</span>
-                  </h2>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
+                    <div></div> {/* spacer */}
+                    <h2>
+                      <span className="tab-emoji emoji-pop emoji-terms">📋</span>
+                      <span className="tab-text">Terms of Service</span>
+                    </h2>
+                    <button className="back-btn" onClick={() => setActiveTab('home')} title="Back to Home">
+                      <span className="back-icon">⬅️</span>
+                    </button>
+                  </div>
                   <div className="about-content">
                     <p><strong>Last Updated: December 2025</strong></p>
 
@@ -847,10 +860,16 @@ function App() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <h2>
-                    <span className="tab-emoji emoji-pop emoji-faq">❓</span>
-                    <span className="tab-text">Frequently Asked Questions</span>
-                  </h2>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
+                    <div></div> {/* spacer */}
+                    <h2>
+                      <span className="tab-emoji emoji-pop emoji-faq">❓</span>
+                      <span className="tab-text">Frequently Asked Questions</span>
+                    </h2>
+                    <button className="back-btn" onClick={() => setActiveTab('home')} title="Back to Home">
+                      <span className="back-icon">⬅️</span>
+                    </button>
+                  </div>
                   <div className="about-content">
 
                     <h3>General Questions</h3>
@@ -1003,7 +1022,7 @@ function App() {
             <p>user: {user ? 'logged in' : 'null'}</p>
             <p>user details: {user ? JSON.stringify(user, null, 2) : 'N/A'}</p>
             <button onClick={() => {
-              console.log('Manual debug - current state:', { showLoader, authLoading, user })
+              // console.log('Manual debug - current state:', { showLoader, authLoading, user })
             }}>Log Debug Info</button>
           </div>
         </div>
