@@ -1,4 +1,4 @@
-# 🎵 Music Mood Matcher - Setup & Cleanup Notes
+# 🎵 Music Mood Matcher - Setup Guide
 
 Last updated: 2026-01-23 — frontend mobile and accessibility updates
 
@@ -96,7 +96,7 @@ GET    /api/user/favorites      → Get all favorites
 | **Login** | `Login.jsx` | ✅ Complete | Email-based auth + demo accounts |
 | **MoodWebcam** | `MoodWebcam.jsx` | ✅ Complete | Face detection with face-api.js |
 | **CrushMode** | `CrushMode.jsx` | ✅ Complete | Quiz-based playlist generator |
-| **ProfileNav** | `ProfileNav.jsx` | ✅ Complete | User profile panel |
+| **ProfileNav** | `ProfileNav.jsx` | ✅ Complete | User profile panel with editable name and gender, email verification flow, theme toggle, login history, logout and delete account actions |
 | **DemoGuide** | `DemoGuide.jsx` | ✅ Complete | Demo mode selector |
 | **Loader** | `Loader.jsx` | ✅ Complete | Intro animation |
 | **HomeTab** | `HomeTab.jsx` | ✅ **FIXED** | Implemented basic mood selector |
@@ -353,4 +353,4 @@ NODE_ENV=production
 
 ---
 
-**Version:** 2.1 | **Updated:** December 21, 2025 | **Status:** Ready for Development ✅
+**Version:** 2.1 | **Updated:** January 23, 2026 | **Status:** Ready for Development ✅
