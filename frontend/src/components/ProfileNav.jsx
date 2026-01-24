@@ -101,7 +101,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
             setVerificationDialogEmail(newEmail)
             setShowVerificationDialog(true)
         } else {
-            
+
             const updatedUser = {
                 ...user,
                 userName: editedName,
