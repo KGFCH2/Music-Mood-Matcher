@@ -16,6 +16,10 @@ Your personal DJ in a browser. 🎧 Discover the perfect soundtrack for every em
 - 🔧 Improved CSS with additional aurora variations and styling fixes
 - 📝 Updated documentation and project structure
 - 🚀 Enhanced user interface with smooth animations and effects
+- 📄 Added copyright notice to main footer
+- 🗑️ Removed duplicate copyright lines from individual page footers
+- 📱 Improved mobile responsiveness for tab headings (About, FAQ, etc.)
+- 🔤 Reduced font sizes for specific informational tab headings
 
 ---
 
