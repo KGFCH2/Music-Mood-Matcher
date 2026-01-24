@@ -100,6 +100,67 @@
     background: transparent !important;
 }
 
+/* New-password inputs: use gray text and placeholders for visibility */
+.profile-nav-panel .new-password-input {
+    color: #b0b0b0 !important;
+}
+
+/* Stronger override for dark-theme form-input rules so new-password fields appear gray */
+[data-theme="dark"] .profile-nav-panel .section-content .info-row input.new-password-input,
+[data-theme="dark"] .profile-nav-panel .section-content .info-row input[type="password"].new-password-input {
+    color: #b0b0b0 !important;
+}
+
+[data-theme="dark"] .profile-nav-panel .section-content .info-row input.new-password-input::placeholder,
+[data-theme="dark"] .profile-nav-panel .section-content .info-row input.new-password-input::-webkit-input-placeholder,
+[data-theme="dark"] .profile-nav-panel .section-content .info-row input.new-password-input::-moz-placeholder,
+[data-theme="dark"] .profile-nav-panel .section-content .info-row input.new-password-input:-ms-input-placeholder {
+    color: rgba(176, 176, 176, 0.95) !important;
+    opacity: 1 !important;
+}
+
+.profile-nav-panel .new-password-input::placeholder,
+.profile-nav-panel .new-password-input::-webkit-input-placeholder,
+.profile-nav-panel .new-password-input::-moz-placeholder,
+.profile-nav-panel .new-password-input:-ms-input-placeholder {
+    color: rgba(176, 176, 176, 0.95) !important;
+    opacity: 1 !important;
+}
+
+/* Strongest overrides for input text, placeholder and autofill across browsers */
+.profile-nav-panel input.form-input.new-password-input,
+.profile-nav-panel input.form-input.new-password-input::placeholder,
+.profile-nav-panel input.form-input.new-password-input::-webkit-input-placeholder,
+.profile-nav-panel input.form-input.new-password-input::-moz-placeholder,
+.profile-nav-panel input.form-input.new-password-input:-ms-input-placeholder {
+    color: #b0b0b0 !important;
+    -webkit-text-fill-color: #b0b0b0 !important;
+    opacity: 1 !important;
+}
+
+/* Autofill (Chrome) */
+.profile-nav-panel input.form-input.new-password-input:-webkit-autofill,
+.profile-nav-panel input.form-input.new-password-input:-webkit-autofill:hover,
+.profile-nav-panel input.form-input.new-password-input:-webkit-autofill:focus {
+    -webkit-text-fill-color: #b0b0b0 !important;
+    box-shadow: 0 0 0px 1000px transparent inset !important;
+    background-color: transparent !important;
+}
+
+/* Ensure high contrast in case a parent rule forces opacity */
+.profile-nav-panel input.form-input.new-password-input {
+    color: #b0b0b0 !important;
+    opacity: 1 !important;
+}
+
+/* Warning style for weak new password message */
+.password-warning {
+    margin: 0.5rem 1.2rem 0 1.2rem;
+    color: #ffb74d;
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+
 @media (prefers-color-scheme: dark) {
 
     .profile-nav-panel .form-input,
@@ -109,29 +170,47 @@
     }
 }
 
+/* Label color for password section (theme-aware) */
+.info-label {
+    font-weight: 500;
+    color: #000000;
+    /* light mode default: black */
+}
+
+[data-theme="dark"] .profile-nav-panel .info-label {
+    color: #b0b0b0 !important;
+    /* dark mode: gray */
+}
+
 /* Placeholder color overrides for inputs inside profile panel */
 .profile-nav-panel .form-input::placeholder {
-    color: rgba(0, 0, 0, 0.45) !important;
-    /* default for light-like backgrounds */
+    color: #000000 !important;
+    /* light mode placeholder: black */
+    opacity: 1 !important;
 }
 
 .profile-nav-panel .form-input::-webkit-input-placeholder {
-    color: rgba(0, 0, 0, 0.45) !important;
+    color: #000000 !important;
+    opacity: 1 !important;
 }
 
 .profile-nav-panel .form-input::-moz-placeholder {
-    color: rgba(0, 0, 0, 0.45) !important;
+    color: #000000 !important;
+    opacity: 1 !important;
 }
 
 .profile-nav-panel .form-input:-ms-input-placeholder {
-    color: rgba(0, 0, 0, 0.45) !important;
+    color: #000000 !important;
+    opacity: 1 !important;
 }
 
 [data-theme="dark"] .profile-nav-panel .form-input::placeholder,
 [data-theme="dark"] .profile-nav-panel .form-input::-webkit-input-placeholder,
 [data-theme="dark"] .profile-nav-panel .form-input::-moz-placeholder,
 [data-theme="dark"] .profile-nav-panel .form-input:-ms-input-placeholder {
-    color: rgba(255, 255, 255, 0.45) !important;
+    color: rgba(176, 176, 176, 0.95) !important;
+    /* dark mode placeholder: gray */
+    opacity: 1 !important;
 }
 
 /* High-specificity fallback: force a light-style dropdown inside profile panel */
@@ -213,26 +292,7 @@
     gap: 0.5rem;
 }
 
-.theme-toggle-btn {
-    background: var(--button-bg);
-    border: 2px solid var(--button-border);
-    color: var(--text-color);
-    width: 42px;
-    height: 42px;
-    border-radius: 12px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.2rem;
-    transition: all 0.2s ease;
-}
-
-.theme-toggle-btn:hover {
-    background: var(--button-border);
-    color: white;
-    transform: scale(1.05);
-}
+/* theme toggle removed */
 
 /* Stylish Close Button */
 .close-btn-stylish {
@@ -523,7 +583,7 @@
 
 .info-label {
     font-weight: 500;
-    color: var(--text-muted, #b0b0b0);
+    color: #ffffff !important;
 }
 
 .info-value {
@@ -680,7 +740,113 @@
         text-align: left;
         margin-left: 0;
     }
+
+    /* Profile dialogs mobile responsive */
+    .profile-overlay {
+        padding: 1rem;
+        align-items: flex-start;
+    }
+
+    .profile-dialog {
+        width: 95%;
+        max-width: 95%;
+        padding: 1.5rem;
+        max-height: 85vh;
+        margin-top: 2rem;
+    }
+
+    .conflict-dialog-overlay {
+        padding: 1rem;
+        align-items: flex-start;
+    }
+
+    .conflict-dialog {
+        width: 95%;
+        max-width: 95%;
+        padding: 1.5rem;
+        max-height: 85vh;
+        margin-top: 2rem;
+    }
 }
+
+@media (max-width: 480px) {
+    .profile-overlay {
+        padding: 0.5rem;
+    }
+
+    .profile-dialog {
+        width: 98%;
+        max-width: 98%;
+        padding: 1rem;
+        max-height: 80vh;
+        border-radius: 12px;
+        margin-top: 1rem;
+    }
+
+    .conflict-dialog-overlay {
+        padding: 0.5rem;
+    }
+
+    .conflict-dialog {
+        width: 98%;
+        max-width: 98%;
+        padding: 1rem;
+        max-height: 80vh;
+        border-radius: 12px;
+        margin-top: 1rem;
+    }
+
+    /* Ensure delete account content is scrollable on small screens */
+    .profile-dialog div[style*="padding: 2rem"],
+    .conflict-dialog div[style*="padding: 2rem"] {
+        padding: 1rem !important;
+    }
+
+    /* Make input fields more touch-friendly */
+    .profile-dialog input,
+    .conflict-dialog input {
+        padding: 14px !important;
+        font-size: 16px !important;
+        /* Prevents zoom on iOS */
+        min-height: 48px !important;
+    }
+
+    /* Adjust button sizes for touch */
+    .profile-dialog button,
+    .conflict-dialog button {
+        padding: 14px !important;
+        min-height: 48px !important;
+        font-size: 16px !important;
+    }
+
+    /* Stack buttons vertically on very small screens */
+    .profile-dialog div[style*="display: flex"][style*="gap: 10px"],
+    .conflict-dialog div[style*="display: flex"][style*="gap: 10px"] {
+        flex-direction: column !important;
+        gap: 8px !important;
+    }
+
+    /* Adjust warning box padding */
+    .profile-dialog div[style*="background: rgba(255, 107, 107, 0.08)"],
+    .conflict-dialog div[style*="background: rgba(255, 107, 107, 0.08)"] {
+        padding: 0.8rem !important;
+        margin-bottom: 1rem !important;
+    }
+
+    /* Adjust list styling for mobile */
+    .profile-dialog ul,
+    .conflict-dialog ul {
+        padding-left: 1.2rem !important;
+        margin: 0.5rem 0 0 !important;
+    }
+
+    .profile-dialog li,
+    .conflict-dialog li {
+        margin-bottom: 0.3rem !important;
+        font-size: 0.85rem !important;
+    }
+}
+
 
 /* Verification Notice */
 .verification-notice {
@@ -764,6 +930,29 @@
     width: 90%;
     color: #f7f7f7;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    max-height: 90vh;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+}
+
+/* Custom scrollbar for profile dialogs */
+.profile-dialog::-webkit-scrollbar {
+    width: 8px;
+}
+
+.profile-dialog::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 10px;
+}
+
+.profile-dialog::-webkit-scrollbar-thumb {
+    background: rgba(124, 77, 255, 0.4);
+    border-radius: 10px;
+    transition: background 0.3s ease;
+}
+
+.profile-dialog::-webkit-scrollbar-thumb:hover {
+    background: rgba(124, 77, 255, 0.6);
 }
 
 /* Conflict Dialog (for email verification) */
@@ -788,6 +977,29 @@
     width: 90%;
     color: #f7f7f7;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    max-height: 90vh;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+}
+
+/* Custom scrollbar for conflict dialogs */
+.conflict-dialog::-webkit-scrollbar {
+    width: 8px;
+}
+
+.conflict-dialog::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 10px;
+}
+
+.conflict-dialog::-webkit-scrollbar-thumb {
+    background: rgba(124, 77, 255, 0.4);
+    border-radius: 10px;
+    transition: background 0.3s ease;
+}
+
+.conflict-dialog::-webkit-scrollbar-thumb:hover {
+    background: rgba(124, 77, 255, 0.6);
 }
 
 
