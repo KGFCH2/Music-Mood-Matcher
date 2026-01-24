@@ -6,7 +6,6 @@ async function connectDB() {
         useNewUrlParser: true,
         useUnifiedTopology: true
     })
-    console.log('MongoDB connected')
 }
 
 module.exports = { connectDB }

@@ -25,4 +25,4 @@ app.get('/api/health', (req, res) => res.json({ ok: true }))
 app.use(errorHandler)
 
 const PORT = process.env.PORT || 5000
-app.listen(PORT, () => console.log(`Backend running on port ${PORT}`))
+app.listen(PORT)
