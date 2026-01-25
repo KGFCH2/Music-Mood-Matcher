@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { hashPassword, validatePasswordStrength, getPasswordFeedback } from '../utils/passwordUtils'
 import { motion, AnimatePresence } from 'framer-motion'
-import { FaSignOutAlt, FaUser, FaLock, FaTrashAlt, FaShieldAlt, FaChartBar, FaEnvelope, FaVenusMars, FaMars, FaVenus, FaGenderless, FaExclamationTriangle, FaCheck, FaTimes } from 'react-icons/fa'
+import { FaSignOutAlt, FaUser, FaLock, FaTrashAlt, FaShieldAlt, FaChartBar, FaEnvelope, FaVenusMars, FaMars, FaVenus, FaGenderless, FaExclamationTriangle, FaCheck, FaTimes, FaEdit } from 'react-icons/fa'
 import PropTypes from 'prop-types'
 import emailjs from '@emailjs/browser'
 import './profile-nav.css'
@@ -577,7 +577,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                                         fontWeight: '600'
                                                     }}
                                                 >
-                                                    ✏️ Edit Profile
+                                                    <FaEdit style={{ color: '#00d9ff' }} /> Edit Profile
                                                 </motion.button>
                                             )}
                                         </div>
