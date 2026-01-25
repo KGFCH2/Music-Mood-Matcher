@@ -296,48 +296,57 @@
 
 /* Stylish Close Button */
 .close-btn-stylish {
-    position: relative;
-    background: var(--button-bg);
-    border: 2px solid var(--button-border);
-    color: var(--text-color);
-    width: 42px;
-    height: 42px;
-    border-radius: 12px;
+    /* make the close button minimal and inline with no box */
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    width: auto;
+    height: auto;
+    padding: 0;
+    border-radius: 0;
     cursor: pointer;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    overflow: hidden;
+    transition: none;
+    overflow: visible;
 }
 
 .close-btn-stylish::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(255, 107, 107, 0.8), rgba(255, 68, 68, 0.9));
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    border-radius: 10px;
+    /* remove decorative pseudo element used for boxed style */
+    display: none;
 }
 
 .close-btn-stylish:hover::before {
-    opacity: 1;
+    opacity: 0;
 }
 
 .close-btn-stylish:hover {
-    border-color: rgba(255, 107, 107, 0.8);
-    box-shadow: 0 4px 20px rgba(255, 107, 107, 0.4);
+    /* keep hover subtle but no box effect */
+    transform: none;
+    box-shadow: none;
 }
 
-.close-btn-stylish .close-icon {
+/* Ensure both the icon element and any svg with the class get the same styling */
+.close-btn-stylish .close-icon,
+.close-btn-stylish .close-icon svg {
     position: relative;
-    z-index: 1;
+    z-index: 3;
+    /* ensure icon sits above pseudo element */
     font-size: 1.8rem;
     font-weight: 300;
     line-height: 1;
     transition: transform 0.3s ease;
+    color: var(--text-color);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    fill: currentColor;
+    stroke: currentColor;
+    width: 1.8rem;
+    height: 1.8rem;
 }
+
 
 .close-btn-stylish:hover .close-icon {
     transform: scale(1.1);
@@ -573,7 +582,7 @@
 }
 
 .registration-content {
-    background: linear-gradient(135deg, rgba(255, 152, 0, 0.1), rgba(255, 87, 34, 0.1));
+    background: linear-gradient(135deg, rgba(255, 153, 0, 0.232), rgba(255, 86, 34, 0.255));
 }
 
 .history-content {
@@ -581,11 +590,11 @@
 }
 
 .privacy-content {
-    background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(139, 195, 74, 0.1));
+    background: linear-gradient(135deg, rgba(0, 229, 255, 0.08), rgba(0, 188, 212, 0.08));
 }
 
 .delete-content {
-    background: linear-gradient(135deg, rgba(244, 67, 54, 0.1), rgba(255, 107, 107, 0.1));
+    background: linear-gradient(135deg, rgba(240, 103, 93, 0.1), rgba(200, 82, 82, 0.226));
 }
 
 .info-row {
