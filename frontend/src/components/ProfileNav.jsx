@@ -720,7 +720,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                         animate={{ opacity: 1, height: 'auto' }}
                                         exit={{ opacity: 0, height: 0 }}
                                         transition={{ duration: 0.2 }}
-                                        style={{ marginTop: '1rem' }}
+                                        style={{ marginTop: '0.2rem' }}
                                     >
                                         <div className="privacy-info">
                                             <div className="privacy-item">
@@ -776,7 +776,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                             border: '1px solid rgba(255, 107, 107, 0.3)',
                                             borderRadius: '8px',
                                             padding: '1rem',
-                                            marginTop: '1rem',
+                                            marginTop: '0.1rem',
                                             marginBottom: '1rem'
                                         }}>
                                             <p style={{ color: '#ff6b6b', fontWeight: '600', margin: '0 0 0.5rem' }}>
