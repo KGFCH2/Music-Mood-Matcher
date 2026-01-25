@@ -184,23 +184,23 @@
 
 /* Placeholder color overrides for inputs inside profile panel */
 .profile-nav-panel .form-input::placeholder {
-    color: #ffffff !important;
-    /* default placeholder: white */
+    color: #c0c0c0 !important;
+    /* default placeholder: light gray */
     opacity: 1 !important;
 }
 
 .profile-nav-panel .form-input::-webkit-input-placeholder {
-    color: #ffffff !important;
+    color: #c0c0c0 !important;
     opacity: 1 !important;
 }
 
 .profile-nav-panel .form-input::-moz-placeholder {
-    color: #ffffff !important;
+    color: #c0c0c0 !important;
     opacity: 1 !important;
 }
 
 .profile-nav-panel .form-input:-ms-input-placeholder {
-    color: #ffffff !important;
+    color: #c0c0c0 !important;
     opacity: 1 !important;
 }
 
@@ -208,8 +208,8 @@
 [data-theme="dark"] .profile-nav-panel .form-input::-webkit-input-placeholder,
 [data-theme="dark"] .profile-nav-panel .form-input::-moz-placeholder,
 [data-theme="dark"] .profile-nav-panel .form-input:-ms-input-placeholder {
-    color: #ffffff !important;
-    /* dark mode placeholder: white */
+    color: #c0c0c0 !important;
+    /* dark mode placeholder: light gray */
     opacity: 1 !important;
 }
 
