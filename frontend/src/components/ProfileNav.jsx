@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { hashPassword, validatePasswordStrength, getPasswordFeedback } from '../utils/passwordUtils'
 import { motion, AnimatePresence } from 'framer-motion'
-import { FaSignOutAlt, FaUser, FaLock, FaTrashAlt, FaShieldAlt, FaChartBar, FaEnvelope, FaVenusMars, FaMars, FaVenus, FaGenderless, FaExclamationTriangle, FaCheck, FaTimes, FaEdit } from 'react-icons/fa'
+import { FaSignOutAlt, FaUser, FaLock, FaTrashAlt, FaShieldAlt, FaChartBar, FaEnvelope, FaVenusMars, FaMars, FaVenus, FaGenderless, FaExclamationTriangle, FaCheck, FaTimes, FaEdit, FaClock } from 'react-icons/fa'
 import PropTypes from 'prop-types'
 import emailjs from '@emailjs/browser'
 import './profile-nav.css'
@@ -180,13 +180,13 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
     const getGenderAvatar = (gender) => {
         switch (gender) {
             case 'male':
-                return '👨'
+                return <FaMars style={{ color: '#00e5ff' }} />
             case 'female':
-                return '👩'
+                return <FaVenus style={{ color: '#ff1493' }} />
             case 'other':
-                return '👤' // use classic silhouette for 'other'
+                return <FaUser style={{ color: '#7c4dff' }} /> // use classic silhouette for 'other'
             default:
-                return '🧑' // default neutral avatar
+                return <FaUser style={{ color: '#7c4dff' }} /> // default neutral avatar
         }
     }
 
@@ -311,7 +311,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                 >
                     {/* Header */}
                     <div className="profile-header">
-                        <h2>👤 Profile</h2>
+                        <h2><FaUser style={{ color: '#7c4dff' }} /> Profile</h2>
                         <div className="header-actions">
                             <motion.button
                                 className="close-btn-stylish"
@@ -320,7 +320,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                 whileTap={{ scale: 0.9 }}
                                 aria-label="Close profile"
                             >
-                                <span className="close-icon">×</span>
+                                <FaTimes className="close-icon" />
                             </motion.button>
                         </div>
                     </div>
@@ -344,12 +344,12 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                             <div className="profile-badge">
                                 {user?.isVerified ? (
                                     <>
-                                        <span className="verified-icon">✅</span>
+                                        <FaCheck className="verified-icon" style={{ color: '#4caf50' }} />
                                         <span className="verified-text">Verified User</span>
                                     </>
                                 ) : (
                                     <>
-                                        <span className="unverified-icon">⏳</span>
+                                        <FaClock className="unverified-icon" style={{ color: '#ff9800' }} />
                                         <span className="unverified-text">Pending Verification</span>
                                     </>
                                 )}
