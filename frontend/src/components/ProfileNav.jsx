@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { hashPassword, validatePasswordStrength, getPasswordFeedback } from '../utils/passwordUtils'
 import { motion, AnimatePresence } from 'framer-motion'
-import { FaSignOutAlt, FaUser, FaLock, FaTrashAlt, FaShieldAlt, FaChartBar } from 'react-icons/fa'
+import { FaSignOutAlt, FaUser, FaLock, FaTrashAlt, FaShieldAlt, FaChartBar, FaEnvelope, FaVenusMars, FaMars, FaVenus, FaGenderless, FaExclamationTriangle } from 'react-icons/fa'
 import PropTypes from 'prop-types'
 import emailjs from '@emailjs/browser'
 import './profile-nav.css'
@@ -432,12 +432,12 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                     >
                                         {!isEditingName && (
                                             <div className="info-row">
-                                                <span className="info-label">📧 Email:</span>
+                                                <span className="info-label"><FaEnvelope style={{ color: '#FFD700' }} /> Email:</span>
                                                 <span className="info-value">{user?.email || 'N/A'}</span>
                                             </div>
                                         )}
                                         <div className="info-row">
-                                            <span className="info-label">👤 Name:</span>
+                                            <span className="info-label"><FaUser style={{ color: '#7c4dff' }} /> Name:</span>
                                             {isEditingName ? (
                                                 <input
                                                     type="text"
@@ -484,7 +484,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                             <div className="password-warning">▲&nbsp;New password does not meet strength requirements</div>
                                         )}
                                         <div className="info-row">
-                                            <span className="info-label">✨ Gender:</span>
+                                            <span className="info-label"><FaVenusMars style={{ color: '#ff1493' }} /> Gender:</span>
                                             {isEditingName ? (
                                                 <select
                                                     value={editingGender}
@@ -780,7 +780,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                             marginBottom: '1rem'
                                         }}>
                                             <p style={{ color: '#ff6b6b', fontWeight: '600', margin: '0 0 0.5rem' }}>
-                                                ⚠️ Warning: This action cannot be undone
+                                                <FaExclamationTriangle style={{ color: '#ff6b6b' }} /> Warning: This action cannot be undone
                                             </p>
                                             <p
                                                 className="delete-note"
