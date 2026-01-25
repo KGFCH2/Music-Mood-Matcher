@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { hashPassword, validatePasswordStrength, getPasswordFeedback } from '../utils/passwordUtils'
 import { motion, AnimatePresence } from 'framer-motion'
-import { FaSignOutAlt, FaUser, FaLock, FaTrashAlt, FaShieldAlt, FaChartBar, FaEnvelope, FaVenusMars, FaMars, FaVenus, FaGenderless, FaExclamationTriangle, FaCheck } from 'react-icons/fa'
+import { FaSignOutAlt, FaUser, FaLock, FaTrashAlt, FaShieldAlt, FaChartBar, FaEnvelope, FaVenusMars, FaMars, FaVenus, FaGenderless, FaExclamationTriangle, FaCheck, FaTimes } from 'react-icons/fa'
 import PropTypes from 'prop-types'
 import emailjs from '@emailjs/browser'
 import './profile-nav.css'
@@ -532,7 +532,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                                             fontWeight: '600'
                                                         }}
                                                     >
-                                                        ✅ Save Changes
+                                                        <FaCheck style={{ color: 'white' }} /> Save Changes
                                                     </motion.button>
                                                     <motion.button
                                                         onClick={() => {
@@ -557,7 +557,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                                             fontWeight: '600'
                                                         }}
                                                     >
-                                                        ❌ Cancel
+                                                        <FaTimes style={{ color: '#ff6b6b' }} /> Cancel
                                                     </motion.button>
                                                 </>
                                             ) : (
