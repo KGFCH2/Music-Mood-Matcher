@@ -508,7 +508,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                             )}
                                         </div>
                                         <div className="info-row">
-                                            <span className="info-label">🔐 User ID:</span>
+                                            <span className="info-label"><FaLock style={{ color: '#ff9900' }} /> User ID:</span>
                                             <span className="info-value info-code">{user?.userId || 'N/A'}</span>
                                         </div>
 
