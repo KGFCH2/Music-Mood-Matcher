@@ -781,15 +781,16 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                                 ⚠️ Warning: This action cannot be undone
                                             </p>
                                             <p
-                                                className="delete-note force-dark-on-light"
+                                                className="delete-note"
                                                 style={{
                                                     margin: '0',
                                                     fontSize: '0.9rem',
                                                     lineHeight: '1.4',
-                                                    color: '#000000',
-                                                    background: '#ffffff',
-                                                    padding: '0.45rem',
-                                                    borderRadius: '6px'
+                                                    background: 'linear-gradient(135deg, #FFD700, #00e5ff)',
+                                                    backgroundClip: 'text',
+                                                    WebkitBackgroundClip: 'text',
+                                                    WebkitTextFillColor: 'transparent',
+                                                    color: 'transparent'
                                                 }}
                                             >
                                                 Deleting your account removes local profile data. If you use the backend, server-side account deletion must be performed through the API and may remove remote records.
