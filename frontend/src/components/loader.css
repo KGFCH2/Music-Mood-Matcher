@@ -170,17 +170,21 @@
 .loader-text h1 {
   font-size: 1.45rem;
   margin: 0;
+  /* Solid fallback for browsers that don't support background-clip text */
   color: var(--text-light);
+  /* Gradient fill when supported */
   background: linear-gradient(90deg, var(--loader-accent), var(--loader-accent-2));
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
+  /* Ensure non-webkit browsers show the fallback color */
+  -moz-text-fill-color: transparent;
   letter-spacing: 0.6px;
 }
 
 .loader-text .creators {
   margin-top: 0.25rem;
-  color: rgba(255, 255, 255, 0.78);
+  color: rgba(255, 255, 255, 0.95);
   font-size: 0.95rem;
 }
 
