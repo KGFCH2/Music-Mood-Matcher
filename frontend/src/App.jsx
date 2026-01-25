@@ -1,6 +1,6 @@
 import { useEffect, useState, lazy, Suspense } from 'react'
 import { motion } from 'framer-motion'
-import { FaHeadphones, FaRobot, FaHeart, FaGlobe, FaMusic, FaLock, FaHome, FaHistory } from 'react-icons/fa'
+import { FaHeadphones, FaRobot, FaHeart, FaGlobe, FaMusic, FaLock, FaHome, FaHistory, FaClipboard, FaQuestionCircle, FaInfoCircle, FaPalette, FaArrowLeft, FaSignOutAlt } from 'react-icons/fa'
 import { songs, moods } from './data/songs'
 import Loader from './components/Loader'
 import Login from './components/Login'
@@ -305,7 +305,7 @@ function App() {
                     {/* Crush Mode removed */}
                   </div>
                   <button className="logout-btn" onClick={logout} title="Logout">
-                    <span className="logout-icon">👋</span>
+                    <FaSignOutAlt className="logout-icon" />
                   </button>
                 </div>
               </nav>
@@ -434,7 +434,7 @@ function App() {
                   </div>
 
                   <div className="mood-selection-header" style={{ textAlign: 'center', marginTop: '4rem', marginBottom: '2rem' }}>
-                    <h2 className="aurora-text-2" style={{ fontSize: '2.2rem' }}>
+                    <h2 className="mood-selection-title" style={{ fontSize: '2.2rem' }}>
                       <img src="https://cdn-icons-png.flaticon.com/128/10190/10190892.png" alt="music icon" style={{ width: '24px', height: '24px', marginRight: '8px' }} /> Select Your Current Mood <img src="https://cdn-icons-png.flaticon.com/128/10190/10190892.png" alt="music icon" style={{ width: '24px', height: '24px', marginLeft: '8px' }} />
                     </h2>
                     <p style={{ color: 'var(--text-muted)', marginTop: '0.5rem' }}>🔥 Choose a vibe to get personalized song recommendations 🔥</p>
@@ -475,7 +475,7 @@ function App() {
                   )}
 
                   <main className="songs-area">
-                    {!currentMood && <p className="hint aurora-text-2">🎧 Select a mood above to explore songs 🎧</p>}
+                    {!currentMood && <p className="hint aurora-text-3">🎧 Select a mood above to explore songs 🎧</p>}
 
                     {currentMood && (
                       <>
@@ -536,6 +536,7 @@ function App() {
                   <h2>
                     <span className="tab-emoji emoji-pop emoji-favorites">❤️</span>
                     <span className="tab-text">Your Favorite Songs</span>
+                    <span className="tab-emoji emoji-pop emoji-favorites">❤️</span>
                   </h2>
                   {favorites.length === 0 && <p className="empty-state">No favorites yet. Add songs to your favorites!</p>}
                   {favorites.length > 0 && (
@@ -581,11 +582,12 @@ function App() {
                   <h2>
                     <span className="tab-emoji emoji-pop emoji-stats">📊</span>
                     <span className="tab-text">Mood Statistics</span>
+                    <span className="tab-emoji emoji-pop emoji-stats">📊</span>
                   </h2>
                   {moodHistory.length === 0 && <p className="empty-state">No mood history yet. Start selecting moods!</p>}
                   {moodHistory.length > 0 && (
                     <>
-                      <p className="tab-subtitle">Summary of your recent mood selections</p>
+                      <p className="tab-subtitle" style={{ textAlign: 'center' }}>Summary of your recent mood selections</p>
                       <div className="history-grid">
                         {moods.map((m, idx) => {
                           const entries = moodHistory.filter(e => e.mood === m)
@@ -623,8 +625,9 @@ function App() {
                   <h2>
                     <span className="tab-emoji emoji-pop emoji-ai">🤖</span>
                     <span className="tab-text">AI Mood Detection</span>
+                    <span className="tab-emoji emoji-pop emoji-ai">🤖</span>
                   </h2>
-                  <p className="tab-subtitle">Let your webcam detect your mood and generate a playlist! (No images are stored)</p>
+                  <p className="tab-subtitle" style={{ textAlign: 'center' }}>Let your webcam detect your mood and generate a playlist! (No images are stored)</p>
                   <Suspense fallback={<Loader />}>
                     <MoodWebcam />
                   </Suspense>
@@ -641,15 +644,15 @@ function App() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
+                  <div className="tab-header">
                     <div></div> {/* spacer */}
-                    <h2>
-                      <span className="tab-emoji emoji-pop emoji-about">ℹ️</span>
+                    <h2 className="curved-underline">
+                      <FaInfoCircle className="tab-emoji emoji-pop emoji-about" />
                       <span className="tab-text">About Music Mood Matcher</span>
-                      <span className="tab-emoji emoji-pop emoji-about">ℹ️</span>
+                      <FaInfoCircle className="tab-emoji emoji-pop emoji-about" />
                     </h2>
                     <button className="back-btn" onClick={() => setActiveTab('home')} title="Back to Home">
-                      <span className="back-icon">⬅️</span>
+                      <FaArrowLeft className="back-icon" />
                     </button>
                   </div>
                   <div className="about-content">
@@ -658,12 +661,12 @@ function App() {
                     </p>
                     <h3>Features:</h3>
                     <ul>
-                      <li><span className="feature-emoji">🎧</span><span className="feature-text"><strong>6 Moods:</strong> Happy, Sad, Energetic, Romantic, Chill, Angry</span></li>
-                      <li><span className="feature-emoji">🌍</span><span className="feature-text"><strong>Multi-language:</strong> English, Hindi & Bengali songs</span></li>
-                      <li><span className="feature-emoji">🎵</span><span className="feature-text"><strong>20+ songs per mood:</strong> Extensive music library</span></li>
-                      <li><span className="feature-emoji">❤️</span><span className="feature-text"><strong>Favorites:</strong> Save your favorite songs</span></li>
-                      <li><span className="feature-emoji">📊</span><span className="feature-text"><strong>History:</strong> Track your mood selections</span></li>
-                      <li><span className="feature-emoji">🎨</span><span className="feature-text"><strong>Beautiful UI:</strong> Music-themed design with animated elements</span></li>
+                      <li><span className="feature-text"><strong>6 Moods:</strong> Happy, Sad, Energetic, Romantic, Chill, Angry  </span><FaHeadphones className="feature-emoji" style={{ color: '#ffa200' }} /></li>
+                      <li><span className="feature-text"><strong>Multi-language:</strong> English, Hindi & Bengali songs  </span><FaGlobe className="feature-emoji" style={{ color: '#4ecdc4' }} /></li>
+                      <li><span className="feature-text"><strong>20+ songs per mood:</strong> Extensive music library  </span><FaMusic className="feature-emoji" style={{ color: '#45b7d1' }} /></li>
+                      <li><span className="feature-text"><strong>Favorites:</strong> Save your favorite songs  </span><FaHeart className="feature-emoji" style={{ color: '#f80737' }} /></li>
+                      <li><span className="feature-text"><strong>History:</strong> Track your mood selections  </span><FaHistory className="feature-emoji" style={{ color: '#a8e6cf' }} /></li>
+                      <li><span className="feature-text"><strong>Beautiful UI:</strong> Music-themed design with animated elements  </span><FaPalette className="feature-emoji" style={{ color: '#dda0dd' }} /></li>
                     </ul>
                     <h3>How to use:</h3>
                     <ol>
@@ -677,9 +680,9 @@ function App() {
                   <div className="page-footer">
                     <div className="footer-divider"></div>
                     <div className="footer-nav">
-                      <button className="footer-nav-btn" onClick={() => setActiveTab('privacy')}><span className="emoji-pop emoji-privacy">🔒</span> <span>Privacy Policy</span></button>
-                      <button className="footer-nav-btn" onClick={() => setActiveTab('terms')}><span className="emoji-pop emoji-terms">📋</span> <span>Terms of Service</span></button>
-                      <button className="footer-nav-btn" onClick={() => setActiveTab('faq')}><span className="emoji-pop emoji-faq">❓</span> <span>FAQ</span></button>
+                      <button className="footer-nav-btn" onClick={() => setActiveTab('privacy')}><FaLock className="footer-icon emoji-privacy" /> <span>Privacy Policy</span></button>
+                      <button className="footer-nav-btn" onClick={() => setActiveTab('terms')}><FaClipboard className="footer-icon emoji-terms" /> <span>Terms of Service</span></button>
+                      <button className="footer-nav-btn" onClick={() => setActiveTab('faq')}><FaQuestionCircle className="footer-icon emoji-faq" /> <span>FAQ</span></button>
                     </div>
                   </div>
                 </motion.div>
@@ -693,19 +696,19 @@ function App() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
+                  <div className="tab-header">
                     <div></div> {/* spacer */}
-                    <h2>
-                      <span className="tab-emoji emoji-pop emoji-privacy">🔒</span>
+                    <h2 className="curved-underline">
+                      <FaLock className="tab-emoji emoji-pop emoji-privacy" />
                       <span className="tab-text">Privacy Policy</span>
-                      <span className="tab-emoji emoji-pop emoji-privacy">🔒</span>
+                      <FaLock className="tab-emoji emoji-pop emoji-privacy" />
                     </h2>
                     <button className="back-btn" onClick={() => setActiveTab('home')} title="Back to Home">
-                      <span className="back-icon">⬅️</span>
+                      <FaArrowLeft className="back-icon" />
                     </button>
                   </div>
                   <div className="about-content">
-                    <p><strong>Last Updated: December 2026</strong></p>
+                    <p><strong>Last Updated: January 2026</strong></p>
 
                     <h3>1. Introduction</h3>
                     <p>Music Mood Matcher ("we," "us," or "our") operates the Music Mood Matcher application. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our application.</p>
@@ -755,9 +758,9 @@ function App() {
                   <div className="page-footer">
                     <div className="footer-divider"></div>
                     <div className="footer-nav">
-                      <button className="footer-nav-btn" onClick={() => setActiveTab('terms')}>📋 Terms of Service</button>
-                      <button className="footer-nav-btn" onClick={() => setActiveTab('faq')}>❓ FAQ</button>
-                      <button className="footer-nav-btn" onClick={() => setActiveTab('about')}>ℹ️ About</button>
+                      <button className="footer-nav-btn" onClick={() => setActiveTab('terms')}><FaClipboard className="footer-icon emoji-terms" /> <span>Terms of Service</span></button>
+                      <button className="footer-nav-btn" onClick={() => setActiveTab('faq')}><FaQuestionCircle className="footer-icon emoji-faq" /> <span>FAQ</span></button>
+                      <button className="footer-nav-btn" onClick={() => setActiveTab('about')}><FaInfoCircle className="footer-icon emoji-about" /> <span>About</span></button>
                     </div>
                   </div>
                 </motion.div>
@@ -771,15 +774,15 @@ function App() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
+                  <div className="tab-header">
                     <div></div> {/* spacer */}
-                    <h2>
-                      <span className="tab-emoji emoji-pop emoji-terms">📋</span>
+                    <h2 className="curved-underline">
+                      <FaClipboard className="tab-emoji emoji-pop emoji-terms" />
                       <span className="tab-text">Terms of Service</span>
-                      <span className="tab-emoji emoji-pop emoji-terms">📋</span>
+                      <FaClipboard className="tab-emoji emoji-pop emoji-terms" />
                     </h2>
                     <button className="back-btn" onClick={() => setActiveTab('home')} title="Back to Home">
-                      <span className="back-icon">⬅️</span>
+                      <FaArrowLeft className="back-icon" />
                     </button>
                   </div>
                   <div className="about-content">
@@ -823,9 +826,9 @@ function App() {
                   <div className="page-footer">
                     <div className="footer-divider"></div>
                     <div className="footer-nav">
-                      <button className="footer-nav-btn" onClick={() => setActiveTab('privacy')}>🔒 Privacy Policy</button>
-                      <button className="footer-nav-btn" onClick={() => setActiveTab('faq')}>❓ FAQ</button>
-                      <button className="footer-nav-btn" onClick={() => setActiveTab('about')}>ℹ️ About</button>
+                      <button className="footer-nav-btn" onClick={() => setActiveTab('privacy')}><FaLock className="footer-icon emoji-privacy" /> <span>Privacy Policy</span></button>
+                      <button className="footer-nav-btn" onClick={() => setActiveTab('faq')}><FaQuestionCircle className="footer-icon emoji-faq" /> <span>FAQ</span></button>
+                      <button className="footer-nav-btn" onClick={() => setActiveTab('about')}><FaInfoCircle className="footer-icon emoji-about" /> <span>About</span></button>
                     </div>
                   </div>
                 </motion.div>
@@ -839,15 +842,15 @@ function App() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
+                  <div className="tab-header">
                     <div></div> {/* spacer */}
-                    <h2>
-                      <span className="tab-emoji emoji-pop emoji-faq">❓</span>
+                    <h2 className="curved-underline">
+                      <FaQuestionCircle className="tab-emoji emoji-pop emoji-faq" />
                       <span className="tab-text">Frequently Asked Questions</span>
-                      <span className="tab-emoji emoji-pop emoji-faq">❓</span>
+                      <FaQuestionCircle className="tab-emoji emoji-pop emoji-faq" />
                     </h2>
                     <button className="back-btn" onClick={() => setActiveTab('home')} title="Back to Home">
-                      <span className="back-icon">⬅️</span>
+                      <FaArrowLeft className="back-icon" />
                     </button>
                   </div>
                   <div className="about-content">
@@ -933,9 +936,9 @@ function App() {
                   <div className="page-footer">
                     <div className="footer-divider"></div>
                     <div className="footer-nav">
-                      <button className="footer-nav-btn" onClick={() => setActiveTab('privacy')}>🔒 Privacy Policy</button>
-                      <button className="footer-nav-btn" onClick={() => setActiveTab('terms')}>📋 Terms of Service</button>
-                      <button className="footer-nav-btn" onClick={() => setActiveTab('about')}>ℹ️ About</button>
+                      <button className="footer-nav-btn" onClick={() => setActiveTab('privacy')}><FaLock className="footer-icon emoji-privacy" /> <span>Privacy Policy</span></button>
+                      <button className="footer-nav-btn" onClick={() => setActiveTab('terms')}><FaClipboard className="footer-icon emoji-terms" /> <span>Terms of Service</span></button>
+                      <button className="footer-nav-btn" onClick={() => setActiveTab('about')}><FaInfoCircle className="footer-icon emoji-about" /> <span>About</span></button>
                     </div>
                   </div>
                 </motion.div>
@@ -945,36 +948,20 @@ function App() {
               <footer className="footer">
                 <div className="footer-content">
                   <p className="footer-creators">
-                    Made with <span className="heart-emoji">❤️</span> by <span className="aurora-text-3">Babin</span> &amp; <span className="aurora-text-3">Debasmita</span>
+                    Made with <span className="heart-emoji">❤️</span> by <span className="creator-b">Babin</span> &amp; <span className="creator-d">Debasmita</span>
                   </p>
                   <div className="footer-links">
-                    <span
-                      className="footer-link"
-                      onClick={() => setActiveTab('privacy')}
-                      title="Read our Privacy Policy"
-                    >
-                      🔒 Privacy Policy
+                    <span className="footer-link" onClick={() => setActiveTab('privacy')} title="Read our Privacy Policy">
+                      <FaLock className="footer-icon emoji-privacy" /> <span>Privacy Policy</span>
                     </span>
-                    <span
-                      className="footer-link"
-                      onClick={() => setActiveTab('terms')}
-                      title="Read our Terms of Service"
-                    >
-                      📋 Terms of Service
+                    <span className="footer-link" onClick={() => setActiveTab('terms')} title="Read our Terms of Service">
+                      <FaClipboard className="footer-icon emoji-terms" /> <span>Terms of Service</span>
                     </span>
-                    <span
-                      className="footer-link"
-                      onClick={() => setActiveTab('faq')}
-                      title="Read FAQs"
-                    >
-                      ❓ FAQ
+                    <span className="footer-link" onClick={() => setActiveTab('faq')} title="Read FAQs">
+                      <FaQuestionCircle className="footer-icon emoji-faq" /> <span>FAQ</span>
                     </span>
-                    <span
-                      className="footer-link"
-                      onClick={() => setActiveTab('about')}
-                      title="Learn About Music Mood Matcher"
-                    >
-                      ℹ️ About
+                    <span className="footer-link" onClick={() => setActiveTab('about')} title="Learn About Music Mood Matcher">
+                      <FaInfoCircle className="footer-icon emoji-about" /> <span>About</span>
                     </span>
                   </div>
                 </div>
