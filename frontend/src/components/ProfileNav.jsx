@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { hashPassword, validatePasswordStrength, getPasswordFeedback } from '../utils/passwordUtils'
 import { motion, AnimatePresence } from 'framer-motion'
-import { FaSignOutAlt, FaUser, FaLock, FaTrashAlt, FaShieldAlt, FaChartBar, FaEnvelope, FaVenusMars, FaMars, FaVenus, FaGenderless, FaExclamationTriangle, FaCheck, FaTimes, FaEdit, FaClock } from 'react-icons/fa'
+import { FaSignOutAlt, FaUser, FaLock, FaTrashAlt, FaShieldAlt, FaChartBar, FaEnvelope, FaVenusMars, FaMars, FaVenus, FaGenderless, FaExclamationTriangle, FaCheck, FaTimes, FaEdit, FaClock, FaCalendarAlt, FaFileAlt, FaCalendar, FaList, FaClipboardList } from 'react-icons/fa'
 import PropTypes from 'prop-types'
 import emailjs from '@emailjs/browser'
 import './profile-nav.css'
@@ -320,7 +320,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                 whileTap={{ scale: 0.9 }}
                                 aria-label="Close profile"
                             >
-                                <FaTimes className="close-icon" />
+                                <FaTimes className="close-icon" style={{ fontSize: '1.8rem', color: 'white' }} />
                             </motion.button>
                         </div>
                     </div>
@@ -377,7 +377,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.15 }}
                         >
-                            <span className="notice-icon">⏳</span>
+                            <FaClock className="notice-icon" style={{ color: '#ff9800', fontSize: '1.5rem' }} />
                             <div className="notice-content">
                                 <p className="notice-title">Account Pending Verification</p>
                                 <p className="notice-text">Please check your email for the verification code to complete your registration.</p>
@@ -392,7 +392,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                     whileTap={{ scale: 0.95 }}
                                     style={{ marginTop: '1rem', padding: '12px 16px', width: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                                 >
-                                    <span style={{ fontSize: '1rem', marginRight: '0.5rem' }}>✅</span>
+                                    <FaCheck style={{ fontSize: '1rem', marginRight: '0.5rem', color: '#4caf50' }} />
                                     <span>Enter Verification Code</span>
                                 </motion.button>
                             </div>
@@ -421,7 +421,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                             <AnimatePresence>
                                 {expandedSection === 'account' && (
                                     <motion.div
-                                        className="section-content"
+                                        className="section-content account-content"
                                         initial={{ opacity: 0, height: 0 }}
                                         animate={{ opacity: 1, height: 'auto' }}
                                         exit={{ opacity: 0, height: 0 }}
@@ -599,7 +599,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                 onClick={() => toggleSection('registration')}
                                 whileHover={{ backgroundColor: 'rgba(124, 77, 255, 0.05)' }}
                             >
-                                <span className="toggle-icon">📅</span>
+                                <FaCalendarAlt className="toggle-icon" style={{ color: '#ff9800', fontSize: '1.25rem' }} />
                                 <span className="toggle-title">Registration Details</span>
                                 <span className={`toggle-arrow ${expandedSection === 'registration' ? 'open' : ''}`}>›</span>
                             </motion.button>
@@ -607,25 +607,25 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                             <AnimatePresence>
                                 {expandedSection === 'registration' && (
                                     <motion.div
-                                        className="section-content"
+                                        className="section-content registration-content"
                                         initial={{ opacity: 0, height: 0 }}
                                         animate={{ opacity: 1, height: 'auto' }}
                                         exit={{ opacity: 0, height: 0 }}
                                         transition={{ duration: 0.2 }}
                                     >
                                         <div className="info-row">
-                                            <span className="info-label">📝 Registered On:</span>
+                                            <span className="info-label"><FaCalendar style={{ color: '#ff9800', marginRight: '0.5rem', fontSize: '1rem' }} /> Registered On:</span>
                                             <span className="info-value">{formatDate(user?.registeredAt)}</span>
                                         </div>
                                         <div className="info-row">
-                                            <span className="info-label">✅ Verification Status:</span>
+                                            <span className="info-label"><FaCheck style={{ color: '#4caf50', marginRight: '0.5rem', fontSize: '1rem' }} /> Verification Status:</span>
                                             <span className={`info-value ${user?.isVerified ? 'verified' : 'unverified'}`}>
                                                 {user?.isVerified ? '✓ Verified' : '⏳ Pending'}
                                             </span>
                                         </div>
                                         {user?.isVerified && user?.verificationCode && (
                                             <div className="info-row">
-                                                <span className="info-label">🔐 Verification Code:</span>
+                                                <span className="info-label"><FaLock style={{ color: '#ff9800', marginRight: '0.5rem', fontSize: '1rem' }} /> Verification Code:</span>
                                                 <span className="info-value info-code">{user.verificationCode}</span>
                                             </div>
                                         )}
@@ -646,7 +646,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                 onClick={() => toggleSection('history')}
                                 whileHover={{ backgroundColor: 'rgba(124, 77, 255, 0.05)' }}
                             >
-                                <span className="toggle-icon">🕐</span>
+                                <FaClock className="toggle-icon" style={{ color: '#2196f3', fontSize: '1.25rem' }} />
                                 <span className="toggle-title">Login History</span>
                                 <span className="history-count">{getLoginCount()}</span>
                                 <span className={`toggle-arrow ${expandedSection === 'history' ? 'open' : ''}`}>›</span>
@@ -655,39 +655,36 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                             <AnimatePresence>
                                 {expandedSection === 'history' && (
                                     <motion.div
-                                        className="section-content"
+                                        className="section-content history-content"
                                         initial={{ opacity: 0, height: 0 }}
                                         animate={{ opacity: 1, height: 'auto' }}
                                         exit={{ opacity: 0, height: 0 }}
                                         transition={{ duration: 0.2 }}
                                     >
                                         <div className="info-row">
-                                            <span className="info-label">🔢 Total Logins:</span>
+                                            <span className="info-label"><FaList style={{ color: '#2196f3', marginRight: '0.5rem', fontSize: '1rem' }} /> Total Logins:</span>
                                             <span className="info-value">{getLoginCount()} times</span>
                                         </div>
                                         <div className="info-row">
-                                            <span className="info-label">⏰ Last Login:</span>
+                                            <span className="info-label"><FaClock style={{ color: '#4caf50', marginRight: '0.5rem', fontSize: '1rem' }} /> Last Login:</span>
                                             <span className="info-value">{getLastLogin()}</span>
                                         </div>
                                         {user?.loginHistory && user.loginHistory.length > 0 && (
                                             <div className="login-history-list">
-                                                <p className="history-label">📋 Recent Logins:</p>
+                                                <p className="history-label"><FaClipboardList style={{ color: '#ff9800', marginRight: '0.5rem', fontSize: '1rem' }} /> Recent Logins:</p>
                                                 <div className="history-items">
-                                                    {[...user.loginHistory]
-                                                        .reverse()
-                                                        .slice(0, 5)
-                                                        .map((login, idx) => (
-                                                            <motion.div
-                                                                key={idx}
-                                                                className="history-item"
-                                                                initial={{ opacity: 0, x: -10 }}
-                                                                animate={{ opacity: 1, x: 0 }}
-                                                                transition={{ delay: idx * 0.05 }}
-                                                            >
-                                                                <span className="item-number">{getLoginCount() - idx}</span>
-                                                                <span className="item-date">{formatDate(login)}</span>
-                                                            </motion.div>
-                                                        ))}
+                                                    {user.loginHistory.slice(-5).map((login, idx) => (
+                                                        <motion.div
+                                                            key={idx}
+                                                            className="history-item"
+                                                            initial={{ opacity: 0, x: -10 }}
+                                                            animate={{ opacity: 1, x: 0 }}
+                                                            transition={{ delay: idx * 0.05 }}
+                                                        >
+                                                            <span className="item-number">{getLoginCount() - (4 - idx)}</span>
+                                                            <span className="item-date">{formatDate(login)}</span>
+                                                        </motion.div>
+                                                    ))}
                                                 </div>
                                             </div>
                                         )}
@@ -716,7 +713,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                             <AnimatePresence>
                                 {expandedSection === 'privacy' && (
                                     <motion.div
-                                        className="section-content"
+                                        className="section-content privacy-content"
                                         initial={{ opacity: 0, height: 0 }}
                                         animate={{ opacity: 1, height: 'auto' }}
                                         exit={{ opacity: 0, height: 0 }}
@@ -766,7 +763,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                             <AnimatePresence>
                                 {expandedSection === 'delete' && (
                                     <motion.div
-                                        className="section-content"
+                                        className="section-content delete-content"
                                         initial={{ opacity: 0, height: 0 }}
                                         animate={{ opacity: 1, height: 'auto' }}
                                         exit={{ opacity: 0, height: 0 }}
@@ -810,12 +807,12 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                                 background: 'rgba(255, 107, 107, 0.2)',
                                                 border: '1px solid rgba(255, 107, 107, 0.5)',
                                                 borderRadius: '8px',
-                                                color: '#ff6b6b',
+                                                color: '#ffffff',
                                                 cursor: 'pointer',
                                                 fontWeight: '600'
                                             }}
                                         >
-                                            <FaTrashAlt style={{ color: '#ff6b6b' }} /> Delete My Account
+                                            <FaTrashAlt style={{ color: '#ff0000' }} />  Delete My Account  <FaTrashAlt style={{ color: '#ff0000' }} />
                                         </motion.button>
                                     </motion.div>
                                 )}
@@ -957,7 +954,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                             fontWeight: '600'
                                         }}
                                     >
-                                        ❌ Cancel
+                                        <FaTimes style={{ color: '#ff6b6b' }} /> Cancel
                                     </motion.button>
                                 </form>
                             </motion.div>
@@ -1001,9 +998,9 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                     }}>
                                         <p style={{ color: '#ff6b6b', fontWeight: '600', margin: '0 0 0.5rem' }}>What will happen:</p>
                                         <ul style={{ margin: '0.5rem 0 0', paddingLeft: '1.5rem', color: '#b0b0b0', fontSize: '0.9rem' }}>
-                                            <li>Your profile data will be permanently deleted</li>
-                                            <li>Login history and preferences will be removed</li>
-                                            <li>You can re-register with the same email anytime</li>
+                                            <li><FaTrashAlt style={{ color: '#ff0000', fontSize: '0.8rem', marginRight: '0.5rem' }} />Your profile data will be permanently deleted</li>
+                                            <li><FaClock style={{ color: '#ff0000', fontSize: '0.8rem', marginRight: '0.5rem' }} />Login history and preferences will be removed</li>
+                                            <li><FaEnvelope style={{ color: '#ff0000', fontSize: '0.8rem', marginRight: '0.5rem' }} />You can re-register with the same email anytime</li>
                                         </ul>
                                     </div>
 
@@ -1046,7 +1043,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                                 fontSize: '0.9rem'
                                             }}
                                         >
-                                            <span>⚠️ {verificationError}</span>
+                                            <span><FaExclamationTriangle style={{ color: '#ff6b6b', fontSize: '0.9rem', marginRight: '0.5rem' }} />{verificationError}</span>
                                         </motion.div>
                                     )}
 
@@ -1061,12 +1058,12 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                                 background: 'rgba(255, 107, 107, 0.3)',
                                                 border: '1px solid rgba(255, 107, 107, 0.5)',
                                                 borderRadius: '8px',
-                                                color: '#ff6b6b',
+                                                color: '#ffffff',
                                                 cursor: 'pointer',
                                                 fontWeight: '600'
                                             }}
                                         >
-                                            🗑️ Delete My Account
+                                            <FaTrashAlt style={{ color: '#ff0000' }} /> Delete My Account
                                         </motion.button>
                                         <motion.button
                                             onClick={() => {
@@ -1082,12 +1079,12 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                                 background: 'rgba(124, 77, 255, 0.2)',
                                                 border: '1px solid rgba(124, 77, 255, 0.5)',
                                                 borderRadius: '8px',
-                                                color: '#7c4dff',
+                                                color: '#ffffff',
                                                 cursor: 'pointer',
                                                 fontWeight: '600'
                                             }}
                                         >
-                                            ❌ Cancel
+                                            <FaTimes style={{ color: '#ff6b6b' }} /> Cancel
                                         </motion.button>
                                     </div>
                                 </div>
@@ -1194,7 +1191,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                             fontWeight: '600'
                                         }}
                                     >
-                                        ❌ Cancel
+                                        <FaTimes style={{ color: '#ff6b6b' }} /> Cancel
                                     </motion.button>
                                 </div>
                             </motion.div>

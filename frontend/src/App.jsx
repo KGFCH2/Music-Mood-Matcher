@@ -1,6 +1,6 @@
 import { useEffect, useState, lazy, Suspense } from 'react'
 import { motion } from 'framer-motion'
-import { FaHeadphones, FaRobot, FaHeart, FaGlobe, FaMusic, FaLock, FaHome, FaHistory, FaClipboard, FaQuestionCircle, FaInfoCircle, FaPalette, FaArrowLeft, FaSignOutAlt } from 'react-icons/fa'
+import { FaHeadphones, FaRobot, FaHeart, FaGlobe, FaMusic, FaLock, FaHome, FaHistory, FaClipboard, FaQuestionCircle, FaInfoCircle, FaPalette, FaArrowLeft, FaSignOutAlt, FaUser } from 'react-icons/fa'
 import { songs, moods } from './data/songs'
 import Loader from './components/Loader'
 import Login from './components/Login'
@@ -320,7 +320,7 @@ function App() {
                   whileTap={{ scale: 0.95 }}
                 >
                   <div className="floating-avatar">
-                    <span className="floating-avatar-icon">{getGenderAvatar(user?.gender)}</span>
+                    <FaUser style={{ fontSize: '1.5rem', color: 'white' }} />
                   </div>
                 </motion.button>
               )}

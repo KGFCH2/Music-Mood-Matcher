@@ -568,6 +568,26 @@
     background: rgba(0, 0, 0, 0.2);
 }
 
+.account-content {
+    background: linear-gradient(135deg, rgba(124, 77, 255, 0.1), rgba(156, 39, 176, 0.1));
+}
+
+.registration-content {
+    background: linear-gradient(135deg, rgba(255, 152, 0, 0.1), rgba(255, 87, 34, 0.1));
+}
+
+.history-content {
+    background: linear-gradient(135deg, rgba(33, 150, 243, 0.1), rgba(3, 169, 244, 0.1));
+}
+
+.privacy-content {
+    background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(139, 195, 74, 0.1));
+}
+
+.delete-content {
+    background: linear-gradient(135deg, rgba(244, 67, 54, 0.1), rgba(255, 107, 107, 0.1));
+}
+
 .info-row {
     display: flex;
     justify-content: space-between;
