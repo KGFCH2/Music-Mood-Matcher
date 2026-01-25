@@ -39,8 +39,15 @@ async function login(req, res, next) {
         user.loginHistory.push(new Date())
         await user.save()
 
+        // Log login history to console
+        console.log(`User ${user.email} logged in at ${new Date().toISOString()}`)
+        console.log(`Login history for ${user.email}:`)
+        user.loginHistory.forEach((loginTime, index) => {
+            console.log(`  ${index + 1}. ${loginTime.toISOString()}`)
+        })
+
         const token = jwt.sign({ userId: user.userId, email: user.email }, JWT_SECRET, { expiresIn: '7d' })
-        res.json({ token, user: { userId: user.userId, email: user.email, userName: user.userName } })
+        res.json({ token, user: { userId: user.userId, email: user.email, userName: user.userName, loginHistory: user.loginHistory } })
     } catch (err) { next(err) }
 }
 
