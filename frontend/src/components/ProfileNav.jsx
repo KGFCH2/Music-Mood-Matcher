@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { hashPassword, validatePasswordStrength, getPasswordFeedback } from '../utils/passwordUtils'
 import { motion, AnimatePresence } from 'framer-motion'
-import { FaSignOutAlt, FaUser, FaLock, FaTrashAlt, FaShieldAlt, FaChartBar, FaEnvelope, FaVenusMars, FaMars, FaVenus, FaGenderless, FaExclamationTriangle } from 'react-icons/fa'
+import { FaSignOutAlt, FaUser, FaLock, FaTrashAlt, FaShieldAlt, FaChartBar, FaEnvelope, FaVenusMars, FaMars, FaVenus, FaGenderless, FaExclamationTriangle, FaCheck } from 'react-icons/fa'
 import PropTypes from 'prop-types'
 import emailjs from '@emailjs/browser'
 import './profile-nav.css'
@@ -481,7 +481,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                         )}
                                         {/* Password strength warning under Account Information */}
                                         {newPassword && !validatePasswordStrength(newPassword).isStrong && (
-                                            <div className="password-warning">▲&nbsp;New password does not meet strength requirements</div>
+                                            <div className="password-warning"><FaExclamationTriangle style={{ color: '#ff6b6b', fontSize: '0.8em' }} />&nbsp;New password does not meet strength requirements</div>
                                         )}
                                         <div className="info-row">
                                             <span className="info-label"><FaVenusMars style={{ color: '#ff1493' }} /> Gender:</span>
@@ -497,9 +497,9 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                                         background: '#ffffff'
                                                     }}
                                                 >
-                                                    <option value="male" style={{ color: '#000000', background: '#ffffff' }}>👨 Male</option>
-                                                    <option value="female" style={{ color: '#000000', background: '#ffffff' }}>👩 Female</option>
-                                                    <option value="other" style={{ color: '#000000', background: '#ffffff' }}>👤 Other</option>
+                                                    <option value="male" style={{ color: '#000000', background: '#ffffff' }}>♂ Male</option>
+                                                    <option value="female" style={{ color: '#000000', background: '#ffffff' }}>♀ Female</option>
+                                                    <option value="other" style={{ color: '#000000', background: '#ffffff' }}>⚲ Other</option>
                                                 </select>
                                             ) : (
                                                 <span className="info-value">
@@ -814,7 +814,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                                 fontWeight: '600'
                                             }}
                                         >
-                                            🗑️ Delete My Account
+                                            <FaTrashAlt style={{ color: '#ff6b6b' }} /> Delete My Account
                                         </motion.button>
                                     </motion.div>
                                 )}
@@ -845,7 +845,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                 style={{ maxWidth: '500px' }}
                             >
                                 <div className="dialog-header">
-                                    <span className="dialog-icon">📧</span>
+                                    <span className="dialog-icon"><FaEnvelope style={{ color: '#FFD700' }} /></span>
                                     <h3>Verify New Email Address</h3>
                                     <p>A verification code has been sent to <strong>{verificationDialogEmail}</strong></p>
 
@@ -858,7 +858,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                         marginTop: '1rem',
                                         textAlign: 'center'
                                     }}>
-                                        <p style={{ margin: '0 0 0.8rem', fontSize: '0.85rem', color: '#b0b0b0', fontWeight: '500' }}>📧 Your Verification Code:</p>
+                                        <p style={{ margin: '0 0 0.8rem', fontSize: '0.85rem', color: '#b0b0b0', fontWeight: '500' }}><FaEnvelope style={{ color: '#FFD700' }} /> Your Verification Code:</p>
                                         <p style={{
                                             margin: 0,
                                             fontSize: '1.8rem',
@@ -892,7 +892,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                                 fontSize: '0.9rem'
                                             }}
                                         >
-                                            <span>⚠️ {verificationError}</span>
+                                            <span><FaExclamationTriangle style={{ color: '#ff6b6b' }} /> {verificationError}</span>
                                         </motion.div>
                                     )}
 
@@ -937,7 +937,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                             marginBottom: '10px'
                                         }}
                                     >
-                                        ✅ Verify & Update Email
+                                        <FaCheck style={{ color: 'white' }} /> Verify & Update Email
                                     </motion.button>
 
                                     <motion.button
@@ -985,7 +985,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                 style={{ maxWidth: '500px' }}
                             >
                                 <div className="dialog-header" style={{ borderBottomColor: 'rgba(255, 107, 107, 0.3)' }}>
-                                    <span className="dialog-icon" style={{ fontSize: '2rem' }}>⚠️</span>
+                                    <span className="dialog-icon" style={{ fontSize: '2rem' }}><FaExclamationTriangle style={{ color: '#ff6b6b' }} /></span>
                                     <h3 style={{ color: '#ff6b6b' }}>Delete Account</h3>
                                     <p>This action is permanent and cannot be undone.</p>
                                 </div>
