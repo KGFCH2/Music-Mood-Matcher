@@ -571,13 +571,16 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                                         background: 'linear-gradient(135deg, #FFD700, #00d9ff)',
                                                         border: '1px solid rgba(124, 77, 255, 0.5)',
                                                         borderRadius: '8px',
-                                                        color: 'white',
+                                                        backgroundClip: 'text',
+                                                        WebkitBackgroundClip: 'text',
+                                                        WebkitTextFillColor: 'transparent',
+                                                        color: 'transparent',
                                                         cursor: 'pointer',
                                                         fontSize: '0.9rem',
                                                         fontWeight: '600'
                                                     }}
                                                 >
-                                                    <FaEdit style={{ color: 'white' }} /> Edit Profile
+                                                    <FaEdit style={{ color: '#00d9ff' }} /> Edit Profile
                                                 </motion.button>
                                             )}
                                         </div>
