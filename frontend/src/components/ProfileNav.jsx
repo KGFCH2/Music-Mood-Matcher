@@ -532,7 +532,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                                             fontWeight: '600'
                                                         }}
                                                     >
-                                                        <FaCheck style={{ color: 'white' }} /> Save Changes
+                                                        <FaCheck style={{ color: '#4caf50' }} /> Save Changes
                                                     </motion.button>
                                                     <motion.button
                                                         onClick={() => {
