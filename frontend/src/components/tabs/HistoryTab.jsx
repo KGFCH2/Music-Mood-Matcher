@@ -80,16 +80,16 @@ export default function HistoryTab({ user }) {
             <h2 className="tab-title">Your Mood History</h2>
             <div className="history-list">
                 {moodHistory.map((entry, idx) => (
-                    <div key={idx} className="history-item tab-section">
-                        <div className="item-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem' }}>
-                            <span className="mood-emoji" style={{ fontSize: '2rem' }}>{getMoodEmoji(entry.mood)}</span>
+                    <div key={idx} className="history-item">
+                        <div className="item-header">
+                            <span className="mood-emoji">{getMoodEmoji(entry.mood)}</span>
                             <div className="item-info">
-                                <p className="item-mood" style={{ margin: 0, fontWeight: 'bold' }}>{entry.mood.toUpperCase()}</p>
-                                <p className="item-time" style={{ margin: 0, fontSize: '0.8rem', opacity: 0.7 }}>{formatDate(entry.timestamp)}</p>
+                                <p className="item-mood">{entry.mood.toUpperCase()}</p>
+                                <p className="item-time">{formatDate(entry.timestamp)}</p>
                             </div>
                         </div>
                         {entry.songs && entry.songs.length > 0 && (
-                            <div className="item-songs" style={{ marginTop: '0.5rem', opacity: 0.8, fontSize: '0.9rem' }}>
+                            <div className="item-songs">
                                 <p>Songs played: {entry.songs.length}</p>
                             </div>
                         )}
