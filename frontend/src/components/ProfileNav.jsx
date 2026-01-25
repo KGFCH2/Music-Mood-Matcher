@@ -523,7 +523,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                                         whileTap={{ scale: 0.95 }}
                                                         style={{
                                                             padding: '12px 16px',
-                                                            background: 'linear-gradient(135deg, #00e5ff, #7c4dff)',
+                                                            background: 'linear-gradient(1350deg, #954242, #4400ff)',
                                                             border: 'none',
                                                             borderRadius: '8px',
                                                             color: 'white',
@@ -568,16 +568,16 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                                     whileTap={{ scale: 0.95 }}
                                                     style={{
                                                         padding: '12px 16px',
-                                                        background: 'rgba(124, 77, 255, 0.2)',
+                                                        background: 'linear-gradient(135deg, #FFD700, #00d9ff)',
                                                         border: '1px solid rgba(124, 77, 255, 0.5)',
                                                         borderRadius: '8px',
-                                                        color: '#7c4dff',
+                                                        color: 'white',
                                                         cursor: 'pointer',
                                                         fontSize: '0.9rem',
                                                         fontWeight: '600'
                                                     }}
                                                 >
-                                                    <FaEdit style={{ color: '#00d9ff' }} /> Edit Profile
+                                                    <FaEdit style={{ color: 'white' }} /> Edit Profile
                                                 </motion.button>
                                             )}
                                         </div>
