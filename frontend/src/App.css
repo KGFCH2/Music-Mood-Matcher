@@ -1,5 +1,3 @@
-/* Music Mood Matcher App Styles */
-
 :root {
   --primary: #7c4dff;
   --primary-light: #b39ddb;
@@ -10,7 +8,6 @@
   --text-muted: #b0b0b0;
   --transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 
-  /* Mood-based color variables */
   --mood-happy: #FFD700;
   --mood-sad: #4a90e2;
   --mood-energetic: #FF6B6B;
@@ -19,7 +16,6 @@
   --mood-angry: #FF4500;
 }
 
-/* Aurora Text Effect */
 .aurora-text {
   background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #feca57, #ff9ff3, #54a0ff);
   background-size: 400% 400%;
@@ -44,7 +40,6 @@
   }
 }
 
-/* Aurora Text Variation 2 - Cooler tones */
 .aurora-text-2 {
   background: linear-gradient(45deg, #667eea, #764ba2, #f093fb, #f5576c, #4facfe, #00f2fe);
   background-size: 400% 400%;
@@ -69,9 +64,19 @@
   }
 }
 
-/* Aurora Text Variation 3 - Warm tones */
+.mood-selection-title {
+  background: linear-gradient(10deg, #ffd900, #00d5ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
+}
+
 .aurora-text-3 {
-  background: linear-gradient(45deg, #ffecd2, #fcb69f, #ff9ff3, #a8edea, #fed6e3, #d299c2);
+  background: linear-gradient(45deg, #FFFF00, #FFD700, #00FF00, #32CD32, #08b6f5, #00aaff);
   background-size: 400% 400%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -93,7 +98,52 @@
   }
 }
 
-/* Aurora Hint Text Effect */
+.aurora-text-4 {
+  background: linear-gradient(45deg, #FFA500, #FF4500, #FF6347, #DC143C, #B22222, #8B0000);
+  background-size: 400% 400%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: aurora-shift-4 7s ease-in-out infinite;
+  font-weight: 600;
+}
+
+@keyframes aurora-shift-4 {
+
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.creator-b {
+  font-weight: 900;
+  transition: transform 0.2s ease, text-shadow 0.2s ease;
+  background: linear-gradient(90deg, #00e5ff, #00ff7a);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.creator-b:hover {
+  transform: scale(1.06);
+}
+
+.creator-d {
+  font-weight: 900;
+  transition: transform 0.25s ease, filter 0.25s ease;
+  background: linear-gradient(90deg, #ffd700, #ff6b6b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.creator-d:hover {
+  transform: translateY(-2px) scale(1.03);
+}
+
 .aurora-hint {
   background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #feca57, #ff9ff3, #54a0ff);
   background-size: 400% 400%;
@@ -128,7 +178,6 @@ body {
   position: relative;
 }
 
-/* Enhanced Animated Music Background */
 .music-background {
   position: fixed;
   top: 0;
@@ -142,9 +191,6 @@ body {
     radial-gradient(circle at 80% 80%, rgba(0, 229, 255, 0.1) 0%, transparent 50%);
 }
 
-/* Animated sound waves - REMOVED */
-
-/* Floating music notes */
 .note {
   position: absolute;
   font-size: 2rem;
@@ -198,8 +244,6 @@ body {
   opacity: 0.3;
 }
 
-/* Floating frequency bars - REMOVED */
-
 @keyframes float-notes {
 
   0%,
@@ -214,7 +258,6 @@ body {
   }
 }
 
-/* Security Alert */
 .security-alert {
   position: fixed;
   top: 1rem;
@@ -247,7 +290,6 @@ body {
   letter-spacing: 0.5px;
 }
 
-/* Navbar */
 .navbar {
   position: sticky;
   top: 0;
@@ -275,7 +317,6 @@ body {
   gap: 0.75rem;
 }
 
-/* Make brand look and behave like a clickable element */
 .nav-brand {
   cursor: pointer;
 }
@@ -286,7 +327,6 @@ body {
   border-radius: 8px;
 }
 
-/* Hide the focus ring for mouse clicks but keep it for keyboard users */
 .nav-brand:focus {
   outline: none;
 }
@@ -305,7 +345,6 @@ body {
   filter: drop-shadow(0 0 20px rgba(124, 77, 255, 0.8)) drop-shadow(0 0 30px rgba(0, 229, 255, 0.5));
 }
 
-/* Emoji pop base */
 .emoji-pop {
   display: inline-block;
   transition: filter 240ms ease, text-shadow 240ms ease, opacity 200ms;
@@ -314,17 +353,13 @@ body {
   -webkit-font-smoothing: antialiased;
   cursor: default;
   color: inherit;
-  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.06));
 }
 
-/* Disable pop-up transform on hover for emojis site-wide */
 .emoji-pop:hover {
   transform: none !important;
   opacity: 1;
-  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.06));
 }
 
-/* Enable pop hover only for emojis inside the mood selection area */
 .moods .mood-emoji.emoji-pop {
   transition: transform 200ms ease, filter 200ms ease, text-shadow 200ms ease;
   will-change: transform, filter, text-shadow;
@@ -332,46 +367,43 @@ body {
 
 .moods .mood-emoji.emoji-pop:hover {
   transform: scale(1.25) rotate(8deg) !important;
-  filter: drop-shadow(0 10px 28px rgba(255, 255, 255, 0.12)) !important;
-  text-shadow: 0 0 12px rgba(255, 255, 255, 0.6) !important;
   cursor: pointer;
 }
 
-/* Per-emoji base color + stronger hover glow */
 .emoji-privacy {
   color: #FFD700;
 }
 
-.emoji-privacy:hover {
-  filter: drop-shadow(0 10px 28px rgba(252, 231, 2, 0.95));
-  text-shadow: 0 0 18px rgba(252, 231, 2, 0.9);
-}
+.emoji-privacy:hover {}
 
 .emoji-terms {
   color: #EAA70B;
 }
 
-.emoji-terms:hover {
-  filter: drop-shadow(0 10px 28px rgba(234, 167, 11, 0.92));
-  text-shadow: 0 0 16px rgba(234, 167, 11, 0.9);
-}
+.emoji-terms:hover {}
 
 .emoji-faq {
   color: #FF2600;
 }
 
-.emoji-faq:hover {
-  filter: drop-shadow(0 10px 28px rgba(255, 38, 0, 0.92));
-  text-shadow: 0 0 16px rgba(255, 38, 0, 0.9);
-}
+.emoji-faq:hover {}
 
 .emoji-about {
   color: #00B7FF;
 }
 
-.emoji-about:hover {
-  filter: drop-shadow(0 10px 28px rgba(0, 183, 255, 0.95));
-  text-shadow: 0 0 16px rgba(0, 183, 255, 0.9);
+.emoji-about:hover {}
+
+.footer-icon {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 0.5rem;
+  font-size: 1.05em;
+}
+
+.footer-icon:hover {
+  transform: translateY(-2px);
+  transition: transform 160ms ease;
 }
 
 .emoji-favorites {
@@ -379,8 +411,8 @@ body {
 }
 
 .emoji-favorites:hover {
-  filter: drop-shadow(0 10px 30px rgba(255, 20, 147, 0.95));
-  text-shadow: 0 0 20px rgba(255, 20, 147, 0.9);
+  filter: drop-shadow(0 8px 22px rgba(255, 0, 0, 0.9));
+  text-shadow: 0 0 12px rgba(255, 0, 0, 0.75);
 }
 
 .emoji-stats {
@@ -388,8 +420,8 @@ body {
 }
 
 .emoji-stats:hover {
-  filter: drop-shadow(0 10px 28px rgba(0, 255, 122, 0.95));
-  text-shadow: 0 0 16px rgba(0, 255, 122, 0.9);
+  filter: drop-shadow(0 8px 22px rgba(0, 255, 0, 0.9));
+  text-shadow: 0 0 12px rgba(0, 255, 0, 0.6);
 }
 
 .emoji-ai {
@@ -397,22 +429,17 @@ body {
 }
 
 .emoji-ai:hover {
-  filter: drop-shadow(0 10px 30px rgba(0, 229, 255, 0.98));
-  text-shadow: 0 0 20px rgba(0, 229, 255, 0.9);
+  filter: drop-shadow(0 10px 30px rgba(0, 122, 255, 0.95));
+  text-shadow: 0 0 16px rgba(0, 122, 255, 0.85);
+  transition: filter 180ms ease, text-shadow 180ms ease;
 }
-
-/* Crush emoji removed */
 
 .emoji-home {
   color: #FFFFFF;
 }
 
-.emoji-home:hover {
-  filter: drop-shadow(0 8px 22px rgba(255, 255, 255, 0.95));
-  text-shadow: 0 0 16px rgba(255, 255, 255, 0.9);
-}
+.emoji-home:hover {}
 
-/* DemoGuide feature emoji variants */
 .emoji-demo-instant {
   color: #FFB74D;
 }
@@ -544,7 +571,6 @@ body {
   box-shadow: 0 4px 20px rgba(124, 77, 255, 0.5);
 }
 
-/* Nav Icon */
 .nav-icon {
   font-size: 1.2rem;
   margin-right: 0.5rem;
@@ -555,7 +581,6 @@ body {
   transform: scale(1.2);
 }
 
-/* Back Button */
 .back-btn {
   padding: 0.5rem;
   border: 1px solid rgba(255, 255, 255, 0.2);
@@ -588,8 +613,6 @@ body {
   transform: translateX(-2px);
 }
 
-/* User Section Styles */
-/* Removed user-profile-btn from navbar */
 .user-profile-btn {
   display: none;
 }
@@ -598,7 +621,6 @@ body {
   display: none;
 }
 
-/* Floating Profile Button - Bottom Right Corner */
 .floating-profile-btn {
   position: fixed;
   bottom: 2rem;
@@ -643,11 +665,10 @@ body {
   filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.3));
 }
 
-/* Logout button in navbar */
 .logout-btn {
   padding: 0.5rem 1rem;
-  border: 1px solid rgba(255, 68, 68, 0.4);
-  background: linear-gradient(135deg, rgba(255, 107, 107, 0.1), rgba(255, 69, 0, 0.05));
+  border: 1px solid rgba(247, 19, 19, 0.821);
+  background: linear-gradient(135deg, rgb(255, 4, 4), rgba(255, 69, 0, 0.05));
   border-radius: 999px;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -663,9 +684,9 @@ body {
 }
 
 .logout-btn:hover {
-  background: linear-gradient(135deg, rgba(255, 107, 107, 0.2), rgba(255, 69, 0, 0.1));
+  background: linear-gradient(135deg, rgba(255, 1, 1, 0.777), rgba(255, 69, 0, 0.1));
   border-color: rgba(255, 68, 68, 0.7);
-  box-shadow: 0 0 15px rgba(255, 68, 68, 0.3);
+  box-shadow: 0 0 15px rgba(255, 2, 2, 0.3);
 }
 
 .profile-avatar {
@@ -718,20 +739,18 @@ body {
 .logout-icon {
   font-size: 1.2rem;
   transition: transform 0.3s ease;
-  filter: drop-shadow(0 0 4px rgba(255, 68, 68, 0.3));
+  filter: drop-shadow(0 0 4px rgb(232, 10, 10));
 }
 
 .logout-btn:hover .logout-icon {
-  transform: rotate(-20deg) scale(1.2);
+  transform: scale(1.2);
   filter: drop-shadow(0 0 8px rgba(255, 68, 68, 0.5));
 }
 
-/* Hide old styles */
 .nav-user-section {
   display: none;
 }
 
-/* Main App Root */
 .app-root {
   position: relative;
   z-index: 1;
@@ -839,7 +858,6 @@ body {
   display: none;
 }
 
-/* Moods Section */
 .moods {
   display: flex;
   gap: 0.8rem;
@@ -924,7 +942,6 @@ body {
   transform: scale(1.2);
 }
 
-/* Mood Controls */
 .mood-controls {
   display: flex;
   justify-content: center;
@@ -951,16 +968,13 @@ body {
   padding: 0.5rem 0.9rem;
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.12);
-  /* make the control visually transparent while keeping readable text */
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
   color: var(--text-light);
   cursor: pointer;
   font-size: 0.9rem;
   transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
-  /* subtle backdrop blur so the control feels glassy/translucent */
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  /* ensure the transparent look on low-opacity backgrounds */
   background-clip: padding-box;
 }
 
@@ -972,10 +986,8 @@ body {
   box-shadow: 0 6px 24px rgba(124, 77, 255, 0.08);
 }
 
-/* Improve contrast for native option list on some platforms */
 .language-filter select option {
   background: #0b1220;
-  /* match app background for dropdown */
   color: var(--text-light);
 }
 
@@ -989,7 +1001,6 @@ body {
   background-clip: text;
 }
 
-/* Songs Area */
 .songs-area {
   flex: 1;
   padding: 1rem 1.5rem;
@@ -1087,7 +1098,6 @@ body {
   text-shadow: 0 0 5px rgba(0, 255, 122, 0.3);
 }
 
-/* Songs Grid */
 .songs-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -1234,7 +1244,6 @@ body {
   box-shadow: 0 6px 25px rgba(255, 215, 0, 0.5);
 }
 
-/* Tab Content */
 .tab-content {
   flex: 1;
   padding: 2rem;
@@ -1252,7 +1261,6 @@ body {
   align-items: center;
   gap: 0.8rem;
   flex: 1;
-  /* allow heading to take available space and stay centered */
   justify-content: center;
   font-weight: 700;
   text-transform: uppercase;
@@ -1260,21 +1268,22 @@ body {
   transition: var(--transition);
 }
 
-/* Ensure header containers can position the back button without affecting centering */
-.tab-content>div {
+.tab-header {
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
 }
 
-/* Place back button absolutely so the H2 remains centered */
-.tab-content>div>.back-btn {
+.tab-header>.back-btn {
   position: absolute;
   right: 0.5rem;
   top: 50%;
   transform: translateY(-50%);
 }
 
-/* If there is a left spacer div, keep it aligned left for symmetry */
-.tab-content>div>div:first-child {
+.tab-header>div:first-child {
   position: absolute;
   left: 0.5rem;
   top: 50%;
@@ -1286,7 +1295,51 @@ body {
   flex-shrink: 0;
 }
 
-/* Responsive: keep heading and emojis on one line where possible */
+/* Curved wavy underline for specific headings (Privacy Terms FAQ About) */
+.curved-underline .tab-text {
+  position: relative;
+  padding-bottom: 0.6rem;
+}
+
+/* underline visible by default */
+.curved-underline .tab-text::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 100%;
+  height: 6px;
+  /* thinner */
+  pointer-events: none;
+  z-index: 1;
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 220ms ease, transform 220ms ease;
+  /* Inline SVG wavy stroke, thin and centered */
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-size: 100% 100%;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 6' preserveAspectRatio='none'><path d='M0 3 C12 0 30 6 50 3 C70 0 88 6 100 3' fill='none' stroke='%2300e5ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' /></svg>");
+}
+
+
+
+@media (max-width: 600px) {
+  .curved-underline .tab-text::after {
+    height: 5px;
+    bottom: -5px;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 5' preserveAspectRatio='none'><path d='M0 2.5 C15 0 35 5 50 2.5 C65 0 85 5 100 2.5' fill='none' stroke='%2300e5ff' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round' /></svg>");
+  }
+}
+
+@media (max-width: 380px) {
+  .curved-underline .tab-text::after {
+    height: 4px;
+    bottom: -4px;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 4' preserveAspectRatio='none'><path d='M0 2 C20 0 40 4 60 2 C80 0 100 4 100 2' fill='none' stroke='%2300e5ff' stroke-width='1.2' stroke-linecap='round' stroke-linejoin='round' /></svg>");
+  }
+}
+
 @media (max-width: 600px) {
   .tab-content h2 {
     font-size: 1.15rem;
@@ -1299,9 +1352,13 @@ body {
 
   .tab-text {
     white-space: nowrap;
-    /* keep text from splitting around emojis */
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+
+  .curved-underline .tab-text::after {
+    height: 6px;
+    bottom: -4px;
   }
 }
 
@@ -1314,6 +1371,11 @@ body {
   .tab-emoji {
     font-size: 1.2rem;
   }
+
+  .curved-underline .tab-text::after {
+    height: 5px;
+    bottom: -3px;
+  }
 }
 
 .tab-text {
@@ -1323,13 +1385,11 @@ body {
   background-clip: text;
 }
 
-/* Slightly reduce heading text for specific informational tabs */
 .emoji-privacy+.tab-text,
 .emoji-terms+.tab-text,
 .emoji-faq+.tab-text,
 .emoji-about+.tab-text {
   font-size: 1.4rem;
-  /* a bit smaller than the main h2 */
   line-height: 1.05;
 }
 
@@ -1340,7 +1400,6 @@ body {
   .emoji-faq+.tab-text,
   .emoji-about+.tab-text {
     font-size: 1.05rem;
-    /* reduce further on small screens */
   }
 }
 
@@ -1367,14 +1426,12 @@ body {
   font-size: 1.1rem;
 }
 
-/* History List */
 .history-list {
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
 
-/* History Grid - Structured Layout */
 .history-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -1446,7 +1503,6 @@ body {
   font-style: italic;
 }
 
-/* About Content */
 .about-content {
   background: linear-gradient(135deg, rgba(123, 77, 255, 0.1), rgba(0, 229, 255, 0.05));
   border: none;
@@ -1495,17 +1551,14 @@ body {
   font-weight: 600;
 }
 
-/* Footer */
 .footer {
   text-align: center;
   padding: 1.2rem 2rem;
-  /* reduced top/bottom padding to tighten spacing */
   border: none;
   background: transparent;
   color: var(--text-muted);
   font-size: 0.95rem;
   margin-top: 1rem;
-  /* reduce gap above footer */
   position: relative;
   z-index: 2;
 }
@@ -1516,7 +1569,6 @@ body {
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
-  /* tightened spacing between footer rows */
 }
 
 .footer-main {
@@ -1550,7 +1602,6 @@ body {
   gap: 1.2rem;
   flex-wrap: wrap;
   margin-top: 0.5rem;
-  /* reduce vertical gap above links */
   padding-top: 0.5rem;
   border-top: 1px solid rgba(0, 229, 255, 0.2);
 }
@@ -1568,25 +1619,74 @@ body {
 .footer-link:hover {
   color: #FFD700;
   transform: translateY(-2px);
-  text-shadow: 0 0 8px rgba(0, 229, 255, 0.5);
 }
 
 .footer-link::after {
   content: '';
   position: absolute;
-  bottom: -2px;
+  bottom: -6px;
   left: 0;
   width: 0;
-  height: 2px;
-  background: linear-gradient(90deg, var(--accent), #FFD700);
-  transition: width 0.3s ease;
+  height: 6px;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-size: 100% 100%;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 6' preserveAspectRatio='none'><path d='M0 3 C12 0 30 6 50 3 C70 0 88 6 100 3' fill='none' stroke='%2300e5ff' stroke-width='2' stroke-linecap='round' /></svg>");
+  transition: width 300ms ease;
+  pointer-events: none;
+  opacity: 0.98;
 }
 
 .footer-link:hover::after {
   width: 100%;
 }
 
-/* Page Footer Styles */
+/* Footer nav buttons use span underline */
+.footer-nav-btn span {
+  position: relative;
+  display: inline-block;
+}
+
+.footer-nav-btn span::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 0;
+  width: 0;
+  height: 6px;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-size: 100% 100%;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 6' preserveAspectRatio='none'><path d='M0 3 C12 0 30 6 50 3 C70 0 88 6 100 3' fill='none' stroke='%2300e5ff' stroke-width='2' stroke-linecap='round' /></svg>");
+  transition: width 300ms ease;
+  pointer-events: none;
+  opacity: 0.98;
+}
+
+.footer-nav-btn:hover span::after {
+  width: 100%;
+}
+
+@media (max-width: 600px) {
+
+  .footer-link::after,
+  .footer-nav-btn span::after {
+    height: 4px;
+    bottom: -4px;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 4' preserveAspectRatio='none'><path d='M0 2 C15 0 35 4 50 2 C65 0 85 4 100 2' fill='none' stroke='%2300e5ff' stroke-width='1.6' stroke-linecap='round' /></svg>");
+  }
+}
+
+@media (max-width: 380px) {
+
+  .footer-link::after,
+  .footer-nav-btn span::after {
+    height: 3px;
+    bottom: -3px;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 3' preserveAspectRatio='none'><path d='M0 1.5 C20 0 40 3 60 1.5 C80 0 100 3 100 1.5' fill='none' stroke='%2300e5ff' stroke-width='1' stroke-linecap='round' /></svg>");
+  }
+}
+
 .page-footer {
   margin-top: 3rem;
   padding-top: 2rem;
@@ -1641,18 +1741,18 @@ body {
   font-size: 0.85rem;
   font-weight: 500;
   margin-top: 0.5rem;
-  /* smaller space to copyright */
 }
 
 .heart-emoji {
   font-size: 1.2rem;
-  transition: transform 0.3s ease, filter 0.3s ease;
+  transition: transform 0.3s ease, filter 0.3s ease, text-shadow 0.3s ease;
   cursor: pointer;
 }
 
 .heart-emoji:hover {
   transform: scale(2.0) rotate(10deg);
-  filter: drop-shadow(0 0 10px rgba(255, 0, 0, 0.8));
+  filter: drop-shadow(0 0 12px rgba(255, 0, 0, 0.85));
+  text-shadow: 0 0 10px rgba(255, 0, 0, 0.6);
 }
 
 @media (max-width: 768px) {
@@ -1666,8 +1766,6 @@ body {
   }
 }
 
-/* Mood-specific Styles */
-/* Happy mood colors */
 body.mood-happy {
   background: linear-gradient(135deg, #2d1b00 0%) !important;
 }
@@ -1685,7 +1783,6 @@ body.mood-happy .tab-content h2 .tab-text {
   background-clip: text;
 }
 
-/* Sad mood colors */
 body.mood-sad {
   background: linear-gradient(135deg, #0b1533 0%) !important;
 }
@@ -1703,7 +1800,6 @@ body.mood-sad .tab-content h2 .tab-text {
   background-clip: text;
 }
 
-/* Energetic mood colors */
 body.mood-energetic {
   background: linear-gradient(135deg, #6d2525 0%) !important;
 }
@@ -1721,7 +1817,6 @@ body.mood-energetic .tab-content h2 .tab-text {
   background-clip: text;
 }
 
-/* Calm/Chill mood colors */
 body.mood-chill,
 body.mood-calm {
   background: linear-gradient(135deg, #0f2d2d 0%) !important;
@@ -1743,7 +1838,6 @@ body.mood-calm .tab-content h2 .tab-text {
   background-clip: text;
 }
 
-/* Romantic mood colors */
 body.mood-romantic {
   background: linear-gradient(135deg, #3d0f2d 0%) !important;
 }
@@ -1761,7 +1855,6 @@ body.mood-romantic .tab-content h2 .tab-text {
   background-clip: text;
 }
 
-/* Angry mood colors */
 body.mood-angry {
   background: linear-gradient(135deg, #3d0f0f 0%) !important;
 }
@@ -1780,7 +1873,6 @@ body.mood-angry .tab-content h2 .tab-text {
 }
 
 
-/* Responsive Design */
 @media (max-width: 768px) {
   .navbar {
     position: sticky;
@@ -1980,7 +2072,6 @@ body.mood-angry .tab-content h2 .tab-text {
   }
 }
 
-/* Home Page Mobile Styles */
 @media (max-width: 768px) {
   .home-details-container {
     padding: 1rem 0.5rem !important;
@@ -2041,16 +2132,13 @@ body.mood-angry .tab-content h2 .tab-text {
   }
 }
 
-/* General Mobile Improvements */
 @media (max-width: 768px) {
   .app-root {
     padding-bottom: 4rem;
-    /* Space for floating button */
   }
 
   .mood-btn {
     min-height: 44px;
-    /* iOS touch target */
     min-width: 44px;
   }
 
@@ -2099,7 +2187,6 @@ body.mood-angry .tab-content h2 .tab-text {
   }
 }
 
-/* Mobile Viewport and Orientation Handling */
 @media (max-width: 768px) and (orientation: landscape) {
   .home-hero-title {
     font-size: 1.8rem !important;
@@ -2152,7 +2239,6 @@ body.mood-angry .tab-content h2 .tab-text {
   }
 }
 
-/* Touch-friendly interactions */
 @media (hover: none) and (pointer: coarse) {
 
   .mood-btn:hover,
@@ -2170,20 +2256,15 @@ body.mood-angry .tab-content h2 .tab-text {
   }
 }
 
-/* Hide scrollbar */
 html {
   scrollbar-width: none;
-  /* Firefox */
   -ms-overflow-style: none;
-  /* IE and Edge */
 }
 
 ::-webkit-scrollbar {
   display: none;
-  /* Chrome, Safari, Opera */
 }
 
-/* Global playful music-theme tweaks (match HomeTab vibe) */
 .music-playful * {
   font-family: 'Cambria Math', Cambria, serif;
 }
@@ -2204,7 +2285,6 @@ html {
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.45), 0 0 40px rgba(124, 77, 255, 0.06);
 }
 
-/* Floating decorative notes used across pages */
 .floating-note-deco {
   position: absolute;
   font-size: 2.2rem;
@@ -2213,7 +2293,6 @@ html {
   animation: float-notes 8s ease-in-out infinite;
 }
 
-/* Hacker-music theme: dark, neon accents, monospace vibes */
 .music-hacker * {
   font-family: 'Cambria Math', Cambria, serif;
 }
@@ -2243,7 +2322,6 @@ html {
   opacity: 0.6;
 }
 
-/* Home Details Sections */
 .home-details-container {
   display: flex;
   flex-direction: column;
@@ -2251,7 +2329,6 @@ html {
   margin-bottom: 3rem !important;
 }
 
-/* Home Hero Section */
 .home-hero-section {
   text-align: center;
   padding: 3rem 2rem;
@@ -2280,7 +2357,6 @@ html {
   margin-right: auto;
 }
 
-/* Typewriter Section */
 .typewriter-section {
   background: linear-gradient(135deg, rgba(0, 229, 255, 0.08), rgba(124, 77, 255, 0.08));
   border: 2px solid rgba(0, 229, 255, 0.3);
@@ -2338,7 +2414,6 @@ html {
   }
 }
 
-/* Beautiful Grid Cards */
 .beauty-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -2360,24 +2435,31 @@ html {
   z-index: 0;
 }
 
-/* Overlay that becomes visible on hover - per-card gradients set below */
 .beauty-card::after {
   content: '';
   position: absolute;
-  inset: 0;
+  inset: -2px;
+  background: linear-gradient(90deg, rgba(0, 229, 255, 0.12), rgba(124, 77, 255, 0.12));
+  border-radius: inherit;
+  z-index: 0;
+  filter: blur(12px);
   opacity: 0;
-  transition: opacity 0.5s ease, transform 0.5s ease;
-  pointer-events: none;
-  z-index: 1;
-  /* sits below content */
+  transition: opacity 420ms ease, transform 420ms ease;
+  transform: scale(0.98);
 }
 
 .beauty-card:hover {
-  transform: translateY(-10px) scale(1.02);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.18);
+  transform: translateY(-8px) rotate(-1deg) scale(1.02);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.28), 0 6px 30px rgba(124, 77, 255, 0.06);
 }
 
-/* White circular backdrop that scales behind the icon */
+/* animated gradient border on hover */
+.beauty-card:hover::after {
+  opacity: 1;
+  transform: scale(1);
+  background: linear-gradient(90deg, rgba(124, 77, 255, 0.18), rgba(0, 229, 255, 0.18) 30%, rgba(255, 255, 255, 0.06) 60%);
+}
+
 .beauty-icon {
   font-size: 3rem;
   margin-bottom: 1rem;
@@ -2386,57 +2468,65 @@ html {
   margin-right: auto;
   position: relative;
   z-index: 3;
-  /* above overlay */
-  color: rgba(255, 255, 255, 0.9);
-  transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), color 0.4s ease;
+  color: rgba(255, 255, 255, 0.95);
+  transition: transform 420ms cubic-bezier(0.2, 0.9, 0.2, 1), color 300ms ease, filter 300ms ease;
 }
 
+/* colorful halo behind icon */
 .beauty-icon::before {
   content: '';
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 84px;
-  height: 84px;
-  background: #fff;
+  width: 92px;
+  height: 92px;
+  background: radial-gradient(circle at 30% 30%, rgba(0, 229, 255, 0.16), transparent 40%), radial-gradient(circle at 70% 70%, rgba(124, 77, 255, 0.14), transparent 45%);
   border-radius: 50%;
-  transform: translate(-50%, -50%) scale(0);
-  transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.3s ease;
-  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.8);
+  transition: transform 420ms ease, opacity 300ms ease;
+  opacity: 0.9;
   z-index: 2;
-  /* between overlay and icon */
+  filter: blur(6px);
 }
 
-.beauty-card:hover .beauty-icon::before {
-  transform: translate(-50%, -50%) scale(1);
-  opacity: 1;
-}
-
-/* Slight icon shrink on hover to give the 'inserted into circle' effect */
 .beauty-card:hover .beauty-icon {
-  transform: scale(0.85);
-  color: #000;
-  /* icon color over the white circle */
+  transform: rotate(6deg) scale(1.06);
+  filter: drop-shadow(0 6px 18px rgba(0, 229, 255, 0.12));
+  color: #000 !important;
 }
 
+/* heading wavy underline that appears on hover */
 .beauty-card h3 {
   font-size: 1.2rem;
   font-weight: 900;
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(255, 255, 255, 0.95);
   margin-bottom: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 1px;
-  transition: all 0.5s ease;
+  transition: color 260ms ease;
   position: relative;
   z-index: 3;
 }
 
-/* Keep the previous gradient heading effect on hover */
-.beauty-card:hover h3 {
-  background: linear-gradient(15000deg, #00ff62, #ffffff, #ff7b00);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+.beauty-card h3::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -6px;
+  width: 60%;
+  height: 6px;
+  transform: translateX(-50%);
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-size: 100% 100%;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 6' preserveAspectRatio='none'><path d='M0 3 C12 0 30 6 50 3 C70 0 88 6 100 3' fill='none' stroke='%23ffffff' stroke-width='1.6' stroke-linecap='round' /></svg>");
+  opacity: 0;
+  transition: opacity 260ms ease, transform 260ms ease;
+}
+
+.beauty-card:hover h3::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-2px);
 }
 
 .beauty-card p {
@@ -2448,40 +2538,38 @@ html {
   z-index: 3;
 }
 
-/* On hover, text becomes darker to match the example */
 .beauty-card:hover p {
   color: #000;
 }
 
-/* Per-card gradient overlays */
 .music-card:hover::after {
   opacity: 1;
-  background: linear-gradient(135deg, rgb(234, 67, 53) 0%, rgb(251, 188, 4) 100%);
+  background: linear-gradient(135deg, rgb(243, 65, 49) 0%, rgb(106, 83, 7) 100%);
 }
 
 .ai-card:hover::after {
   opacity: 1;
-  background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
+  background: linear-gradient(135deg, #87f3eb 20%, #023616 100%);
 }
 
 .heart-card:hover::after {
   opacity: 1;
-  background: linear-gradient(135deg, #ff9ff3 0%, #f368e0 100%);
+  background: linear-gradient(135deg, #ff9ff3 0%, #3c0635 100%);
 }
 
 .globe-card:hover::after {
   opacity: 1;
-  background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+  background: linear-gradient(135deg, #74b9ff 0%, #073b63 100%);
 }
 
 .playlist-card:hover::after {
   opacity: 1;
-  background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%);
+  background: linear-gradient(135deg, #766eec 0%, #261f54 100%);
 }
 
 .lock-card:hover::after {
   opacity: 1;
-  background: linear-gradient(135deg, #fd79a8 0%, #e84393 100%);
+  background: linear-gradient(135deg, #fd79a8 0%, #49182f 100%);
 }
 
 @media (max-width: 768px) {
@@ -2530,7 +2618,6 @@ html {
   }
 }
 
-/* Home Details Grid */
 .home-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -2685,7 +2772,6 @@ html {
   }
 }
 
-/* Mapping Card */
 .mapping-card {
   grid-column: 1 / -1;
 }
@@ -2719,7 +2805,6 @@ html {
   opacity: 0.7;
 }
 
-/* Hacker Theme Overrides */
 .music-hacker .home-section {
   border-color: rgba(0, 255, 122, 0.2);
   box-shadow: 0 0 15px rgba(0, 255, 122, 0.05);
@@ -2748,7 +2833,6 @@ html {
   text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
 }
 
-/* Responsive Adjustments */
 @media (max-width: 768px) {
   .home-grid {
     grid-template-columns: 1fr;
@@ -2771,7 +2855,6 @@ html {
   background: linear-gradient(135deg, rgba(0, 255, 122, 0.05) 0%, transparent 100%);
 }
 
-/* Subtle matrix-style vertical lines */
 .music-hacker::before {
   content: '';
   position: fixed;
@@ -2781,14 +2864,12 @@ html {
   z-index: 0;
 }
 
-/* Neon card tone */
 .music-hacker .card-pro {
   background: linear-gradient(180deg, rgba(0, 0, 0, 0.55), rgba(6, 6, 12, 0.7));
   border: 1px solid rgba(0, 255, 122, 0.06);
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7);
 }
 
-/* Header equalizer micro-visual */
 .music-hacker .header-eq {
   display: inline-flex;
   gap: 4px;
@@ -2825,17 +2906,14 @@ html {
   }
 }
 
-/* Neon focused buttons */
 .music-hacker .nav-btn.active {
   background: linear-gradient(90deg, var(--hacker-green), var(--hacker-purple));
   color: #041018;
   box-shadow: 0 6px 26px rgba(0, 255, 122, 0.12);
 }
 
-/* Make important explanatory text readable in light-mode */
 .force-dark-on-light {
   color: #b0b0b0;
-  /* default (dark theme) */
   font-weight: 600;
 }
 
@@ -2847,7 +2925,6 @@ html {
     -moz-osx-font-smoothing: grayscale;
   }
 
-  /* Extra specificity for profile panel variants in case other CSS overrides color */
   .profile-nav-panel .section-content .force-dark-on-light,
   .profile-section .section-content .force-dark-on-light,
   .profile-nav-panel .section-content p.delete-note.force-dark-on-light {
@@ -2856,7 +2933,6 @@ html {
   }
 }
 
-/* Also apply when the app explicitly sets data-theme="light" */
 [data-theme="light"] .force-dark-on-light,
 [data-theme="light"] .profile-nav-panel .section-content .force-dark-on-light,
 [data-theme="light"] .profile-section .section-content .force-dark-on-light,
@@ -2865,7 +2941,6 @@ html {
   font-weight: 700 !important;
 }
 
-/* Image Carousel Styles for Home Page */
 .image-carousel {
   width: 100%;
   margin: 2rem 0;
@@ -2904,7 +2979,6 @@ html {
   }
 }
 
-/* Mobile responsiveness */
 @media (max-width: 768px) {
   .carousel-image {
     max-width: 100%;
@@ -2928,7 +3002,6 @@ html {
   }
 }
 
-/* Updated Image Marquee Styles for Page Flip Animation - Rectangle Removed */
 .music-marquee {
   width: 100%;
   display: flex;
@@ -2951,7 +3024,6 @@ html {
   transform: scale(1.05);
 }
 
-/* Updated Image Marquee Styles - Removed Rectangle */
 .music-marquee {
   width: 100%;
   display: flex;
