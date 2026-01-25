@@ -338,9 +338,6 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                         <h3 className="profile-name">{user?.userName || 'User'}</h3>
                         <p className="profile-email-main">{user?.email || 'No email'}</p>
                         <div className="profile-gender-verified-row">
-                            <p className="profile-gender-main">
-                                <span className="gender-badge">{getGenderAvatar(user?.gender)} {user?.gender?.charAt(0).toUpperCase() + user?.gender?.slice(1) || 'Not specified'}</span>
-                            </p>
                             <div className="profile-badge">
                                 {user?.isVerified ? (
                                     <>
