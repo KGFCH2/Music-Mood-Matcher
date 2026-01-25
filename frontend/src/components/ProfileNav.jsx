@@ -416,7 +416,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                 onClick={() => toggleSection('account')}
                                 whileHover={{ backgroundColor: 'rgba(124, 77, 255, 0.05)' }}
                             >
-                                <span className="toggle-icon"><FaUser /></span>
+                                <span className="toggle-icon"><FaUser style={{ color: '#7c4dff' }} /></span>
                                 <span className="toggle-title">Account Information</span>
                                 <span className={`toggle-arrow ${expandedSection === 'account' ? 'open' : ''}`}>›</span>
                             </motion.button>
@@ -707,7 +707,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                 onClick={() => toggleSection('privacy')}
                                 whileHover={{ backgroundColor: 'rgba(124, 77, 255, 0.05)' }}
                             >
-                                <span className="toggle-icon"><FaLock /></span>
+                                <span className="toggle-icon"><FaLock style={{ color: '#00e5ff' }} /></span>
                                 <span className="toggle-title">Privacy & Security</span>
                                 <span className={`toggle-arrow ${expandedSection === 'privacy' ? 'open' : ''}`}>›</span>
                             </motion.button>
@@ -724,19 +724,19 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                     >
                                         <div className="privacy-info">
                                             <div className="privacy-item">
-                                                <span className="privacy-icon"><FaLock /></span>
+                                                <span className="privacy-icon"><FaLock style={{ color: '#FFD700' }} /></span>
                                                 <span className="privacy-text">Profile data is stored locally and can be synced to the backend when authenticated</span>
                                             </div>
                                             <div className="privacy-item">
-                                                <span className="privacy-icon"><FaShieldAlt /></span>
+                                                <span className="privacy-icon"><FaShieldAlt style={{ color: '#00e5ff' }} /></span>
                                                 <span className="privacy-text">Authentication and profile endpoints communicate with the backend if configured</span>
                                             </div>
                                             <div className="privacy-item">
-                                                <span className="privacy-icon"><FaUser /></span>
+                                                <span className="privacy-icon"><FaUser style={{ color: '#7c4dff' }} /></span>
                                                 <span className="privacy-text">Only you can access your local profile data; remote data follows server policies</span>
                                             </div>
                                             <div className="privacy-item">
-                                                <span className="privacy-icon"><FaChartBar /></span>
+                                                <span className="privacy-icon"><FaChartBar style={{ color: '#ff1493' }} /></span>
                                                 <span className="privacy-text">Your preferences and favorites are private by default</span>
                                             </div>
                                         </div>
@@ -757,7 +757,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                 onClick={() => toggleSection('delete')}
                                 whileHover={{ backgroundColor: 'rgba(255, 107, 107, 0.05)' }}
                             >
-                                <span className="toggle-icon"><FaTrashAlt /></span>
+                                <span className="toggle-icon"><FaTrashAlt style={{ color: '#ff6b6b' }} /></span>
                                 <span className="toggle-title" style={{ color: '#ff6b6b' }}>Delete Account</span>
                                 <span className={`toggle-arrow ${expandedSection === 'delete' ? 'open' : ''}`}>›</span>
                             </motion.button>
