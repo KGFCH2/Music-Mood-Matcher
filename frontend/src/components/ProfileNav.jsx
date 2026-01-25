@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { hashPassword, validatePasswordStrength, getPasswordFeedback } from '../utils/passwordUtils'
 import { motion, AnimatePresence } from 'framer-motion'
+import { FaSignOutAlt } from 'react-icons/fa'
 import PropTypes from 'prop-types'
 import emailjs from '@emailjs/browser'
 import './profile-nav.css'
@@ -365,7 +366,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                 whileTap={{ scale: 0.98 }}
                                 aria-label="Logout"
                             >
-                                <span className="profile-logout-icon">👋</span>
+                                <FaSignOutAlt className="profile-logout-icon" />
                                 <span className="profile-logout-text">Logout</span>
                             </motion.button>
                         </div>
