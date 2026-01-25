@@ -283,7 +283,7 @@ function App() {
                     aria-label="Go to Home"
                   >
                     <span className="brand-icon">🎵</span>
-                    <h1>Music Mood Matcher</h1>
+                    <h1 className="gold-cyan-text">Music Mood Matcher</h1>
                   </div>
                   <div className="nav-menu">
                     <button className={`nav-btn ${activeTab === 'home' ? 'active' : ''}`} onClick={() => { setActiveTab('home'); setCurrentMood(null); }}>
@@ -657,16 +657,16 @@ function App() {
                   </div>
                   <div className="about-content">
                     <p>
-                      🎵 <strong>Music Mood Matcher</strong> is your personal music companion that matches your mood with curated songs!
+                      🎵 <strong className="gold-cyan-text">Music Mood Matcher</strong> is your personal music companion that matches your mood with curated songs!
                     </p>
                     <h3>Features:</h3>
                     <ul>
-                      <li><span className="feature-text"><strong>6 Moods:</strong> Happy, Sad, Energetic, Romantic, Chill, Angry  </span><FaHeadphones className="feature-emoji" style={{ color: '#ffa200' }} /></li>
-                      <li><span className="feature-text"><strong>Multi-language:</strong> English, Hindi & Bengali songs  </span><FaGlobe className="feature-emoji" style={{ color: '#4ecdc4' }} /></li>
-                      <li><span className="feature-text"><strong>20+ songs per mood:</strong> Extensive music library  </span><FaMusic className="feature-emoji" style={{ color: '#45b7d1' }} /></li>
-                      <li><span className="feature-text"><strong>Favorites:</strong> Save your favorite songs  </span><FaHeart className="feature-emoji" style={{ color: '#f80737' }} /></li>
-                      <li><span className="feature-text"><strong>History:</strong> Track your mood selections  </span><FaHistory className="feature-emoji" style={{ color: '#a8e6cf' }} /></li>
-                      <li><span className="feature-text"><strong>Beautiful UI:</strong> Music-themed design with animated elements  </span><FaPalette className="feature-emoji" style={{ color: '#dda0dd' }} /></li>
+                      <li><span className="feature-text"><strong className="color-combined-text">6 Moods:</strong> Happy, Sad, Energetic, Romantic, Chill, Angry  </span><FaHeadphones className="feature-emoji" style={{ color: '#ffa200' }} /></li>
+                      <li><span className="feature-text"><strong className="color-combined-text">Multi-language:</strong> English, Hindi & Bengali songs  </span><FaGlobe className="feature-emoji" style={{ color: '#4ecdc4' }} /></li>
+                      <li><span className="feature-text"><strong className="color-combined-text">20+ songs per mood:</strong> Extensive music library  </span><FaMusic className="feature-emoji" style={{ color: '#45b7d1' }} /></li>
+                      <li><span className="feature-text"><strong className="color-combined-text">Favorites:</strong> Save your favorite songs  </span><FaHeart className="feature-emoji" style={{ color: '#f80737' }} /></li>
+                      <li><span className="feature-text"><strong className="color-combined-text">History:</strong> Track your mood selections  </span><FaHistory className="feature-emoji" style={{ color: '#a8e6cf' }} /></li>
+                      <li><span className="feature-text"><strong className="color-combined-text">Beautiful UI:</strong> Music-themed design with animated elements  </span><FaPalette className="feature-emoji" style={{ color: '#dda0dd' }} /></li>
                     </ul>
                     <h3>How to use:</h3>
                     <ol>
