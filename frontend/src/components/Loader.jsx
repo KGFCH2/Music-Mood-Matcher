@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import './loader.css'
 
 // Silent loader with musical visuals (no audio)
-export default function Loader({ onDone, introDuration = 1200 }) {
+export default function Loader({ onDone, introDuration = 3000 }) {
   const timeoutRef = useRef(null)
   useEffect(() => {
     // show loader for a short intro then call onDone to reveal the homepage
@@ -22,8 +22,6 @@ export default function Loader({ onDone, introDuration = 1200 }) {
     <div className="mm-loader" role="status" aria-label="Loading Music Mood Matcher" aria-busy="true">
       <div className="loader-card">
         <div className="loader-visual">
-          <div className="circle c1"></div>
-          <div className="circle c2"></div>
 
           <div className="equalizer" aria-hidden="true">
             <div className="eq-bar"></div>
@@ -32,15 +30,15 @@ export default function Loader({ onDone, introDuration = 1200 }) {
             <div className="eq-bar"></div>
             <div className="eq-bar"></div>
           </div>
-
-          <div className="note n1">♪</div>
-          <div className="note n2">♫</div>
-          <div className="note n3">🎵</div>
         </div>
 
         <div className="loader-text">
           <h1>Music Mood Matcher</h1>
           <p className="creators">Made by <strong>Babin Bid</strong> & <strong>Debasmita Bose</strong></p>
+        </div>
+
+        <div className="loading-progress">
+          <div className="progress-bar"></div>
         </div>
       </div>
     </div>
