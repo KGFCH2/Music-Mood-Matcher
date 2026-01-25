@@ -775,6 +775,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                             border: '1px solid rgba(255, 107, 107, 0.3)',
                                             borderRadius: '8px',
                                             padding: '1rem',
+                                            marginTop: '1rem',
                                             marginBottom: '1rem'
                                         }}>
                                             <p style={{ color: '#ff6b6b', fontWeight: '600', margin: '0 0 0.5rem' }}>
