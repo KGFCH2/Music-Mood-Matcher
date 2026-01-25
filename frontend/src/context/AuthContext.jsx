@@ -34,7 +34,8 @@ export function AuthProvider({ children }) {
             userId: userData.userId,
             registeredAt: userData.registeredAt,
             isVerified: userData.isVerified,
-            isDemo: userData.isDemo || false
+            isDemo: userData.isDemo || false,
+            loginHistory: userData.loginHistory || []
         }
 
         console.log('AuthContext: Setting user to:', safeUserData)
@@ -60,7 +61,8 @@ export function AuthProvider({ children }) {
             userId: updated.userId,
             registeredAt: updated.registeredAt,
             isVerified: updated.isVerified,
-            isDemo: updated.isDemo || false
+            isDemo: updated.isDemo || false,
+            loginHistory: updated.loginHistory || []
         }
 
         secureStorage.setUserInfo(safeUserData)
