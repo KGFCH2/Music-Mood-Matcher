@@ -320,7 +320,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                 whileTap={{ scale: 0.9 }}
                                 aria-label="Close profile"
                             >
-                                <FaTimes className="close-icon" style={{ fontSize: '1.8rem', color: 'white' }} />
+                                <FaTimes className="close-icon" style={{ fontSize: '1.8rem', color: '#ff6b6b' }} />
                             </motion.button>
                         </div>
                     </div>
