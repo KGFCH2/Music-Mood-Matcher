@@ -522,17 +522,18 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                                         whileHover={{ scale: 1.05 }}
                                                         whileTap={{ scale: 0.95 }}
                                                         style={{
-                                                            padding: '12px 16px',
+                                                            padding: '20px 32px',
                                                             background: 'linear-gradient(1350deg, #954242, #4400ff)',
                                                             border: 'none',
                                                             borderRadius: '8px',
                                                             color: 'white',
                                                             cursor: 'pointer',
+                                                            width: '70%',
                                                             fontSize: '0.9rem',
                                                             fontWeight: '600'
                                                         }}
                                                     >
-                                                        <FaCheck style={{ color: '#4caf50' }} /> Save Changes
+                                                        Save Changes
                                                     </motion.button>
                                                     <motion.button
                                                         onClick={() => {
@@ -557,7 +558,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                                             fontWeight: '600'
                                                         }}
                                                     >
-                                                        <FaTimes style={{ color: '#ff6b6b' }} /> Cancel
+                                                        Cancel
                                                     </motion.button>
                                                 </>
                                             ) : (
