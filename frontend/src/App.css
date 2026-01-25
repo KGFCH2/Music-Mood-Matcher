@@ -124,6 +124,7 @@
   font-weight: 900;
   transition: transform 0.2s ease, text-shadow 0.2s ease;
   background: linear-gradient(90deg, #00e5ff, #00ff7a);
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -136,6 +137,7 @@
   font-weight: 900;
   transition: transform 0.25s ease, filter 0.25s ease;
   background: linear-gradient(90deg, #ffd700, #ff6b6b);
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -374,25 +376,17 @@ body {
   color: #FFD700;
 }
 
-.emoji-privacy:hover {}
-
 .emoji-terms {
   color: #EAA70B;
 }
-
-.emoji-terms:hover {}
 
 .emoji-faq {
   color: #FF2600;
 }
 
-.emoji-faq:hover {}
-
 .emoji-about {
   color: #00B7FF;
 }
-
-.emoji-about:hover {}
 
 .footer-icon {
   display: inline-block;
@@ -437,8 +431,6 @@ body {
 .emoji-home {
   color: #FFFFFF;
 }
-
-.emoji-home:hover {}
 
 .emoji-demo-instant {
   color: #FFB74D;
@@ -1543,6 +1535,37 @@ body {
   margin-bottom: 0.75rem;
 }
 
+.color-combined-text {
+  background: linear-gradient(1350deg, #FFD700, #00e5ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.gold-cyan-text {
+  background: linear-gradient(45deg, #FFD700, #00e5ff);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gold-cyan-shift 3s ease-in-out infinite;
+  font-weight: 800;
+}
+
+@keyframes gold-cyan-shift {
+
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
 .footer-text {
   text-align: center;
   margin-top: 2rem;
@@ -2310,6 +2333,7 @@ html {
 
 .music-hacker .nav-brand h1 {
   background: linear-gradient(90deg, var(--hacker-green), var(--hacker-cyan));
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
