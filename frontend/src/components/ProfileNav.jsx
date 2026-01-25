@@ -453,7 +453,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                         </div>
                                         {isEditingName && (
                                             <div className="info-row">
-                                                <span className="info-label">🔒 New Password:</span>
+                                                <span className="info-label"><FaLock style={{ color: '#FFD700' }} /> New Password:</span>
                                                 <div style={{ display: 'flex', flexDirection: 'column', marginLeft: '10px', gap: '0.5rem' }}>
                                                     <input
                                                         type="password"
