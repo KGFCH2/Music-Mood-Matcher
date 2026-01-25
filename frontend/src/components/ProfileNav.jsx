@@ -409,12 +409,11 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                             transition={{ delay: 0.15 }}
                         >
                             <motion.button
-                                className={`section-toggle ${expandedSection === 'account' ? 'active' : ''}`}
+                                className={`section-toggle account-toggle ${expandedSection === 'account' ? 'active' : ''}`}
                                 onClick={() => toggleSection('account')}
-                                whileHover={{ backgroundColor: 'rgba(124, 77, 255, 0.05)' }}
                             >
                                 <span className="toggle-icon"><FaUser style={{ color: '#7c4dff' }} /></span>
-                                <span className="toggle-title">Account Information</span>
+                                <span className="toggle-title" style={{ color: '#7c4dff' }}>Account Information</span>
                                 <span className={`toggle-arrow ${expandedSection === 'account' ? 'open' : ''}`}>›</span>
                             </motion.button>
 
@@ -595,12 +594,11 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                             transition={{ delay: 0.2 }}
                         >
                             <motion.button
-                                className={`section-toggle ${expandedSection === 'registration' ? 'active' : ''}`}
+                                className={`section-toggle registration-toggle ${expandedSection === 'registration' ? 'active' : ''}`}
                                 onClick={() => toggleSection('registration')}
-                                whileHover={{ backgroundColor: 'rgba(124, 77, 255, 0.05)' }}
                             >
                                 <FaCalendarAlt className="toggle-icon" style={{ color: '#ff9800', fontSize: '1.25rem' }} />
-                                <span className="toggle-title">Registration Details</span>
+                                <span className="toggle-title" style={{ color: '#ff9800' }}>Registration Details</span>
                                 <span className={`toggle-arrow ${expandedSection === 'registration' ? 'open' : ''}`}>›</span>
                             </motion.button>
 
@@ -620,7 +618,11 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                         <div className="info-row">
                                             <span className="info-label"><FaCheck style={{ color: '#4caf50', marginRight: '0.5rem', fontSize: '1rem' }} /> Verification Status:</span>
                                             <span className={`info-value ${user?.isVerified ? 'verified' : 'unverified'}`}>
-                                                {user?.isVerified ? '✓ Verified' : '⏳ Pending'}
+                                                {user?.isVerified ? (
+                                                    <><FaCheck style={{ color: '#4caf50', marginRight: '0.5rem' }} /> Verified</>
+                                                ) : (
+                                                    <><FaClock style={{ color: '#ff9800', marginRight: '0.5rem' }} /> Pending</>
+                                                )}
                                             </span>
                                         </div>
                                         {user?.isVerified && user?.verificationCode && (
@@ -642,12 +644,11 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                             transition={{ delay: 0.25 }}
                         >
                             <motion.button
-                                className={`section-toggle ${expandedSection === 'history' ? 'active' : ''}`}
+                                className={`section-toggle history-toggle ${expandedSection === 'history' ? 'active' : ''}`}
                                 onClick={() => toggleSection('history')}
-                                whileHover={{ backgroundColor: 'rgba(124, 77, 255, 0.05)' }}
                             >
                                 <FaClock className="toggle-icon" style={{ color: '#2196f3', fontSize: '1.25rem' }} />
-                                <span className="toggle-title">Login History</span>
+                                <span className="toggle-title" style={{ color: '#2196f3' }}>Login History</span>
                                 <span className="history-count">{getLoginCount()}</span>
                                 <span className={`toggle-arrow ${expandedSection === 'history' ? 'open' : ''}`}>›</span>
                             </motion.button>
@@ -701,12 +702,11 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                             transition={{ delay: 0.3 }}
                         >
                             <motion.button
-                                className={`section-toggle ${expandedSection === 'privacy' ? 'active' : ''}`}
+                                className={`section-toggle privacy-toggle ${expandedSection === 'privacy' ? 'active' : ''}`}
                                 onClick={() => toggleSection('privacy')}
-                                whileHover={{ backgroundColor: 'rgba(124, 77, 255, 0.05)' }}
                             >
                                 <span className="toggle-icon"><FaLock style={{ color: '#00e5ff' }} /></span>
-                                <span className="toggle-title">Privacy & Security</span>
+                                <span className="toggle-title" style={{ color: '#00e5ff' }}>Privacy & Security</span>
                                 <span className={`toggle-arrow ${expandedSection === 'privacy' ? 'open' : ''}`}>›</span>
                             </motion.button>
 
@@ -751,11 +751,10 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                             transition={{ delay: 0.35 }}
                         >
                             <motion.button
-                                className={`section-toggle danger ${expandedSection === 'delete' ? 'active' : ''}`}
+                                className={`section-toggle danger delete-toggle ${expandedSection === 'delete' ? 'active' : ''}`}
                                 onClick={() => toggleSection('delete')}
-                                whileHover={{ backgroundColor: 'rgba(255, 107, 107, 0.05)' }}
                             >
-                                <span className="toggle-icon"><FaTrashAlt style={{ color: '#ff6b6b' }} /></span>
+                                <span className="toggle-icon"><FaTrashAlt className="delete-icon" /></span>
                                 <span className="toggle-title" style={{ color: '#ff6b6b' }}>Delete Account</span>
                                 <span className={`toggle-arrow ${expandedSection === 'delete' ? 'open' : ''}`}>›</span>
                             </motion.button>
@@ -812,7 +811,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                                 fontWeight: '600'
                                             }}
                                         >
-                                            <FaTrashAlt style={{ color: '#ff0000' }} />  Delete My Account  <FaTrashAlt style={{ color: '#ff0000' }} />
+                                            <FaTrashAlt className="delete-icon" />  Delete My Account  <FaTrashAlt className="delete-icon" />
                                         </motion.button>
                                     </motion.div>
                                 )}
@@ -998,9 +997,9 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                     }}>
                                         <p style={{ color: '#ff6b6b', fontWeight: '600', margin: '0 0 0.5rem' }}>What will happen:</p>
                                         <ul style={{ margin: '0.5rem 0 0', paddingLeft: '1.5rem', color: '#b0b0b0', fontSize: '0.9rem' }}>
-                                            <li><FaTrashAlt style={{ color: '#ff0000', fontSize: '0.8rem', marginRight: '0.5rem' }} />Your profile data will be permanently deleted</li>
-                                            <li><FaClock style={{ color: '#ff0000', fontSize: '0.8rem', marginRight: '0.5rem' }} />Login history and preferences will be removed</li>
-                                            <li><FaEnvelope style={{ color: '#ff0000', fontSize: '0.8rem', marginRight: '0.5rem' }} />You can re-register with the same email anytime</li>
+                                            <li><FaTrashAlt className="delete-icon small-icon" />Your profile data will be permanently deleted</li>
+                                            <li><FaClock className="delete-icon small-icon" />Login history and preferences will be removed</li>
+                                            <li><FaEnvelope className="delete-icon small-icon" />You can re-register with the same email anytime</li>
                                         </ul>
                                     </div>
 
@@ -1063,7 +1062,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                                 fontWeight: '600'
                                             }}
                                         >
-                                            <FaTrashAlt style={{ color: '#ff0000' }} /> Delete My Account
+                                            <FaTrashAlt className="delete-icon" /> Delete My Account
                                         </motion.button>
                                         <motion.button
                                             onClick={() => {
