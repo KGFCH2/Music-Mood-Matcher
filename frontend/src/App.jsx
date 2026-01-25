@@ -232,7 +232,7 @@ function App() {
     <>
       {(showLoader || authLoading) && <Loader onDone={() => {
         setShowLoader(false)
-      }} introDuration={800} />}
+      }} introDuration={3000} />}
       {!showLoader && !authLoading ? (
         <>
           {!user ? (
