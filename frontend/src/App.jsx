@@ -857,75 +857,80 @@ function App() {
 
                     <h3>General Questions</h3>
 
-                    <h4>What is Music Mood Matcher?</h4>
-                    <p>Music Mood Matcher is a web application that recommends songs based on your current mood. Select one of six moods (Happy, Sad, Energetic, Romantic, Chill, Angry) and discover curated playlists in English, Hindi, and Bengali.</p>
+                    <h4><span className="faq-q">Qs.</span> What is Music Mood Matcher?</h4>
+                    <p><span className="faq-a">Ans.</span> Music Mood Matcher is a web application that recommends songs based on your current mood. Select one of six moods (Happy, Sad, Energetic, Romantic, Chill, Angry) and discover curated playlists in English, Hindi, and Bengali.</p>
 
-                    <h4>Is Music Mood Matcher free to use?</h4>
-                    <p>Yes! Music Mood Matcher is completely free. We don't charge any subscription fees. You can enjoy unlimited mood-based music recommendations without any cost.</p>
+                    <h4><span className="faq-q">Qs.</span> Is Music Mood Matcher free to use?</h4>
+                    <p><span className="faq-a">Ans.</span> Yes! Music Mood Matcher is completely free. We don't charge any subscription fees. You can enjoy unlimited mood-based music recommendations without any cost.</p>
 
-                    <h4>Do I need to create an account?</h4>
-                    <p>Yes, you need to sign up with your name, email, and optional gender information. Your account helps us save your favorites and mood history so you can pick up where you left off.</p>
+                    <h4><span className="faq-q">Qs.</span> Do I need to create an account?</h4>
+                    <p><span className="faq-a">Ans.</span> Yes, you need to sign up with your name, email, and optional gender information. Your account helps us save your favorites and mood history so you can pick up where you left off.</p>
 
-                    <h4>What moods are available?</h4>
-                    <p>We offer six moods: Happy, Sad, Energetic, Romantic, Chill, and Angry. Each mood has a curated selection of songs designed to match that emotional state.</p>
+                    <h4><span className="faq-q">Qs.</span> What moods are available?</h4>
+                    <p><span className="faq-a">Ans.</span> We offer six moods: Happy, Sad, Energetic, Romantic, Chill, and Angry. Each mood has a curated selection of songs designed to match that emotional state.</p>
+
+                    <h4><span className="faq-q">Qs.</span>What's the difference between demo accounts and original accounts?</h4>
+                    <p><span className="faq-a">Ans.</span><strong>(i) Demo Accounts:</strong> Perfect for quick exploration without registration. No password required, automatically verified, and data stored only locally in your browser. Great for testing features but data won't persist across devices or browser sessions.</p>
+                    <p><strong>(ii) Original Accounts:</strong> Full user accounts with password protection, email verification, and data stored securely on our servers. Your favorites, mood history, and preferences are saved permanently and accessible from any device.</p>
+                    <p>✓ Both account types provide identical access to all app features - the main difference is data persistence and security level.</p>
 
                     <h3>Features & Functionality</h3>
 
-                    <h4>How do I save my favorite songs?</h4>
-                    <p>Click the heart icon (❤️) on any song card to add it to your favorites. You can view all saved favorites in the "Favorites" tab. Your favorites are saved locally in your browser.</p>
+                    <h4><span className="faq-q">Qs.</span> How do I save my favorite songs?</h4>
+                    <p><span className="faq-a">Ans.</span> Click the heart icon (❤️) on any song card to add it to your favorites. You can view all saved favorites in the "Favorites" tab. Your favorites are saved locally in your browser.</p>
 
-                    <h4>Can I filter songs by language?</h4>
-                    <p>Yes! Once you select a mood, use the "Filter by language" dropdown to choose English, Hindi, Bengali, or view all languages together.</p>
+                    <h4><span className="faq-q">Qs.</span> Can I filter songs by language?</h4>
+                    <p><span className="faq-a">Ans.</span> Yes! Once you select a mood, use the "Filter by language" dropdown to choose English, Hindi, Bengali, or view all languages together.</p>
 
-                    <h4>Where do the songs play from?</h4>
-                    <p>Clicking the "Play" button on any song opens it directly on YouTube. We partner with YouTube to provide you with seamless music playback.</p>
+                    <h4><span className="faq-q">Qs.</span> Where do the songs play from?</h4>
+                    <p><span className="faq-a">Ans.</span> Clicking the "Play" button on any song opens it directly on YouTube. We partner with YouTube to provide you with seamless music playback.</p>
 
                     {/* Crush Mode info removed */}
 
-                    <h4>How does the AI Mood feature work?</h4>
-                    <p>The AI Mood feature uses your device's webcam to detect your facial expression and automatically recommend songs that match your detected emotion. It's fun and completely optional!</p>
+                    <h4><span className="faq-q">Qs.</span> How does the AI Mood feature work?</h4>
+                    <p><span className="faq-a">Ans.</span> The AI Mood feature uses your device's webcam to detect your facial expression and automatically recommend songs that match your detected emotion. It's fun and completely optional!</p>
 
                     <h3>Data & Privacy</h3>
 
-                    <h4>Is my data safe?</h4>
-                    <p>Yes! Your mood history and favorites are stored locally on your device using your browser's localStorage. We also use SSL encryption for any data transmitted to our servers. For details, see our Privacy Policy.</p>
+                    <h4><span className="faq-q">Qs.</span> Is my data safe?</h4>
+                    <p><span className="faq-a">Ans.</span> Yes! Your mood history and favorites are stored locally on your device using your browser's localStorage. We also use SSL encryption for any data transmitted to our servers. For details, see our Privacy Policy.</p>
 
-                    <h4>What data do you collect?</h4>
-                    <p>We collect your name, email, and optional gender for account purposes. Your mood selections and favorite songs are stored locally on your device. We use basic analytics to understand app usage but don't track personal behavior.</p>
+                    <h4><span className="faq-q">Qs.</span> What data do you collect?</h4>
+                    <p><span className="faq-a">Ans.</span> We collect your name, email, and optional gender for account purposes. Your mood selections and favorite songs are stored locally on your device. We use basic analytics to understand app usage but don't track personal behavior.</p>
 
-                    <h4>Can I delete my account and data?</h4>
-                    <p>Yes! You can request account deletion anytime. To delete your account, use the profile settings or contact support. Your local data can be cleared by clearing your browser's cache.</p>
+                    <h4><span className="faq-q">Qs.</span> Can I delete my account and data?</h4>
+                    <p><span className="faq-a">Ans.</span> Yes! You can request account deletion anytime. To delete your account, use the profile settings or contact support. Your local data can be cleared by clearing your browser's cache.</p>
 
-                    <h4>Do you sell my data?</h4>
-                    <p>Absolutely not. We never sell, rent, or share your personal information with third parties. Your data is yours alone.</p>
+                    <h4><span className="faq-q">Qs.</span> Do you sell my data?</h4>
+                    <p><span className="faq-a">Ans.</span> Absolutely not. We never sell, rent, or share your personal information with third parties. Your data is yours alone.</p>
 
                     <h3>Technical Questions</h3>
 
-                    <h4>What browsers does Music Mood Matcher support?</h4>
-                    <p>Music Mood Matcher works on all modern browsers: Chrome, Firefox, Safari, Edge, and Opera. We recommend keeping your browser updated for the best experience.</p>
+                    <h4><span className="faq-q">Qs.</span> What browsers does Music Mood Matcher support?</h4>
+                    <p><span className="faq-a">Ans.</span> Music Mood Matcher works on all modern browsers: Chrome, Firefox, Safari, Edge, and Opera. We recommend keeping your browser updated for the best experience.</p>
 
-                    <h4>Can I use Music Mood Matcher on mobile?</h4>
-                    <p>Yes! Music Mood Matcher is fully responsive and works great on smartphones, tablets, and desktops. Simply open it in your mobile browser.</p>
+                    <h4><span className="faq-q">Qs.</span> Can I use Music Mood Matcher on mobile?</h4>
+                    <p><span className="faq-a">Ans.</span> Yes! Music Mood Matcher is fully responsive and works great on smartphones, tablets, and desktops. Simply open it in your mobile browser.</p>
 
-                    <h4>Why isn't the app loading?</h4>
-                    <p>Try refreshing the page or clearing your browser cache. If issues persist, make sure JavaScript is enabled and you're using a supported browser. Contact support if problems continue.</p>
+                    <h4><span className="faq-q">Qs.</span> Why isn't the app loading?</h4>
+                    <p><span className="faq-a">Ans.</span> Try refreshing the page or clearing your browser cache. If issues persist, make sure JavaScript is enabled and you're using a supported browser. Contact support if problems continue.</p>
 
-                    <h4>What should I do if I encounter a bug?</h4>
-                    <p>We'd love to hear about it! Please report any bugs to: <a href="mailto:babinbid05@gmail.com">babinbid05@gmail.com</a> / <a href="mailto:dbose272@gmail.com">dbose272@gmail.com</a> with a description of the issue and screenshots if possible.</p>
+                    <h4><span className="faq-q">Qs.</span> What should I do if I encounter a bug?</h4>
+                    <p><span className="faq-a">Ans.</span> We'd love to hear about it! Please report any bugs to: <a href="mailto:babinbid05@gmail.com">babinbid05@gmail.com</a> / <a href="mailto:dbose272@gmail.com">dbose272@gmail.com</a> with a description of the issue and screenshots if possible.</p>
 
                     <h3>Music & Content</h3>
 
-                    <h4>How often are new songs added?</h4>
-                    <p>We regularly update our music library with new recommendations. Follow us on social media or check the app for announcements about new additions!</p>
+                    <h4><span className="faq-q">Qs.</span> How often are new songs added?</h4>
+                    <p><span className="faq-a">Ans.</span> We regularly update our music library with new recommendations. Follow us on social media or check the app for announcements about new additions!</p>
 
-                    <h4>Can I suggest songs for a specific mood?</h4>
-                    <p>Yes! We'd love your suggestions. Send your recommendations to: <a href="mailto:babinbid05@gmail.com">babinbid05@gmail.com</a> / <a href="mailto:dbose272@gmail.com">dbose272@gmail.com</a>. Your input helps us improve our music curation.</p>
+                    <h4><span className="faq-q">Qs.</span> Can I suggest songs for a specific mood?</h4>
+                    <p><span className="faq-a">Ans.</span> Yes! We'd love your suggestions. Send your recommendations to: <a href="mailto:babinbid05@gmail.com">babinbid05@gmail.com</a> / <a href="mailto:dbose272@gmail.com">dbose272@gmail.com</a>. Your input helps us improve our music curation.</p>
 
-                    <h4>Why is a particular song in a certain mood category?</h4>
-                    <p>Songs are categorized based on their musical characteristics (tempo, key, instrumentation, lyrics) and the emotions they evoke. Our curation is based on music theory and user feedback.</p>
+                    <h4><span className="faq-q">Qs.</span> Why is a particular song in a certain mood category?</h4>
+                    <p><span className="faq-a">Ans.</span> Songs are categorized based on their musical characteristics (tempo, key, instrumentation, lyrics) and the emotions they evoke. Our curation is based on music theory and user feedback.</p>
 
-                    <h4>Can I download songs for offline listening?</h4>
-                    <p>Music Mood Matcher requires an internet connection to stream songs via YouTube. However, you can create a playlist on YouTube itself for offline downloads through their premium service.</p>
+                    <h4><span className="faq-q">Qs.</span> Can I download songs for offline listening?</h4>
+                    <p><span className="faq-a">Ans.</span> Music Mood Matcher requires an internet connection to stream songs via YouTube. However, you can create a playlist on YouTube itself for offline downloads through their premium service.</p>
 
                     <h3>Still Have Questions?</h3>
 
