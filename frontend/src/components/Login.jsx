@@ -1316,7 +1316,7 @@ export default function Login({ onLoginSuccess }) {
                                                         animate={{ scale: registerData.gender === 'other' ? 1.3 : 1 }}
                                                         transition={{ duration: 0.2 }}
                                                     >
-                                                        <FaGenderless style={{ color: '#000000', fontSize: '1.5rem' }} />
+                                                        <FaGenderless style={{ color: '#FF6B35', fontSize: '1.5rem' }} />
                                                     </motion.span>
                                                     <span className="gender-text">Other</span>
                                                 </motion.button>
