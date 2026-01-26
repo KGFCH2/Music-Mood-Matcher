@@ -122,7 +122,7 @@
     position: relative;
     background: linear-gradient(180deg, rgba(10, 10, 12, 0.88), rgba(20, 20, 28, 0.9));
     backdrop-filter: blur(8px);
-    border: 1px solid rgba(124, 77, 255, 0.08);
+    border: 1px solid rgba(0, 200, 255, 0.08);
     border-radius: 14px;
     padding: 1.6rem 1.6rem 2.4rem 1.6rem;
     width: 100%;
@@ -158,7 +158,6 @@
 }
 
 .login-header h1 {
-    color: #00ff7a;
     font-size: 1.6rem;
     font-weight: 700;
     margin: 0.3rem 0 0;
@@ -185,10 +184,10 @@
 
 .decorative-bars .bar {
     width: 8px;
-    background: linear-gradient(180deg, #7c4dff 0%, #00e5ff 100%);
+    background: linear-gradient(180deg, #00c8ff 0%, #00e5ff 100%);
     border-radius: 4px 4px 0 0;
     min-height: 20px;
-    box-shadow: 0 0 10px rgba(124, 77, 255, 0.4);
+    box-shadow: 0 0 10px rgba(0, 200, 255, 0.4);
 }
 
 .login-form {
@@ -238,14 +237,14 @@
 }
 
 .tab-btn:hover {
-    background: rgba(124, 77, 255, 0.1);
+    background: rgba(0, 200, 255, 0.1);
     color: rgba(255, 255, 255, 0.8);
 }
 
 .tab-btn.active {
     background: linear-gradient(135deg, #7c4dff 0%, #00e5ff 100%);
     color: #ffffff;
-    box-shadow: 0 4px 15px rgba(124, 77, 255, 0.3);
+    box-shadow: 0 4px 15px rgba(0, 200, 255, 0.3);
 }
 
 /* Forms Container for Sliding Animation */
@@ -272,80 +271,29 @@
     margin-bottom: 0.1rem;
 }
 
-@media (max-width: 480px) {
-    .forms-container {
-        min-height: 360px;
-    }
-
-    .login-card {
-        padding: 1rem 0.9rem 1.25rem 0.9rem;
-    }
-
-    .form-group {
-        gap: 0.12rem;
-    }
-
-    /* On very small screens avoid absolute overlapping forms so the page scrolls naturally */
-    .auth-form {
-        position: static;
-        opacity: 1 !important;
-        transform: none !important;
-        position: relative;
-    }
-
-    .login-btn {
-        width: 100%;
-    }
-}
-
 /* Further mobile refinements */
-@media (max-width: 420px) {
-
-    /* Hide decorative floating notes to reduce clutter and improve performance */
-    .musical-note,
-    .verification-dialog-overlay .floating-note,
-    .login-background .floating-note-deco {
-        display: none;
-    }
-
-    /* Avoid fixed container causing keyboard issues on mobile by allowing natural document flow */
-    .login-container {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        padding: 0.6rem 0.6rem calc(env(safe-area-inset-bottom, 16px) + 0.6rem);
-        align-items: flex-start;
-        overflow-y: auto;
-    }
-
-    /* Larger touch targets */
-    .tab-btn {
-        padding: 0.9rem 0.8rem;
-        font-size: 1rem;
-    }
-
+@media (max-width: 480px) {
     .gender-btn {
         padding: 0.9rem 0.6rem;
         min-height: 56px;
     }
-
-    .login-btn,
-    .option-btn,
-    .cancel-btn,
-    .resend-btn {
-        padding: 0.9rem 1rem;
-        font-size: 1rem;
-        border-radius: 12px;
-    }
-
-    /* Ensure inputs are comfortably large */
-    .form-input {
-        padding: 0.9rem 1rem;
-        font-size: 16px;
-    }
 }
+
+.login-btn,
+.option-btn,
+.cancel-btn,
+.resend-btn {
+    padding: 0.9rem 1rem;
+    font-size: 1rem;
+    border-radius: 12px;
+}
+
+/* Ensure inputs are comfortably large */
+.form-input {
+    padding: 0.9rem 1rem;
+    font-size: 16px;
+}
+
 
 .form-group label {
     color: rgba(255, 255, 255, 0.9);
@@ -367,7 +315,7 @@
 
 .form-input {
     padding: 0.9rem 1.1rem;
-    border: 1px solid rgba(124, 77, 255, 0.3);
+    border: 1px solid rgba(0, 200, 255, 0.3);
     border-radius: 10px;
     background: rgba(255, 255, 255, 0.05);
     color: #ffffff;
@@ -382,9 +330,9 @@
 
 .form-input:focus {
     outline: none;
-    border-color: rgba(124, 77, 255, 0.6);
+    border-color: rgba(0, 200, 255, 0.6);
     background: rgba(255, 255, 255, 0.08);
-    box-shadow: 0 0 20px rgba(124, 77, 255, 0.2);
+    box-shadow: 0 0 20px rgba(0, 200, 255, 0.2);
 }
 
 .form-input:disabled {
@@ -415,10 +363,18 @@
     height: 44px;
     padding: 0.35rem;
     border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    background: rgba(255, 255, 255, 0.02);
-    color: inherit;
+    border: 1px solid rgba(0, 200, 255, 0.4);
+    background: rgba(0, 200, 255, 0.1);
+    color: #00c8ff;
     cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.password-toggle:hover:not(:disabled) {
+    background: rgba(0, 200, 255, 0.2);
+    border-color: rgba(0, 200, 255, 0.7);
+    box-shadow: 0 0 15px rgba(0, 200, 255, 0.3);
+    transform: scale(1.05);
 }
 
 .password-toggle:disabled {
@@ -483,7 +439,7 @@
     align-items: center;
     justify-content: center;
     gap: 0.6rem;
-    box-shadow: 0 8px 25px rgba(124, 77, 255, 0.3);
+    box-shadow: 0 8px 25px rgba(0, 200, 255, 0.3);
 }
 
 .btn-icon {
@@ -496,7 +452,7 @@
 
 .login-btn:hover:not(:disabled) {
     transform: translateY(-2px);
-    box-shadow: 0 12px 35px rgba(124, 77, 255, 0.4);
+    box-shadow: 0 12px 35px rgba(0, 200, 255, 0.4);
 }
 
 .login-btn:active:not(:disabled) {
@@ -516,8 +472,8 @@
     padding: 0.8rem 1.2rem;
     border: none;
     border-radius: 12px;
-    background: linear-gradient(135deg, rgba(124, 77, 255, 0.2), rgba(0, 229, 255, 0.2));
-    color: #7c4dff;
+    background: linear-gradient(135deg, rgba(0, 200, 255, 0.2), rgba(0, 229, 255, 0.2));
+    color: #00c8ff;
     font-size: 0.9rem;
     font-weight: 600;
     cursor: pointer;
@@ -526,13 +482,13 @@
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    box-shadow: 0 4px 15px rgba(124, 77, 255, 0.2);
+    box-shadow: 0 4px 15px rgba(0, 200, 255, 0.2);
 }
 
 .demo-bottom-btn:hover:not(:disabled) {
-    background: linear-gradient(135deg, rgba(124, 77, 255, 0.3), rgba(0, 229, 255, 0.3));
+    background: linear-gradient(135deg, rgba(0, 200, 255, 0.3), rgba(0, 229, 255, 0.3));
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(124, 77, 255, 0.3);
+    box-shadow: 0 6px 20px rgba(0, 200, 255, 0.3);
 }
 
 .demo-bottom-btn:active:not(:disabled) {
@@ -549,10 +505,10 @@
     width: 100%;
     margin-top: 0.5rem;
     padding: 0.7rem 1rem;
-    border: 1px solid rgba(124, 77, 255, 0.3);
+    border: 1px solid rgba(0, 200, 255, 0.3);
     border-radius: 10px;
-    background: rgba(124, 77, 255, 0.1);
-    color: #7c4dff;
+    background: rgba(0, 200, 255, 0.1);
+    color: #00c8ff;
     font-size: 0.85rem;
     font-weight: 600;
     cursor: pointer;
@@ -561,14 +517,14 @@
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    box-shadow: 0 2px 10px rgba(124, 77, 255, 0.1);
+    box-shadow: 0 2px 10px rgba(0, 200, 255, 0.1);
 }
 
 .demo-or-btn:hover:not(:disabled) {
-    background: rgba(124, 77, 255, 0.15);
-    border-color: rgba(124, 77, 255, 0.5);
+    background: rgba(0, 200, 255, 0.15);
+    border-color: rgba(0, 200, 255, 0.5);
     transform: translateY(-1px);
-    box-shadow: 0 4px 15px rgba(124, 77, 255, 0.2);
+    box-shadow: 0 4px 15px rgba(0, 200, 255, 0.2);
 }
 
 .demo-or-btn:active:not(:disabled) {
@@ -629,7 +585,7 @@
     font-size: 0.7rem;
     margin-top: 0;
     padding-top: 1.2rem;
-    border-top: 2px solid rgba(124, 77, 255, 0.3);
+    border-top: 2px solid rgba(0, 200, 255, 0.3);
     letter-spacing: 0.3px;
     display: flex;
     align-items: center;
@@ -751,7 +707,7 @@
 .gender-btn {
     flex: 1;
     padding: 0.7rem 0.4rem;
-    border: 2px solid rgba(124, 77, 255, 0.3);
+    border: 2px solid rgba(0, 200, 255, 0.3);
     border-radius: 12px;
     background: rgba(255, 255, 255, 0.05);
     color: rgba(255, 255, 255, 0.7);
@@ -790,17 +746,17 @@
 }
 
 .gender-btn:hover:not(:disabled) {
-    border-color: rgba(124, 77, 255, 0.6);
+    border-color: rgba(0, 200, 255, 0.6);
     background: rgba(255, 255, 255, 0.08);
     color: rgba(255, 255, 255, 0.9);
     transform: translateY(-2px);
 }
 
 .gender-btn.active {
-    border-color: #7c4dff;
+    border-color: #00c8ff;
     background: linear-gradient(135deg, rgba(124, 77, 255, 0.3) 0%, rgba(0, 229, 255, 0.2) 100%);
     color: #ffffff;
-    box-shadow: 0 0 20px rgba(124, 77, 255, 0.3);
+    box-shadow: 0 0 20px rgba(0, 200, 255, 0.3);
 }
 
 .gender-btn:disabled {
@@ -847,26 +803,19 @@
 .verification-dialog-overlay {
     position: fixed;
     inset: 0;
-    background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+    background: #000000;
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 2000;
-    overflow: hidden;
+    overflow: auto;
     padding: 1rem;
     -webkit-overflow-scrolling: touch;
 }
 
-/* Animated background for verification dialog */
+/* Animated background for verification dialog removed for solid black look */
 .verification-dialog-overlay::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background:
-        radial-gradient(circle at 20% 80%, rgba(124, 77, 255, 0.15) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(0, 229, 255, 0.15) 0%, transparent 50%),
-        radial-gradient(circle at 40% 40%, rgba(124, 77, 255, 0.1) 0%, transparent 40%);
-    animation: pulse-bg 8s ease-in-out infinite;
+    display: none;
 }
 
 @keyframes pulse-bg {
@@ -948,15 +897,16 @@
 
 .verification-dialog {
     position: relative;
-    z-index: 1;
-    background: linear-gradient(135deg, rgba(0, 200, 255, 0.08), rgba(100, 150, 255, 0.05));
+    z-index: 10;
+    background: #000000;
     backdrop-filter: blur(25px);
-    border: 1px solid rgba(0, 200, 255, 0.2);
+    border: 1px solid rgba(0, 200, 255, 0.3);
     border-radius: 24px;
-    padding: 2.5rem;
-    max-width: 420px;
-    width: 92%;
-    max-height: 90vh;
+    padding: 2.2rem 2.5rem;
+    max-width: 580px;
+    width: 95%;
+    max-height: 85vh;
+    min-height: auto;
     overflow-y: auto;
     box-shadow:
         0 25px 70px rgba(0, 0, 0, 0.6),
@@ -986,11 +936,11 @@
 }
 
 .verification-dialog .dialog-header {
-    background: linear-gradient(135deg, rgba(0, 200, 255, 0.25), rgba(100, 150, 255, 0.15));
-    padding: 1.5rem 1.25rem;
-    border-bottom: 1px solid rgba(0, 200, 255, 0.15);
+    background: #000000;
+    padding: 1.3rem 1.2rem;
+    border-bottom: 1px solid rgba(0, 200, 255, 0.2);
     text-align: center;
-    margin: -2.5rem -2.5rem 1.5rem -2.5rem;
+    margin: -2rem -2.2rem 1.5rem -2.2rem;
     border-radius: 24px 24px 0 0;
 }
 
@@ -1002,11 +952,10 @@
 }
 
 .verification-dialog .dialog-header h3 {
-    color: #ffffff;
     font-size: 1.4rem;
     font-weight: 700;
     margin: 0.4rem 0;
-    background: linear-gradient(135deg, #00c8ff 0%, #6496ff 100%);
+    background: linear-gradient(135deg, #00c8ff 0%, #fff700 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -1020,7 +969,11 @@
 }
 
 .verification-dialog .dialog-header p strong {
-    color: #00c8ff;
+    background: linear-gradient(to right, #00c8ff, #fff700);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: bold;
 }
 
 /* Verification dialog specific form inputs and buttons */
@@ -1032,12 +985,13 @@
 .verification-dialog .form-input:focus {
     border-color: rgba(0, 200, 255, 0.8);
     background: rgba(0, 200, 255, 0.1);
-    box-shadow: 0 0 25px rgba(0, 200, 255, 0.3);
+    box-shadow: 0 0 15px rgba(0, 200, 255, 0.4);
+    outline: none;
 }
 
 .verification-dialog .resend-btn,
 .verification-dialog .login-btn {
-    background: linear-gradient(135deg, #00c8ff 0%, #6496ff 100%);
+    background: linear-gradient(135deg, #00c8ff 0%, #fff700 100%);
     box-shadow: 0 6px 25px rgba(0, 200, 255, 0.35);
 }
 
@@ -1068,7 +1022,7 @@
     width: 100%;
     max-height: 90vh;
     overflow-y: auto;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(124, 77, 255, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(0, 200, 255, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1);
     scroll-behavior: smooth;
 }
 
@@ -1083,19 +1037,19 @@
 }
 
 .conflict-dialog::-webkit-scrollbar-thumb {
-    background: rgba(124, 77, 255, 0.4);
+    background: rgba(0, 200, 255, 0.4);
     border-radius: 10px;
     transition: background 0.3s ease;
 }
 
 .conflict-dialog::-webkit-scrollbar-thumb:hover {
-    background: rgba(124, 77, 255, 0.6);
+    background: rgba(0, 200, 255, 0.6);
 }
 
 .dialog-header {
     text-align: center;
     margin-bottom: 2rem;
-    background: linear-gradient(135deg, rgba(124, 77, 255, 0.2), rgba(0, 229, 255, 0.1));
+    background: linear-gradient(135deg, rgba(0, 200, 255, 0.2), rgba(0, 229, 255, 0.1));
     padding: 1.25rem 1rem;
     border-radius: 15px;
     margin: -2rem -2rem 2rem -2rem;
@@ -1155,7 +1109,7 @@
     background: rgba(255, 255, 255, 0.08);
     border-color: rgba(255, 255, 255, 0.25);
     transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(124, 77, 255, 0.1);
+    box-shadow: 0 8px 20px rgba(0, 200, 255, 0.1);
 }
 
 .user-option h4 {
@@ -1570,7 +1524,7 @@
 
 /* ===== Accessibility Focus Styles ===== */
 .form-input:focus-visible {
-    outline: 2px solid #7c4dff;
+    outline: 2px solid #00c8ff;
     outline-offset: 2px;
 }
 
@@ -1640,5 +1594,193 @@
     40%,
     80% {
         transform: translateX(5px);
+    }
+}
+
+/* Final Mobile Overrides - Placed at end for highest specificity */
+@media (max-width: 768px) {
+    .login-container {
+        padding: 0 !important;
+        background: #000000 !important;
+        align-items: flex-start !important;
+        display: block !important;
+        height: auto !important;
+        min-height: 100vh !important;
+        position: relative !important;
+        overflow-y: auto !important;
+    }
+
+    .login-card {
+        padding: 1.5rem 1rem 3rem 1rem !important;
+        min-height: 100vh !important;
+        max-height: none !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        border-radius: 0 !important;
+        border: none !important;
+        margin: 0 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        background: #000000 !important;
+        box-shadow: none !important;
+        backdrop-filter: none !important;
+    }
+
+    .forms-container {
+        min-height: auto !important;
+        flex: 1 !important;
+    }
+
+    .form-group {
+        gap: 0.12rem !important;
+        margin-bottom: 1.2rem !important;
+    }
+
+    /* Stack elements naturally on mobile */
+    .auth-form {
+        position: relative !important;
+        opacity: 1 !important;
+        transform: none !important;
+        width: 100% !important;
+    }
+
+    .login-btn,
+    .demo-or-btn {
+        width: 100% !important;
+        padding: 1.1rem !important;
+        font-size: 1.1rem !important;
+        margin-top: 1rem !important;
+        border-radius: 999px !important;
+    }
+
+    .header-icon {
+        font-size: 3.5rem !important;
+        margin-top: 1rem !important;
+    }
+
+    .login-header h1 {
+        font-size: 2rem !important;
+        margin-top: 0.5rem !important;
+    }
+
+    .tab-btn {
+        padding: 1rem 0.5rem !important;
+        font-size: 0.95rem !important;
+    }
+
+    /* Hide decorative floating notes to reduce clutter */
+    .musical-note,
+    .verification-dialog-overlay .floating-note,
+    .login-background .floating-note-deco {
+        display: none !important;
+    }
+
+    .gender-options {
+        flex-direction: column !important;
+        gap: 0.8rem !important;
+    }
+
+    .gender-btn {
+        flex-direction: row !important;
+        padding: 1rem !important;
+        justify-content: center !important;
+        gap: 1rem !important;
+    }
+}
+
+
+/* ============================================================
+   FINAL MOBILE OVERRIDES - EXPERT VIEWPORT FIX
+   ============================================================ */
+@media (max-width: 768px) {
+
+    /* Force container to ignore all flex centering and fill the height */
+    .login-container {
+        padding: 0 !important;
+        background: #000000 !important;
+        display: block !important;
+        height: auto !important;
+        min-height: 100vh !important;
+        overflow-y: scroll !important;
+        position: static !important;
+    }
+
+    /* Transform the card into a full-width "Long" scrollable surface */
+    .login-card {
+        width: 100% !important;
+        max-width: 100% !important;
+        min-height: 100vh !important;
+        height: auto !important;
+        margin: 0 !important;
+        border-radius: 0 !important;
+        border: none !important;
+        background: #000000 !important;
+        box-shadow: none !important;
+        padding: 2rem 1.25rem 4rem 1.25rem !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: flex-start !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+    }
+
+    /* Title Styling - Blue to Yellow Gradient */
+    .login-header h1 {
+        font-size: 2.4rem !important;
+        background: linear-gradient(to right, #00c8ff, #fff700) !important;
+        -webkit-background-clip: text !important;
+        -webkit-text-fill-color: transparent !important;
+        letter-spacing: -0.5px !important;
+        margin-bottom: 0.5rem !important;
+    }
+
+    /* Elements stacking for "Long" layout */
+    .form-group {
+        width: 100% !important;
+        margin-bottom: 1.5rem !important;
+        gap: 0.4rem !important;
+    }
+
+    .gender-options {
+        flex-direction: column !important;
+        gap: 1rem !important;
+    }
+
+    .gender-btn {
+        width: 100% !important;
+        padding: 1.2rem !important;
+        flex-direction: row !important;
+        gap: 1.5rem !important;
+        font-size: 1.1rem !important;
+        background: rgba(255, 255, 255, 0.05) !important;
+        border-color: rgba(255, 255, 255, 0.1) !important;
+    }
+
+    /* Buttons - make them big and easy to tap */
+    .login-btn,
+    .demo-or-btn {
+        width: 100% !important;
+        padding: 1.2rem !important;
+        font-size: 1.2rem !important;
+        border-radius: 12px !important;
+        margin-top: 1rem !important;
+    }
+
+    /* Tabs layout */
+    .auth-tabs {
+        margin-bottom: 2rem !important;
+        padding: 0.3rem !important;
+        background: rgba(255, 255, 255, 0.05) !important;
+    }
+
+    .tab-btn {
+        padding: 1rem !important;
+        font-size: 1rem !important;
+    }
+
+    /* Hide background noise */
+    .login-background .floating-note-deco,
+    .musical-note {
+        display: none !important;
     }
 }
