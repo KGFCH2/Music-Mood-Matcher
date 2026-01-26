@@ -192,6 +192,11 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
 
     useEffect(() => {
         if (openInEdit) {
+            // Only allow editing if user is verified
+            if (!user?.isVerified) {
+                setError('Please verify your email before editing your profile.')
+                return
+            }
             setIsEditingName(true)
             setEditedName(user?.userName || '')
             setEditingGender(user?.gender || 'other')
@@ -559,7 +564,13 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                                 </>
                                             ) : (
                                                 <motion.button
-                                                    onClick={() => setIsEditingName(true)}
+                                                    onClick={() => {
+                                                        if (!user?.isVerified) {
+                                                            setError('Please verify your email before editing your profile.')
+                                                            return
+                                                        }
+                                                        setIsEditingName(true)
+                                                    }}
                                                     className="edit-btn"
                                                     whileHover={{ scale: 1.05 }}
                                                     whileTap={{ scale: 0.95 }}
@@ -572,7 +583,8 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                                         WebkitBackgroundClip: 'text',
                                                         WebkitTextFillColor: 'transparent',
                                                         color: 'transparent',
-                                                        cursor: 'pointer',
+                                                        cursor: user?.isVerified ? 'pointer' : 'not-allowed',
+                                                        opacity: user?.isVerified ? 1 : 0.5,
                                                         fontSize: '0.9rem',
                                                         fontWeight: '600'
                                                     }}
