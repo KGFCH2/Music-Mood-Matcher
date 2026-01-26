@@ -51,6 +51,49 @@ async function login(req, res, next) {
     } catch (err) { next(err) }
 }
 
+async function forgotPassword(req, res, next) {
+    try {
+        const { email } = req.body
+        if (!email) return res.status(400).json({ message: 'Email required' })
+
+        const user = await User.findOne({ email })
+        if (!user) return res.status(404).json({ message: 'No user found with this email' })
+
+        // Generate 6-digit code
+        const code = Math.floor(100000 + Math.random() * 900000).toString()
+        user.resetPasswordCode = code
+        user.resetPasswordExpires = Date.now() + 600000 // 10 minutes
+        await user.save()
+
+        // NOTE: In a production app, the backend should send this code via email.
+        // Since we are using EmailJS on the frontend, we return the code to the client.
+        res.json({ message: 'Verification code generated', code, userName: user.userName })
+    } catch (err) { next(err) }
+}
+
+async function resetPassword(req, res, next) {
+    try {
+        const { email, code, newPassword } = req.body
+        if (!email || !code || !newPassword) return res.status(400).json({ message: 'All fields required' })
+
+        const user = await User.findOne({
+            email,
+            resetPasswordCode: code,
+            resetPasswordExpires: { $gt: Date.now() }
+        })
+
+        if (!user) return res.status(400).json({ message: 'Invalid or expired reset code' })
+
+        // Hash new password
+        user.password = await bcrypt.hash(newPassword, 10)
+        user.resetPasswordCode = undefined
+        user.resetPasswordExpires = undefined
+        await user.save()
+
+        res.json({ message: 'Password successfully updated' })
+    } catch (err) { next(err) }
+}
+
 async function profile(req, res, next) {
     try {
         const user = await User.findOne({ userId: req.user.userId }).lean()
@@ -59,4 +102,4 @@ async function profile(req, res, next) {
     } catch (err) { next(err) }
 }
 
-module.exports = { register, login, profile }
+module.exports = { register, login, profile, forgotPassword, resetPassword }
