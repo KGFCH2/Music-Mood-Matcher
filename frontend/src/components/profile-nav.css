@@ -382,7 +382,7 @@
     border-radius: 12px;
     text-align: center;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(124, 77, 255, 0.2);
+    border: 1px solid rgba(0, 200, 255, 0.2);
 }
 
 /* Logout button inside profile details */
@@ -421,9 +421,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, #7c4dff 0%, #00e5ff 100%);
+    background: linear-gradient(135deg, #00c8ff 0%, #00e5ff 100%);
     border-radius: 50%;
-    box-shadow: 0 4px 12px rgba(124, 77, 255, 0.2);
+    box-shadow: 0 4px 12px rgba(0, 200, 255, 0.2);
 }
 
 .profile-name {
@@ -454,7 +454,7 @@
 
 .gender-badge {
     display: inline-block;
-    background: linear-gradient(135deg, rgba(124, 77, 255, 0.2), rgba(0, 229, 255, 0.1));
+    background: linear-gradient(135deg, rgba(0, 200, 255, 0.2), rgba(0, 229, 255, 0.1));
     color: #00e5ff;
     padding: 0.3rem 0.7rem;
     border-radius: 20px;
@@ -515,7 +515,7 @@
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(124, 77, 255, 0.1);
+    border: 1px solid rgba(0, 200, 255, 0.1);
 }
 
 /* Section Toggle Button */
@@ -536,16 +536,16 @@
 }
 
 .section-toggle:hover {
-    background-color: rgba(124, 77, 255, 0.03);
+    background-color: rgba(0, 200, 255, 0.03);
 }
 
 /* Per-section hover backgrounds */
 .section-toggle.account-toggle:hover {
-    background-color: rgba(124, 77, 255, 0.06);
+    background-color: rgba(0, 200, 255, 0.06);
 }
 
 .section-toggle.account-toggle.active {
-    border-bottom-color: #7c4dff;
+    border-bottom-color: #00c8ff;
 }
 
 .section-toggle.registration-toggle:hover {
@@ -590,7 +590,7 @@
 }
 
 .history-count {
-    background: #7c4dff;
+    background: #00c8ff;
     color: white;
     padding: 0.25rem 0.75rem;
     border-radius: 12px;
@@ -601,7 +601,7 @@
 .toggle-arrow {
     font-size: 1.5rem;
     transition: transform 0.2s ease;
-    color: #7c4dff;
+    color: #00c8ff;
 }
 
 .toggle-arrow.open {
@@ -615,7 +615,7 @@
 }
 
 .account-content {
-    background: linear-gradient(135deg, rgba(124, 77, 255, 0.1), rgba(156, 39, 176, 0.1));
+    background: linear-gradient(135deg, rgba(0, 200, 255, 0.1), rgba(156, 39, 176, 0.1));
 }
 
 .registration-content {
@@ -738,7 +738,7 @@
 }
 
 .item-number {
-    background: #7c4dff;
+    background: #00c8ff;
     color: white;
     width: 24px;
     height: 24px;
@@ -784,7 +784,7 @@
 
 /* Footer Note */
 .profile-footer-note {
-    background: rgba(124, 77, 255, 0.15);
+    background: rgba(0, 200, 255, 0.15);
     color: #00e5ff;
     padding: 1rem 1.5rem;
     display: flex;
@@ -792,7 +792,7 @@
     gap: 0.75rem;
     font-size: 0.9rem;
     margin-top: auto;
-    border-top: 1px solid rgba(124, 77, 255, 0.2);
+    border-top: 1px solid rgba(0, 200, 255, 0.2);
 }
 
 .note-icon {
@@ -1015,7 +1015,7 @@
 
 .profile-dialog {
     background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-    border: 1px solid rgba(124, 77, 255, 0.3);
+    border: 1px solid rgba(0, 200, 255, 0.3);
     border-radius: 12px;
     padding: 2rem;
     max-width: 400px;
@@ -1038,13 +1038,13 @@
 }
 
 .profile-dialog::-webkit-scrollbar-thumb {
-    background: rgba(124, 77, 255, 0.4);
+    background: rgba(0, 200, 255, 0.4);
     border-radius: 10px;
     transition: background 0.3s ease;
 }
 
 .profile-dialog::-webkit-scrollbar-thumb:hover {
-    background: rgba(124, 77, 255, 0.6);
+    background: rgba(0, 200, 255, 0.6);
 }
 
 /* Conflict Dialog (for email verification) */
@@ -1062,7 +1062,7 @@
 
 .conflict-dialog {
     background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-    border: 1px solid rgba(124, 77, 255, 0.3);
+    border: 1px solid rgba(0, 200, 255, 0.3);
     border-radius: 12px;
     padding: 2rem;
     max-width: 500px;
@@ -1085,13 +1085,13 @@
 }
 
 .conflict-dialog::-webkit-scrollbar-thumb {
-    background: rgba(124, 77, 255, 0.4);
+    background: rgba(0, 200, 255, 0.4);
     border-radius: 10px;
     transition: background 0.3s ease;
 }
 
 .conflict-dialog::-webkit-scrollbar-thumb:hover {
-    background: rgba(124, 77, 255, 0.6);
+    background: rgba(0, 200, 255, 0.6);
 }
 
 
@@ -1114,11 +1114,11 @@
 }
 
 .profile-avatar-large {
-    box-shadow: 0 12px 36px rgba(124, 77, 255, 0.18);
+    box-shadow: 0 12px 36px rgba(0, 200, 255, 0.18);
 }
 
 .profile-section {
-    background: linear-gradient(135deg, rgba(124, 77, 255, 0.06), rgba(0, 229, 255, 0.02));
+    background: linear-gradient(135deg, rgba(0, 200, 255, 0.06), rgba(0, 229, 255, 0.02));
     border-radius: 12px;
 }
 
@@ -1127,7 +1127,7 @@
 }
 
 .history-count {
-    background: linear-gradient(90deg, #FFD700, #7c4dff);
+    background: linear-gradient(90deg, #FFD700, #00c8ff);
     color: #0b1220;
 }
 
