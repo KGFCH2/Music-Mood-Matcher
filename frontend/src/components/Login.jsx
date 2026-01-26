@@ -5,7 +5,7 @@ import emailjs from '@emailjs/browser'
 import DemoGuide from './DemoGuide'
 import { secureStorage } from '../utils/secureStorage'
 import { hashPassword, validatePasswordStrength, getPasswordFeedback } from '../utils/passwordUtils'
-import { FaEnvelope, FaCheck, FaLock, FaRedo, FaClock, FaExclamationTriangle, FaTimes, FaStar, FaKey, FaMicrophone, FaEye, FaEyeSlash, FaUser, FaMars, FaVenus, FaGenderless, FaMusic, FaFilm, FaInfoCircle } from 'react-icons/fa'
+import { FaEnvelope, FaCheck, FaLock, FaRedo, FaClock, FaExclamationTriangle, FaTimes, FaStar, FaKey, FaMicrophone, FaEye, FaEyeSlash, FaUser, FaMars, FaVenus, FaGenderless, FaMusic, FaFilm, FaInfoCircle, FaVenusMars } from 'react-icons/fa'
 import './login.css'
 
 export default function Login({ onLoginSuccess }) {
@@ -40,7 +40,10 @@ export default function Login({ onLoginSuccess }) {
     const DEMO_USERS = [
         { email: 'demo.music.lover@example.com', name: 'Music Lover', gender: 'male' },
         { email: 'demo.happy.vibes@example.com', name: 'Happy Vibes', gender: 'female' },
-        { email: 'demo.chill.mode@example.com', name: 'Chill Mode', gender: 'other' }
+        { email: 'demo.chill.mode@example.com', name: 'Chill Mode', gender: 'other' },
+        { email: 'demo.rock.fan@example.com', name: 'Rock Fan', gender: 'male' },
+        { email: 'demo.jazz.lover@example.com', name: 'Jazz Lover', gender: 'female' },
+        { email: 'demo.pop.star@example.com', name: 'Pop Star', gender: 'other' }
     ]
 
     const verificationInputRef = React.useRef(null)
@@ -58,6 +61,16 @@ export default function Login({ onLoginSuccess }) {
         }
         return () => clearInterval(timer)
     }, [resendCooldown])
+
+    // Auto-hide "Email Sent" success message after 4 seconds
+    useEffect(() => {
+        if (emailSentSuccess) {
+            const timer = setTimeout(() => {
+                setEmailSentSuccess(false)
+            }, 4000)
+            return () => clearTimeout(timer)
+        }
+    }, [emailSentSuccess])
 
     useEffect(() => {
         const handleKeyDown = (e) => {
@@ -525,11 +538,9 @@ export default function Login({ onLoginSuccess }) {
             await secureStorage.setRegisteredUsers(updatedUsers)
 
             setIsLoading(false)
-            setEmailSentSuccess(true)
-
-            // Show verification dialog with the registered email
             setVerificationDialogEmail(registrationEmail)
             setShowVerificationDialog(true)
+            setEmailSentSuccess(true) // Set after showing dialog to ensure visibility
             setVerificationInputCode('')
             setVerificationError('')
             setRegisterData({ email: '', userName: '', gender: 'other', password: '', confirmPassword: '' })
@@ -733,7 +744,7 @@ export default function Login({ onLoginSuccess }) {
                 onLoginSuccess(verifiedUser)
             }, 1500)
         } else {
-            setVerificationError('Invalid verification code. Please check your email and try again.')
+            setVerificationError('Invalid verification code. Please check your email and try again. OR, Register again to receive a new code.')
         }
     }
 
@@ -747,6 +758,7 @@ export default function Login({ onLoginSuccess }) {
 
         setIsResending(true)
         setVerificationError('')
+        setEmailSentSuccess(false) // Clear previous success state immediately
 
         // Find the user by email
         const user = registeredUsers.find(u => u.email === verificationDialogEmail)
@@ -856,7 +868,7 @@ export default function Login({ onLoginSuccess }) {
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6, ease: 'easeOut' }}
-                        style={{ display: showConflictDialog ? 'none' : 'block' }}
+                        style={{ display: showConflictDialog || showVerificationDialog ? 'none' : 'block' }}
                     >
                         {/* Animated Header */}
                         <motion.div
@@ -866,7 +878,7 @@ export default function Login({ onLoginSuccess }) {
                             transition={{ delay: 0.2, duration: 0.5 }}
                         >
                             <div className="header-icon">🎵</div>
-                            <h1>Music Mood Matcher</h1>
+                            <h1 style={{ background: 'linear-gradient(to right, #00c8ff, #fff700)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', fontWeight: 'bold', fontSize: '1.8rem' }}>Music Mood Matcher</h1>
                             <p className="header-subtitle">Find Your Perfect Song</p>
                         </motion.div>
 
@@ -1003,7 +1015,7 @@ export default function Login({ onLoginSuccess }) {
                                         >
                                             <label htmlFor="registerName">
                                                 <FaMicrophone className="label-icon" style={{ color: '#ff6b6b' }} />
-                                                <span className="label-text">Your Name</span>
+                                                <span className="label-text"> Your Name</span>
                                                 {nameValidation.isValid === true && <span className="validation-icon valid">✓</span>}
                                                 {nameValidation.isValid === false && <span className="validation-icon invalid">✗</span>}
                                             </label>
@@ -1034,8 +1046,8 @@ export default function Login({ onLoginSuccess }) {
                                             transition={{ delay: 0.15, duration: 0.4 }}
                                         >
                                             <label htmlFor="registerEmail">
-                                                <span className="label-icon"><FaEnvelope /></span>
-                                                <span className="label-text">Email Address</span>
+                                                <span className="label-icon"><FaEnvelope className="label-icon" style={{ color: '#00ffa6' }} /></span>
+                                                <span className="label-text"> Email Address</span>
                                                 {emailValidation.isValid === true && <span className="validation-icon valid"><FaCheck /></span>}
                                                 {emailValidation.isValid === false && <span className="validation-icon invalid"><FaTimes /></span>}
                                             </label>
@@ -1066,8 +1078,8 @@ export default function Login({ onLoginSuccess }) {
                                             transition={{ delay: 0.2, duration: 0.4 }}
                                         >
                                             <label htmlFor="registerPassword">
-                                                <FaLock className="label-icon" style={{ color: '#ff9800' }} />
-                                                <span className="label-text">Password</span>
+                                                <FaLock className="label-icon" style={{ color: '#db9937' }} />
+                                                <span className="label-text"> Password</span>
                                                 {passwordValidation.isValid === true && <span className="validation-icon valid">✓</span>}
                                                 {passwordValidation.isValid === false && <span className="validation-icon invalid">✗</span>}
                                             </label>
@@ -1109,8 +1121,8 @@ export default function Login({ onLoginSuccess }) {
                                             transition={{ delay: 0.25, duration: 0.4 }}
                                         >
                                             <label htmlFor="confirmPassword">
-                                                <span className="label-icon"><FaLock /></span>
-                                                <span className="label-text">Confirm Password</span>
+                                                <span className="label-icon"><FaLock className="label-icon" style={{ color: '#ff9900' }} /></span>
+                                                <span className="label-text"> Confirm Password</span>
                                                 {confirmPasswordValidation.isValid === true && <span className="validation-icon valid"><FaCheck /></span>}
                                                 {confirmPasswordValidation.isValid === false && <span className="validation-icon invalid"><FaTimes /></span>}
                                             </label>
@@ -1152,7 +1164,7 @@ export default function Login({ onLoginSuccess }) {
                                             transition={{ delay: 0.3, duration: 0.4 }}
                                         >
                                             <label className="gender-label">
-                                                <FaStar className="label-icon" style={{ color: '#9c27b0' }} />
+                                                <FaVenusMars className="label-icon" style={{ color: '#00c8ff' }} />
                                                 <span className="label-text">Select Gender</span>
                                             </label>
                                             <div className="gender-options">
@@ -1209,7 +1221,7 @@ export default function Login({ onLoginSuccess }) {
                                                         animate={{ scale: registerData.gender === 'other' ? 1.3 : 1 }}
                                                         transition={{ duration: 0.2 }}
                                                     >
-                                                        <FaGenderless style={{ color: '#9c27b0', fontSize: '1.5rem' }} />
+                                                        <FaGenderless style={{ color: '#000000', fontSize: '1.5rem' }} />
                                                     </motion.span>
                                                     <span className="gender-text">Other</span>
                                                 </motion.button>
@@ -1295,8 +1307,8 @@ export default function Login({ onLoginSuccess }) {
                                             transition={{ delay: 0.1, duration: 0.4 }}
                                         >
                                             <label htmlFor="signinEmail">
-                                                <span className="label-icon"><FaEnvelope /></span>
-                                                <span className="label-text">Email Address</span>
+                                                <span className="label-icon"><FaEnvelope className="label-icon" style={{ color: '#00ffa6' }} /></span>
+                                                <span className="label-text"> Email Address</span>
                                             </label>
                                             <input
                                                 id="signinEmail"
@@ -1485,232 +1497,248 @@ export default function Login({ onLoginSuccess }) {
                             )}
                         </AnimatePresence>
 
-                        {/* Verification Dialog */}
-                        <AnimatePresence>
-                            {showVerificationDialog && (
-                                <motion.div
-                                    className="verification-dialog-overlay"
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    exit={{ opacity: 0 }}
-                                    transition={{ duration: 0.4 }}
-                                    role="dialog"
-                                    aria-modal="true"
-                                    aria-labelledby="verification-title"
-                                    onClick={(e) => e.stopPropagation()} // Prevent closing by clicking outside
-                                >
-                                    {/* Floating music notes */}
-                                    <div className="floating-notes">
-                                        <span className="floating-note">🎵</span>
-                                        <span className="floating-note">🎶</span>
-                                        <span className="floating-note">🎵</span>
-                                        <span className="floating-note">🎶</span>
-                                        <span className="floating-note">🎵</span>
-                                        <span className="floating-note">🎶</span>
-                                    </div>
-
-                                    <motion.div
-                                        className="verification-dialog"
-                                        initial={{ opacity: 0, scale: 0.9, y: 20 }}
-                                        animate={{ opacity: 1, scale: 1, y: 0 }}
-                                        exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                                        transition={{ duration: 0.3 }}
-                                    >
-                                        {/* Success Animation Overlay */}
-                                        <AnimatePresence>
-                                            {showSuccessAnimation && (
-                                                <motion.div
-                                                    className="success-overlay"
-                                                    initial={{ opacity: 0 }}
-                                                    animate={{ opacity: 1 }}
-                                                    exit={{ opacity: 0 }}
-                                                    style={{
-                                                        position: 'absolute',
-                                                        inset: 0,
-                                                        background: 'rgba(76, 175, 80, 0.95)',
-                                                        borderRadius: '20px',
-                                                        display: 'flex',
-                                                        flexDirection: 'column',
-                                                        alignItems: 'center',
-                                                        justifyContent: 'center',
-                                                        zIndex: 10
-                                                    }}
-                                                >
-                                                    <motion.div
-                                                        initial={{ scale: 0 }}
-                                                        animate={{ scale: [0, 1.2, 1] }}
-                                                        transition={{ duration: 0.5 }}
-                                                        style={{ fontSize: '4rem' }}
-                                                    >
-                                                        <FaCheck />
-                                                    </motion.div>
-                                                    <motion.p
-                                                        initial={{ opacity: 0, y: 10 }}
-                                                        animate={{ opacity: 1, y: 0 }}
-                                                        transition={{ delay: 0.3 }}
-                                                        style={{ color: 'white', fontSize: '1.5rem', fontWeight: 'bold', marginTop: '1rem' }}
-                                                    >
-                                                        Email Verified!
-                                                    </motion.p>
-                                                    <motion.p
-                                                        initial={{ opacity: 0 }}
-                                                        animate={{ opacity: 1 }}
-                                                        transition={{ delay: 0.5 }}
-                                                        style={{ color: 'rgba(255,255,255,0.9)', marginTop: '0.5rem' }}
-                                                    >
-                                                        Redirecting...
-                                                    </motion.p>
-                                                </motion.div>
-                                            )}
-                                        </AnimatePresence>
-
-                                        <div className="dialog-header">
-                                            <span className="dialog-icon"><FaEnvelope /></span>
-                                            <h3 id="verification-title">Email Verification Required</h3>
-                                            <p>Code sent to <strong>{verificationDialogEmail}</strong></p>
-                                            <p style={{ fontSize: '0.75rem', marginTop: '0.25rem', color: '#b0b0b0' }}>
-                                                <FaEnvelope /> Check inbox or spam folder • Verification required to continue
-                                            </p>
-                                            <p style={{ fontSize: '0.7rem', marginTop: '0.5rem', color: '#ff9999', fontWeight: '600' }}>
-                                                You must verify your email to complete registration
-                                            </p>
-                                        </div>
-
-                                        <form onSubmit={handleVerifyEmail} style={{ padding: '1rem 1.5rem 1.25rem', display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
-                                            {emailSentSuccess && (
-                                                <motion.div
-                                                    className="success-message"
-                                                    initial={{ opacity: 0, x: -20 }}
-                                                    animate={{ opacity: 1, x: 0 }}
-                                                    transition={{ duration: 0.3 }}
-                                                    role="alert"
-                                                    aria-live="polite"
-                                                    style={{
-                                                        background: 'rgba(76, 175, 80, 0.2)',
-                                                        border: '1px solid #4caf50',
-                                                        borderRadius: '6px',
-                                                        padding: '0.5rem 0.75rem',
-                                                        marginBottom: '0.75rem',
-                                                        display: 'flex',
-                                                        alignItems: 'center',
-                                                        gap: '0.4rem',
-                                                        fontSize: '0.85rem'
-                                                    }}
-                                                >
-                                                    <span><FaCheck /></span>
-                                                    <span style={{ color: '#4caf50' }}>Email sent!</span>
-                                                </motion.div>
-                                            )}
-
-                                            {verificationError && (
-                                                <motion.div
-                                                    className="error-message"
-                                                    initial={{ opacity: 0, x: -20 }}
-                                                    animate={{ opacity: 1, x: 0 }}
-                                                    transition={{ duration: 0.3 }}
-                                                    role="alert"
-                                                    aria-live="assertive"
-                                                >
-                                                    <span className="error-icon"><FaExclamationTriangle /></span>
-                                                    <span className="error-text">{verificationError}</span>
-                                                </motion.div>
-                                            )}
-
-                                            <motion.div
-                                                className="form-group"
-                                                initial={{ opacity: 0, x: -20 }}
-                                                animate={{ opacity: 1, x: 0 }}
-                                                transition={{ delay: 0.1, duration: 0.4 }}
-                                                style={{ width: '100%', marginBottom: '0.5rem' }}
-                                            >
-                                                <label htmlFor="verificationCode" style={{ marginBottom: '0.4rem' }}>
-                                                    <span className="label-icon"><FaLock /></span>
-                                                    <span className="label-text" style={{ fontSize: '0.85rem' }}>Verification Code</span>
-                                                </label>
-                                                <input
-                                                    ref={verificationInputRef}
-                                                    id="verificationCode"
-                                                    type="text"
-                                                    placeholder="ABC123"
-                                                    value={verificationInputCode}
-                                                    onChange={(e) => handleVerificationCodeChange(e.target.value)}
-                                                    maxLength="6"
-                                                    className="form-input"
-                                                    style={{ letterSpacing: '6px', textAlign: 'center', fontSize: '1.3rem', fontWeight: 'bold', padding: '0.8rem 1rem' }}
-                                                    aria-label="Verification code"
-                                                    autoComplete="one-time-code"
-                                                    autoFocus
-                                                />
-                                                <small style={{ color: '#888', marginTop: '0.3rem', display: 'block', textAlign: 'center', fontSize: '0.75rem' }}>
-                                                    Auto-submits when complete
-                                                </small>
-                                            </motion.div>
-
-                                            <motion.button
-                                                className="login-btn"
-                                                type="submit"
-                                                whileHover={{ scale: 1.03 }}
-                                                whileTap={{ scale: 0.97 }}
-                                                initial={{ opacity: 0, y: 20 }}
-                                                animate={{ opacity: 1, y: 0 }}
-                                                transition={{ delay: 0.2, duration: 0.4 }}
-                                                style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem', padding: '0.75rem 1.5rem', fontSize: '0.9rem' }}
-                                            >
-                                                <span className="btn-icon"><FaCheck /></span>
-                                                <span className="btn-text">Verify</span>
-                                            </motion.button>
-
-                                            <motion.button
-                                                className="resend-btn"
-                                                type="button"
-                                                onClick={handleResendCode}
-                                                disabled={isResending || resendCooldown > 0}
-                                                whileHover={{ scale: resendCooldown > 0 ? 1 : 1.05 }}
-                                                whileTap={{ scale: resendCooldown > 0 ? 1 : 0.95 }}
-                                                style={{
-                                                    marginTop: '0.6rem',
-                                                    background: 'transparent',
-                                                    border: '1px solid #667eea',
-                                                    color: resendCooldown > 0 ? '#888' : '#667eea',
-                                                    padding: '0.5rem 1rem',
-                                                    borderRadius: '6px',
-                                                    cursor: (isResending || resendCooldown > 0) ? 'not-allowed' : 'pointer',
-                                                    opacity: (isResending || resendCooldown > 0) ? 0.6 : 1,
-                                                    display: 'flex',
-                                                    alignItems: 'center',
-                                                    justifyContent: 'center',
-                                                    gap: '0.4rem',
-                                                    minWidth: '140px',
-                                                    fontSize: '0.85rem'
-                                                }}
-                                                aria-disabled={isResending || resendCooldown > 0}
-                                            >
-                                                {isResending ? (
-                                                    <>
-                                                        <span className="spinner"></span>
-                                                        <span>Sending...</span>
-                                                    </>
-                                                ) : resendCooldown > 0 ? (
-                                                    <>
-                                                        <span><FaClock /></span>
-                                                        <span>Resend in {resendCooldown}s</span>
-                                                    </>
-                                                ) : (
-                                                    <>
-                                                        <span><FaRedo /></span>
-                                                        <span>Resend Code</span>
-                                                    </>
-                                                )}
-                                            </motion.button>
-                                        </form>
-                                    </motion.div>
-                                </motion.div>
-                            )}
-                        </AnimatePresence>
-
                     </motion.div>
                 </div>
             )}
+
+            {/* Verification Dialog - Positioned at Root Level to ensure visibility */}
+            <AnimatePresence>
+                {showVerificationDialog && (
+                    <motion.div
+                        className="verification-dialog-overlay"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.4 }}
+                        role="dialog"
+                        aria-modal="true"
+                        aria-labelledby="verification-title"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <div className="floating-notes">
+                            <span className="floating-note">🎵</span>
+                            <span className="floating-note">🎶</span>
+                            <span className="floating-note">🎵</span>
+                            <span className="floating-note">🎶</span>
+                            <span className="floating-note">🎵</span>
+                            <span className="floating-note">🎶</span>
+                        </div>
+
+                        <motion.div
+                            className="verification-dialog"
+                            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                            animate={{ opacity: 1, scale: 1, y: 0 }}
+                            exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                            transition={{ duration: 0.3 }}
+                        >
+                            <AnimatePresence>
+                                {showSuccessAnimation && (
+                                    <motion.div
+                                        className="success-overlay"
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        exit={{ opacity: 0 }}
+                                        style={{
+                                            position: 'absolute',
+                                            inset: 0,
+                                            background: 'rgba(76, 175, 80, 0.95)',
+                                            borderRadius: '20px',
+                                            display: 'flex',
+                                            flexDirection: 'column',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            zIndex: 10
+                                        }}
+                                    >
+                                        <motion.div
+                                            initial={{ scale: 0 }}
+                                            animate={{ scale: [0, 1.2, 1] }}
+                                            transition={{ duration: 0.5 }}
+                                            style={{ fontSize: '4rem' }}
+                                        >
+                                            <FaCheck />
+                                        </motion.div>
+                                        <motion.p
+                                            initial={{ opacity: 0, y: 10 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            transition={{ delay: 0.3 }}
+                                            style={{ color: 'white', fontSize: '1.5rem', fontWeight: 'bold', marginTop: '1rem' }}
+                                        >
+                                            Email Verified!
+                                        </motion.p>
+                                        <motion.p
+                                            initial={{ opacity: 0 }}
+                                            animate={{ opacity: 1 }}
+                                            transition={{ delay: 0.5 }}
+                                            style={{ color: 'rgba(255,255,255,0.9)', marginTop: '0.5rem' }}
+                                        >
+                                            Redirecting...
+                                        </motion.p>
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+
+                            <div className="dialog-header">
+                                <span className="dialog-icon"><FaEnvelope style={{ color: '#00ffee', fontSize: '2.5rem' }} /></span>
+                                <h3 id="verification-title" style={{ fontSize: '1.45rem', marginTop: '0.6rem', background: 'linear-gradient(to right, #fff700, #00c8ff, #fff700)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', fontWeight: 'bold' }}>Email Verification Required</h3>
+                                <p style={{ marginTop: '0.8rem', marginBottom: '0.8rem', fontSize: '1.05rem', fontWeight: '600', textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+                                    <FaEnvelope style={{ color: '#00c8ff', fontSize: '1rem' }} />
+                                    <span style={{ color: '#ffffff' }}>Code sent to : </span>
+                                    <span style={{ background: 'linear-gradient(to right, #fff700, #00c8ff, #fff700)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', fontWeight: '800' }}>{verificationDialogEmail}</span>
+                                    <FaEnvelope style={{ color: '#00c8ff', fontSize: '1rem' }} />
+                                </p>
+                                <div style={{ borderTop: '1px solid rgba(0, 200, 255, 0.2)', paddingTop: '0.8rem', marginTop: '0.5rem' }}>
+                                    <p style={{ fontSize: '0.92rem', marginBottom: '0.6rem', background: 'linear-gradient(to right, #fff700, #00c8ff, #fff700)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', fontWeight: '700', textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+                                        <FaEnvelope style={{ color: '#00c8ff', fontSize: '1rem' }} />
+                                        <span>Check inbox or spam folder • Verification required to continue</span>
+                                        <FaEnvelope style={{ color: '#00c8ff', fontSize: '1rem' }} />
+                                    </p>
+                                    <p style={{ fontSize: '0.85rem', marginTop: '0.6rem', background: 'linear-gradient(to right, #fff700, #00c8ff, #fff700)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', fontWeight: '600', textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+                                        <FaExclamationTriangle style={{ color: '#fff700' }} />
+                                        You must verify your email to complete registration
+                                        <FaExclamationTriangle style={{ color: '#fff700' }} />
+                                    </p>
+                                </div>
+                            </div>
+
+                            <form onSubmit={handleVerifyEmail} style={{ padding: '0.6rem 1.5rem 1.2rem', display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
+                                {emailSentSuccess && (
+                                    <motion.div
+                                        className="success-message"
+                                        initial={{ opacity: 0, x: -20 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        transition={{ duration: 0.3 }}
+                                        role="alert"
+                                        aria-live="polite"
+                                        style={{
+                                            background: 'rgba(58, 155, 61, 0.2)',
+                                            border: '1px solid #4caf50',
+                                            borderRadius: '6px',
+                                            padding: '0.5rem 1rem',
+                                            marginBottom: '0.6rem',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            gap: '0.5rem',
+                                            fontSize: '0.9rem'
+                                        }}
+                                    >
+                                        <FaCheck style={{ color: '#00c8ff', fontSize: '1.1rem' }} />
+                                        <span style={{ background: 'linear-gradient(to right, #fff700, #00c8ff, #fff700)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', fontWeight: 'bold' }}>Email sent</span>
+                                    </motion.div>
+                                )}
+
+                                {verificationError && (
+                                    <motion.div
+                                        className="error-message"
+                                        initial={{ opacity: 0, x: -20 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        transition={{ duration: 0.3 }}
+                                        role="alert"
+                                        aria-live="assertive"
+                                        style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', marginBottom: '0.6rem' }}
+                                    >
+                                        <FaExclamationTriangle style={{ color: '#fff700' }} />
+                                        <span style={{ background: 'linear-gradient(to right, #fff700, #00c8ff, #fff700)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', fontWeight: 'bold' }}>{verificationError}</span>
+                                        <FaExclamationTriangle style={{ color: '#fff700' }} />
+                                    </motion.div>
+                                )}
+
+                                <motion.div
+                                    className="form-group"
+                                    initial={{ opacity: 0, x: -20 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    transition={{ delay: 0.1, duration: 0.4 }}
+                                    style={{ width: '100%', marginBottom: '1rem', marginTop: '0.6rem' }}
+                                >
+                                    <label htmlFor="verificationCode" style={{ marginBottom: '0.4rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', fontSize: '1rem', fontWeight: '600' }}>
+                                        <span className="label-icon" style={{ color: '#00c8ff', fontSize: '1rem' }}><FaLock /></span>
+                                        <span className="label-text" style={{ background: 'linear-gradient(to right, #fff700, #00c8ff, #fff700)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', fontWeight: 'bold' }}>Verification Code</span>
+                                        <span className="label-icon" style={{ color: '#00c8ff', fontSize: '1rem' }}><FaLock /></span>
+                                    </label>
+                                    <input
+                                        ref={verificationInputRef}
+                                        id="verificationCode"
+                                        type="text"
+                                        placeholder="ABC123"
+                                        value={verificationInputCode}
+                                        onChange={(e) => handleVerificationCodeChange(e.target.value)}
+                                        maxLength="6"
+                                        className="form-input"
+                                        style={{ letterSpacing: '6px', textAlign: 'center', fontSize: '1.2rem', fontWeight: 'bold', padding: '0.6rem 1rem', color: '#00c8ff', width: '200px', margin: '0 auto', display: 'block' }}
+                                        aria-label="Verification code"
+                                        autoComplete="one-time-code"
+                                        autoFocus
+                                    />
+                                    <small style={{ marginTop: '0.4rem', display: 'block', textAlign: 'center', fontSize: '0.85rem', fontWeight: '600' }}>
+                                        <FaInfoCircle style={{ marginRight: '0.4rem', color: '#00c8ff', fontSize: '0.9rem' }} />
+                                        <span style={{ background: 'linear-gradient(to right, #fff700, #00c8ff, #fff700)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Auto-submits when complete</span>
+                                    </small>
+                                </motion.div>
+
+                                <motion.button
+                                    className="login-btn"
+                                    type="submit"
+                                    whileHover={{ scale: 1.02 }}
+                                    whileTap={{ scale: 0.98 }}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: 0.2, duration: 0.4 }}
+                                    style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', padding: '0.8rem 2.5rem', fontSize: '1.1rem', fontWeight: '700', marginTop: '0.5rem', width: '100%' }}
+                                >
+                                    <span className="btn-icon"><FaCheck style={{ color: '#000000', fontSize: '1.2rem' }} /></span>
+                                    <span className="btn-text" style={{ color: '#000000' }}>Verify</span>
+                                </motion.button>
+
+                                <motion.button
+                                    className="resend-btn"
+                                    type="button"
+                                    onClick={handleResendCode}
+                                    disabled={isResending || resendCooldown > 0}
+                                    whileHover={{ scale: resendCooldown > 0 ? 1 : 1.05 }}
+                                    whileTap={{ scale: resendCooldown > 0 ? 1 : 0.95 }}
+                                    style={{
+                                        marginTop: '0.6rem',
+                                        background: 'transparent',
+                                        border: '1.5px solid rgba(0, 200, 255, 0.5)',
+                                        color: resendCooldown > 0 ? '#666' : '#00c8ff',
+                                        padding: '0.7rem 1.5rem',
+                                        borderRadius: '10px',
+                                        cursor: (isResending || resendCooldown > 0) ? 'not-allowed' : 'pointer',
+                                        opacity: (isResending || resendCooldown > 0) ? 0.5 : 1,
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        gap: '0.5rem',
+                                        width: '100%',
+                                        fontSize: '0.95rem',
+                                        fontWeight: '600',
+                                        transition: 'all 0.3s ease'
+                                    }}
+                                    aria-disabled={isResending || resendCooldown > 0}
+                                >
+                                    {isResending ? (
+                                        <>
+                                            <span className="spinner"></span>
+                                            <span>Sending...</span>
+                                        </>
+                                    ) : resendCooldown > 0 ? (
+                                        <>
+                                            <span><FaClock style={{ color: '#fff700', fontSize: '1rem' }} /></span>
+                                            <span>Resend in {resendCooldown}s</span>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <span><FaRedo style={{ color: '#00c8ff', fontSize: '1rem' }} /></span>
+                                            <span style={{ background: 'linear-gradient(to right, #fff700, #00c8ff, #fff700)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', fontWeight: 'bold' }}>Resend Code</span>
+                                        </>
+                                    )}
+                                </motion.button>
+                            </form>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </>
     )
 }
