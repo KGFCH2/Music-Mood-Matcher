@@ -184,9 +184,9 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
             case 'female':
                 return <FaVenus style={{ color: '#e91e63' }} />
             case 'other':
-                return <FaGenderless style={{ color: '#000000' }} />
+                return <FaGenderless style={{ color: '#FF6B35' }} />
             default:
-                return <FaGenderless style={{ color: '#000000' }} />
+                return <FaGenderless style={{ color: '#FF6B35' }} />
         }
     }
 
