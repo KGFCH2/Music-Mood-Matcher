@@ -545,7 +545,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                                         whileTap={{ scale: 0.95 }}
                                                         style={{
                                                             padding: '12px 16px',
-                                                            background: 'rgba(255, 107, 107, 0.2)',
+                                                            background: 'linear-gradient(135deg, #00ff8478, #0088ff)',
                                                             border: '1px solid rgba(255, 107, 107, 0.5)',
                                                             borderRadius: '8px',
                                                             color: '#ffffff',
@@ -945,7 +945,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                         style={{
                                             width: '100%',
                                             padding: '12px',
-                                            background: 'rgba(255, 107, 107, 0.2)',
+                                            background: 'linear-gradient(135deg, #00ff8478, #0088ff)',
                                             border: '1px solid rgba(255, 107, 107, 0.5)',
                                             borderRadius: '8px',
                                             color: '#ff6b6b',
@@ -1075,7 +1075,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                             style={{
                                                 flex: 1,
                                                 padding: '12px',
-                                                background: 'rgba(124, 77, 255, 0.2)',
+                                                background: 'linear-gradient(135deg, #00ff8478, #0088ff)',
                                                 border: '1px solid rgba(124, 77, 255, 0.5)',
                                                 borderRadius: '8px',
                                                 color: '#ffffff',
@@ -1182,7 +1182,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                         style={{
                                             flex: 1,
                                             padding: '12px',
-                                            background: 'rgba(124, 77, 255, 0.1)',
+                                            background: 'linear-gradient(135deg, #00ff8478, #0088ff)',
                                             border: '1px solid rgba(124, 77, 255, 0.3)',
                                             borderRadius: '8px',
                                             color: '#7c4dff',
