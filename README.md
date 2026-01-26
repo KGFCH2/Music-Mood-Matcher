@@ -2,55 +2,74 @@
 
 [![React](https://img.shields.io/badge/React-18.3.1-blue?logo=react&logoColor=white)](https://react.dev)
 [![Vite](https://img.shields.io/badge/Vite-7.1.7-646cff?logo=vite&logoColor=white)](https://vitejs.dev)
+[![Node.js](https://img.shields.io/badge/Node.js-20.x-green?logo=node.js&logoColor=white)](https://nodejs.org)
+[![MongoDB](https://img.shields.io/badge/MongoDB-Latest-green?logo=mongodb&logoColor=white)](https://www.mongodb.com)
 [![Status](https://img.shields.io/badge/Status-Production%20Ready-brightgreen)](https://github.com)
-[![GitHub](https://img.shields.io/badge/GitHub-Music--Mood--Matcher-black?logo=github)](https://github.com/KGFCH2/Music-Mood-Matcher)
+[![PWA](https://img.shields.io/badge/PWA-Ready-blueviolet?logo=progressive-web-apps&logoColor=white)](https://web.dev/progressive-web-apps/)
 
-Your personal DJ in a browser. 🎧 Discover the perfect soundtrack for every emotion using AI mood detection. 150+ songs in 3 languages, all curated to match your vibe.
-
----
-
-## 🛠️ Recent Changes
-
-- 🎨 Added multiple aurora text effects for enhanced visual appeal
-- 📱 Adjusted hero section positioning for better layout
-- 🔧 Improved CSS with additional aurora variations and styling fixes
-- 📝 Updated documentation and project structure
-- 🚀 Enhanced user interface with smooth animations and effects
-- 📄 Added copyright notice to main footer
-- 🗑️ Removed duplicate copyright lines from individual page footers
-- 📱 Improved mobile responsiveness for tab headings (About, FAQ, etc.)
-- 🔤 Reduced font sizes for specific informational tab headings
+Your personal AI-powered DJ in a browser. 🎧 Music Mood Matcher uses cutting-edge face detection to understand your emotions and curate the perfect soundtrack. With over 150+ songs across multiple languages and a robust full-stack architecture, it's designed to be your ultimate emotional musical companion.
 
 ---
 
-## 🎸 Let's Jam: Quick Start
-
-### Frontend Setup
-```bash
-cd frontend
-npm install
-npm run dev        # Starts on http://localhost:5173
-```
-
----
-
-## 🎼 The Greatest Hits
+## 🚀 Key Features
 
 | Feature | Description |
 |---------|-------------|
-| 🎵 **150+ Hits** | Multi-language collection in English, Hindi & Bengali |
-| 🎭 **6 Mood Vibes** | Happy, Sad, Energetic, Romantic, Chill, Angry |
-| 🤖 **AI DJ Mode** | Webcam detects your mood & auto-generates playlists |
-|  **VIP Access** | Secure login with encrypted credentials |
-| ⭐ **Your Collection** | Save favorites, track your mood over time |
-| 📊 **Mood Analytics** | See your emotional music journey |
-| 📻 **Offline Radio** | Works offline with service worker caching |
-| 🔒 **Fort Knox** | CORS, rate limiting, military-grade protection |
-| 🎨 **Studio Quality UI** | Smooth animations, glass-morphism design |
+| 🤖 **AI Mood Detection** | Real-time facial expression analysis using `face-api.js` to detect 6 core emotions. |
+| 🎵 **Curated Library** | 150+ hand-picked tracks in **English, Hindi, and Bengali**. |
+| 📱 **Cross-Platform PWA** | Installable on mobile and desktop with offline support and caching. |
+| 🔒 **Secure Auth** | Full-stack authentication with JWT, bcrypt hashing, and secure session management. |
+| 📊 **Emotional Insights** | Visualized mood history and analytics to track your musical journey. |
+| 🎨 **Immersive UI** | Aurora text effects, glass-morphism, and smooth Framer Motion animations. |
+| 📧 **Password Recovery** | Integrated EmailJS support for secure verification code-based resets. |
+| 🌙 **Theme Control** | Multi-theme support with dark/light modes and personalized profile management. |
 
 ---
 
-## 📁 Project Structure
+## 🛠️ Performance & Tech Stack
+
+- **⚛️ Frontend:** React 18, Vite 7, Framer Motion, Axios, React Icons.
+- **🟢 Backend:** Node.js, Express, MongoDB (Mongoose), JWT.
+- **🧠 AI/ML:** Face-api.js (TensorFlow.js based) for on-device facial recognition.
+- **📶 PWA:** Service Workers, Web Manifest, Offline Caching strategies.
+- **🧪 Tools:** ESLint for linting, Vitest for unit testing.
+
+---
+
+## 🎸 Getting Started
+
+### Prerequisites
+- Node.js (v18 or higher)
+- MongoDB (Local or Atlas)
+- NPM or Yarn
+
+### ⚙️ Quick Installation
+
+1. **Clone & Install Frontend:**
+   ```bash
+   cd frontend
+   npm install
+   ```
+
+2. **Install Backend:**
+   ```bash
+   cd ../backend
+   npm install
+   ```
+
+3. **Environment Setup:**
+   *   Create `.env` in `frontend/` with `VITE_API_URL`, `VITE_EMAILJS_SERVICE_ID`, etc.
+   *   Create `.env` in `backend/` with `MONGO_URI` and `JWT_SECRET`.
+
+4. **Launch Application:**
+   *   Backend: `cd backend && npm start` (Runs on port 5000)
+   *   Frontend: `cd frontend && npm run dev` (Runs on port 5173)
+
+---
+
+---
+
+## 📁 Project Architecture
 
 ```
 Music-Mood-Matcher/
@@ -102,103 +121,45 @@ Music-Mood-Matcher/
 └── README.md                          # This file
 ```
 
-## 🎸 Setup Your Stage
+## ✨ Design Philosophy
 
-### Frontend Setup
-```bash
-cd frontend
-npm install
-npm run dev        # Starts on http://localhost:5173
-```
-### Backend Setup
-```bash
-cd backend
-npm install
-npm start          # Starts the server on port 5000
-```
-🎵 Your personal DJ is ready to rock!
+Music Mood Matcher isn't just an app; it's an experience. We've utilized **🌈 Aurora gradients** and **🪟 glass-morphism** to create a focused, distraction-free environment that adapts to your mood. The UI shifts subtly as you move through different emotional states, reinforcing the connection between your feelings and the music.
 
 ---
 
-## 👤 Profile
+## ⚖️ License
 
-- View and edit your profile details (name, email, gender). Email changes require verification via a one-time code sent by EmailJS.
-- Theme toggle for light/dark mode is available inside the profile panel.
-- Logout action is available in the profile details for easy access on mobile devices.
-- View registration date, verification status, and recent login history.
-- Delete account option removes local user data (confirmation required).
-
-
-## 🔊 Soundcheck: Testing
-
-### 🎙️ Test the Acoustics
-```bash
-cd frontend
-npm test                 # 🎵 Keep the beat going (watch mode)
-npm run test:ui         # 📊 Visual spectrum analyzer
-```
-
-### Example Test
-```javascript
-import { describe, it, expect } from 'vitest'
-
-describe('App', () => {
-  it('should render correctly', () => {
-    expect(true).toBe(true)
-  })
-})
-```
+Distributed under the MIT License. See `LICENSE` for more information.
 
 ---
 
-## 🔒 Data Security
+## 👥 Contributors
 
-- ✅ User data stored locally in browser (localStorage)
-- ✅ No server-side data transmission
-- ✅ AI processing happens client-side
-- ✅ PWA caching for offline functionality
-- ✅ EmailJS for contact forms (external service)
+- **Babin Bid** - *Founder & Lead Developer*
+- **Debasmita Bose** - *Lead Designer & UI Specialist*
 
 ---
 
-## � Offline Radio: PWA Features
+*Made with ❤️ for music lovers everywhere.*
+
+
+
+
+
+
+## 📻 Offline Radio: PWA Features
 
 - ✅ Record songs for offline playback
 - ✅ Make it your home screen station
-- ✅ No internet? No problem! Plays cached hits
-- ✅ One-tap installation to home screen
-- ✅ Lightning-fast track loading
+- ✅ 📶 No internet? No problem! Plays cached hits
+- ✅ 📲 One-tap installation to home screen
+- ✅ ⚡ Lightning-fast track loading
 
 ---
 
-## 🎪 Going on Tour: Deployment
 
-### 🎸 Concert Venues (Deploy to Vercel/Netlify)
-```bash
-cd frontend
-npm run build
-# 🎭 Deploy the dist/ folder to your hosting platform
-```
 
-**Recommended platforms:**
-- **Vercel**: Connect GitHub repo, automatic deployments
-- **Netlify**: Drag & drop dist/ folder or connect Git
-- **GitHub Pages**: Use gh-pages package
-
----
-
-## ⚡ Turn Up the Volume: Performance
-
-✅ Split tracks for faster delivery
-✅ Cache the greatest hits
-✅ Load features on-demand (lazy loading)
-✅ Instant studio feedback (HMR)
-✅ Indexed playlists for speed
-✅ Compressed audio for fast streaming
-
----
-
-## � Encore: Coming Soon
+## ⏭️ Encore: Coming Soon
 
 - [ ] 🎶 Spotify Integration - Stream your own music
 - [ ] 🎤 Voice Mood Detection - Your voice sets the mood
@@ -213,20 +174,6 @@ npm run build
 3. Auto-focus and auto-submit verification code
 4. Success animation on verification
 
-### Sign-In
-1. Enter registered email
-2. System validates account
-3. Session restored with favorites & history
-4. Auto-redirect to Home
-
-**Features:**
-- ⏱️ 60-second resend cooldown (prevents spam)
-- 🎯 Auto-focus on verification input
-- ⚡ Auto-submit when code complete
-- 🎉 Success animation on verification
-- ♿ ARIA labels for accessibility
-
----
 
 ## 💾 Data Storage
 
@@ -381,4 +328,4 @@ Personal use - See [LICENSE](LICENSE) file
 
 ---
 
-🎵 **Last Updated:** January 25, 2026 | **Version:** 2.6 - Footer Copyright and Mobile Responsiveness Enhancements 🎵
+🎵 **Last Updated:** January 26, 2026 | **Version:** 3.0 - Full-Stack AI Integration 🎵
