@@ -1,6 +1,26 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import PropTypes from 'prop-types'
+import {
+    FaFilm,
+    FaUser,
+    FaUserCircle,
+    FaEnvelope,
+    FaVenusMars,
+    FaPlay,
+    FaStar,
+    FaBolt,
+    FaHeadphones,
+    FaPalette,
+    FaSync,
+    FaMusic,
+    FaGlobe,
+    FaArrowLeft,
+    FaMicrophone,
+    FaMars,
+    FaVenus,
+    FaGenderless
+} from 'react-icons/fa'
 import './demo-guide.css'
 
 export default function DemoGuide({ onSelectDemo, onBack }) {
@@ -13,7 +33,7 @@ export default function DemoGuide({ onSelectDemo, onBack }) {
             email: 'demo.music.lover@example.com',
             name: 'Music Lover',
             gender: 'male',
-            avatar: '👨',
+            icon: <FaMars />,
             description: 'A passionate music enthusiast exploring different moods',
             color: '#FFD700'
         },
@@ -22,7 +42,7 @@ export default function DemoGuide({ onSelectDemo, onBack }) {
             email: 'demo.happy.vibes@example.com',
             name: 'Happy Vibes',
             gender: 'female',
-            avatar: '👩',
+            icon: <FaVenus />,
             description: 'Always looking for uplifting and energetic songs',
             color: '#FF1493'
         },
@@ -31,7 +51,7 @@ export default function DemoGuide({ onSelectDemo, onBack }) {
             email: 'demo.chill.mode@example.com',
             name: 'Chill Mode',
             gender: 'other',
-            avatar: '🧑',
+            icon: <FaGenderless style={{ color: '#000000' }} />,
             description: 'Prefers relaxing music for peaceful moments',
             color: '#20B2AA'
         },
@@ -40,7 +60,7 @@ export default function DemoGuide({ onSelectDemo, onBack }) {
             email: 'demo.rock.fan@example.com',
             name: 'Rock Fan',
             gender: 'male',
-            avatar: '🧔',
+            icon: <FaUser />,
             description: 'Loves energetic rock and metal music vibes',
             color: '#FF6347'
         },
@@ -49,7 +69,7 @@ export default function DemoGuide({ onSelectDemo, onBack }) {
             email: 'demo.jazz.lover@example.com',
             name: 'Jazz Lover',
             gender: 'female',
-            avatar: '👩',
+            icon: <FaUserCircle />,
             description: 'Enjoys smooth jazz and sophisticated melodies',
             color: '#9370DB'
         },
@@ -58,7 +78,7 @@ export default function DemoGuide({ onSelectDemo, onBack }) {
             email: 'demo.pop.star@example.com',
             name: 'Pop Star',
             gender: 'other',
-            avatar: '🎤',
+            icon: <FaMicrophone />,
             description: 'Explores trending pop and contemporary sounds',
             color: '#00CED1'
         }
@@ -105,7 +125,7 @@ export default function DemoGuide({ onSelectDemo, onBack }) {
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: 0.2, duration: 0.5 }}
                 >
-                    <div className="demo-header-icon">🎬</div>
+                    <div className="demo-header-icon"><FaFilm /></div>
                     <h1>Demo Accounts</h1>
                     <p className="demo-subtitle">Choose a demo account to explore the app instantly!</p>
                 </motion.div>
@@ -127,7 +147,7 @@ export default function DemoGuide({ onSelectDemo, onBack }) {
                         >
                             {/* Avatar */}
                             <div className="demo-avatar" style={{ borderColor: demoUser.color }}>
-                                <span className="demo-avatar-emoji">{demoUser.avatar}</span>
+                                <span className="demo-avatar-emoji">{demoUser.icon}</span>
                             </div>
 
                             {/* User Info */}
@@ -136,13 +156,13 @@ export default function DemoGuide({ onSelectDemo, onBack }) {
 
                             {/* Email */}
                             <div className="demo-email-box">
-                                <span className="email-icon">📧</span>
+                                <span className="email-icon"><FaEnvelope /></span>
                                 <span className="email-text">{demoUser.email}</span>
                             </div>
 
                             {/* Gender Badge */}
                             <div className="demo-gender-badge">
-                                <span className="gender-emoji">⚧️</span>
+                                <span className="gender-emoji"><FaVenusMars /></span>
                                 <span className="gender-text">{demoUser.gender.charAt(0).toUpperCase() + demoUser.gender.slice(1)}</span>
                             </div>
 
@@ -156,7 +176,7 @@ export default function DemoGuide({ onSelectDemo, onBack }) {
                                     borderColor: demoUser.color
                                 }}
                             >
-                                <span className="btn-icon">▶️</span>
+                                <span className="btn-icon"><FaPlay /></span>
                                 <span className="btn-text">Try Demo</span>
                             </motion.button>
 
@@ -197,35 +217,47 @@ export default function DemoGuide({ onSelectDemo, onBack }) {
                             exit={{ opacity: 0, height: 0 }}
                             transition={{ duration: 0.3 }}
                         >
-                            <h3 className="features-title">✨ Why Try Demo?</h3>
+                            <h3 className="features-title"><FaStar style={{ color: '#fff700', marginRight: '8px' }} /> Why Try Demo?</h3>
                             <div className="features-grid">
                                 <div className="feature-item">
-                                    <div className="feature-icon emoji-pop emoji-demo-instant">⚡</div>
+                                    <div className="feature-icon emoji-pop emoji-demo-instant">
+                                        <FaBolt style={{ color: '#FFD700', transition: 'all 0.4s ease' }} />
+                                    </div>
                                     <p>Instant Access</p>
                                     <span>No verification needed</span>
                                 </div>
                                 <div className="feature-item">
-                                    <div className="feature-icon emoji-pop emoji-demo-full">🎧</div>
+                                    <div className="feature-icon emoji-pop emoji-demo-full">
+                                        <FaHeadphones style={{ color: '#00c8ff', transition: 'all 0.4s ease' }} />
+                                    </div>
                                     <p>Full Features</p>
                                     <span>All features unlocked</span>
                                 </div>
                                 <div className="feature-item">
-                                    <div className="feature-icon emoji-pop emoji-demo-ui">🎨</div>
+                                    <div className="feature-icon emoji-pop emoji-demo-ui">
+                                        <FaPalette style={{ color: '#FF1493', transition: 'all 0.4s ease' }} />
+                                    </div>
                                     <p>Beautiful UI</p>
                                     <span>Experience the design</span>
                                 </div>
                                 <div className="feature-item">
-                                    <div className="feature-icon emoji-pop emoji-demo-reuse">♻️</div>
+                                    <div className="feature-icon emoji-pop emoji-demo-reuse">
+                                        <FaSync style={{ color: '#20B2AA', transition: 'all 0.4s ease' }} />
+                                    </div>
                                     <p>Reusable</p>
                                     <span>Use anytime you want</span>
                                 </div>
                                 <div className="feature-item">
-                                    <div className="feature-icon emoji-pop emoji-demo-moods">🎵</div>
+                                    <div className="feature-icon emoji-pop emoji-demo-moods">
+                                        <FaMusic style={{ color: '#FF6347', transition: 'all 0.4s ease' }} />
+                                    </div>
                                     <p>6 Moods</p>
                                     <span>Explore all emotions</span>
                                 </div>
                                 <div className="feature-item">
-                                    <div className="feature-icon emoji-pop emoji-demo-lang">🌍</div>
+                                    <div className="feature-icon emoji-pop emoji-demo-lang">
+                                        <FaGlobe style={{ color: '#00CED1', transition: 'all 0.4s ease' }} />
+                                    </div>
                                     <p>Multi-Language</p>
                                     <span>English, Hindi & Bengali</span>
                                 </div>
@@ -244,7 +276,7 @@ export default function DemoGuide({ onSelectDemo, onBack }) {
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.6, duration: 0.3 }}
                 >
-                    <span className="btn-icon">←</span>
+                    <span className="btn-icon"><FaArrowLeft /></span>
                     <span className="btn-text">Back to Login</span>
                 </motion.button>
             </motion.div>
