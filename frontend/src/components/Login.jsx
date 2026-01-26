@@ -5,6 +5,7 @@ import emailjs from '@emailjs/browser'
 import DemoGuide from './DemoGuide'
 import { secureStorage } from '../utils/secureStorage'
 import { hashPassword, validatePasswordStrength, getPasswordFeedback } from '../utils/passwordUtils'
+import { FaEnvelope, FaCheck, FaLock, FaRedo, FaClock, FaExclamationTriangle } from 'react-icons/fa'
 import './login.css'
 
 export default function Login({ onLoginSuccess }) {
@@ -951,10 +952,10 @@ export default function Login({ onLoginSuccess }) {
                                             transition={{ delay: 0.15, duration: 0.4 }}
                                         >
                                             <label htmlFor="registerEmail">
-                                                <span className="label-icon">📧</span>
+                                                <span className="label-icon"><FaEnvelope /></span>
                                                 <span className="label-text">Email Address</span>
-                                                {emailValidation.isValid === true && <span className="validation-icon valid">✓</span>}
-                                                {emailValidation.isValid === false && <span className="validation-icon invalid">✗</span>}
+                                                {emailValidation.isValid === true && <span className="validation-icon valid"><FaCheck /></span>}
+                                                {emailValidation.isValid === false && <span className="validation-icon invalid"><FaTimes /></span>}
                                             </label>
                                             <input
                                                 id="registerEmail"
@@ -1026,10 +1027,10 @@ export default function Login({ onLoginSuccess }) {
                                             transition={{ delay: 0.25, duration: 0.4 }}
                                         >
                                             <label htmlFor="confirmPassword">
-                                                <span className="label-icon">🔐</span>
+                                                <span className="label-icon"><FaLock /></span>
                                                 <span className="label-text">Confirm Password</span>
-                                                {confirmPasswordValidation.isValid === true && <span className="validation-icon valid">✓</span>}
-                                                {confirmPasswordValidation.isValid === false && <span className="validation-icon invalid">✗</span>}
+                                                {confirmPasswordValidation.isValid === true && <span className="validation-icon valid"><FaCheck /></span>}
+                                                {confirmPasswordValidation.isValid === false && <span className="validation-icon invalid"><FaTimes /></span>}
                                             </label>
                                             <div className="password-input-wrapper">
                                                 <input
@@ -1210,7 +1211,7 @@ export default function Login({ onLoginSuccess }) {
                                             transition={{ delay: 0.1, duration: 0.4 }}
                                         >
                                             <label htmlFor="signinEmail">
-                                                <span className="label-icon">📧</span>
+                                                <span className="label-icon"><FaEnvelope /></span>
                                                 <span className="label-text">Email Address</span>
                                             </label>
                                             <input
@@ -1339,7 +1340,7 @@ export default function Login({ onLoginSuccess }) {
                                                     whileHover={{ scale: 1.05 }}
                                                     whileTap={{ scale: 0.95 }}
                                                 >
-                                                    <span className="btn-icon">✅</span>
+                                                    <span className="btn-icon"><FaCheck /></span>
                                                     <span className="btn-text">Keep Existing</span>
                                                 </motion.button>
                                             </div>
@@ -1376,7 +1377,7 @@ export default function Login({ onLoginSuccess }) {
                                                     whileHover={{ scale: 1.05 }}
                                                     whileTap={{ scale: 0.95 }}
                                                 >
-                                                    <span className="btn-icon">🔄</span>
+                                                    <span className="btn-icon"><FaRedo /></span>
                                                     <span className="btn-text">Use New Details</span>
                                                 </motion.button>
                                             </div>
@@ -1456,7 +1457,7 @@ export default function Login({ onLoginSuccess }) {
                                                         transition={{ duration: 0.5 }}
                                                         style={{ fontSize: '4rem' }}
                                                     >
-                                                        ✅
+                                                        <FaCheck />
                                                     </motion.div>
                                                     <motion.p
                                                         initial={{ opacity: 0, y: 10 }}
@@ -1479,11 +1480,11 @@ export default function Login({ onLoginSuccess }) {
                                         </AnimatePresence>
 
                                         <div className="dialog-header">
-                                            <span className="dialog-icon">📧</span>
+                                            <span className="dialog-icon"><FaEnvelope /></span>
                                             <h3 id="verification-title">Email Verification Required</h3>
                                             <p>Code sent to <strong>{verificationDialogEmail}</strong></p>
                                             <p style={{ fontSize: '0.75rem', marginTop: '0.25rem', color: '#b0b0b0' }}>
-                                                📨 Check inbox or spam folder • Verification required to continue
+                                                <FaEnvelope /> Check inbox or spam folder • Verification required to continue
                                             </p>
                                         </div>
 
@@ -1508,7 +1509,7 @@ export default function Login({ onLoginSuccess }) {
                                                         fontSize: '0.85rem'
                                                     }}
                                                 >
-                                                    <span>✅</span>
+                                                    <span><FaCheck /></span>
                                                     <span style={{ color: '#4caf50' }}>Email sent!</span>
                                                 </motion.div>
                                             )}
@@ -1522,7 +1523,7 @@ export default function Login({ onLoginSuccess }) {
                                                     role="alert"
                                                     aria-live="assertive"
                                                 >
-                                                    <span className="error-icon">⚠️</span>
+                                                    <span className="error-icon"><FaExclamationTriangle /></span>
                                                     <span className="error-text">{verificationError}</span>
                                                 </motion.div>
                                             )}
@@ -1535,7 +1536,7 @@ export default function Login({ onLoginSuccess }) {
                                                 style={{ width: '100%', marginBottom: '0.5rem' }}
                                             >
                                                 <label htmlFor="verificationCode" style={{ marginBottom: '0.4rem' }}>
-                                                    <span className="label-icon">🔐</span>
+                                                    <span className="label-icon"><FaLock /></span>
                                                     <span className="label-text" style={{ fontSize: '0.85rem' }}>Verification Code</span>
                                                 </label>
                                                 <input
@@ -1567,7 +1568,7 @@ export default function Login({ onLoginSuccess }) {
                                                 transition={{ delay: 0.2, duration: 0.4 }}
                                                 style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem', padding: '0.75rem 1.5rem', fontSize: '0.9rem' }}
                                             >
-                                                <span className="btn-icon">✅</span>
+                                                <span className="btn-icon"><FaCheck /></span>
                                                 <span className="btn-text">Verify</span>
                                             </motion.button>
 
@@ -1603,12 +1604,12 @@ export default function Login({ onLoginSuccess }) {
                                                     </>
                                                 ) : resendCooldown > 0 ? (
                                                     <>
-                                                        <span>⏱️</span>
+                                                        <span><FaClock /></span>
                                                         <span>Resend in {resendCooldown}s</span>
                                                     </>
                                                 ) : (
                                                     <>
-                                                        <span>🔄</span>
+                                                        <span><FaRedo /></span>
                                                         <span>Resend Code</span>
                                                     </>
                                                 )}
