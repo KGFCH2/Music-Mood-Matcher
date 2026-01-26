@@ -388,6 +388,28 @@ body {
   color: #00B7FF;
 }
 
+/* FAQ Question and Answer prefixes */
+.faq-q {
+  color: #FF6B35;
+  font-weight: bold;
+  margin-right: 0.5rem;
+}
+
+.faq-a {
+  color: #4ECDC4;
+  font-weight: bold;
+  margin-right: 0.5rem;
+}
+
+/* FAQ Question headings with gradient text */
+.about-content h4 {
+  background: linear-gradient(4500deg, #40ade8, #ffd900);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: bold;
+}
+
 .footer-icon {
   display: inline-block;
   vertical-align: middle;
