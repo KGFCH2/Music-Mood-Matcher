@@ -33,7 +33,7 @@ export default function DemoGuide({ onSelectDemo, onBack }) {
             email: 'demo.music.lover@example.com',
             name: 'Music Lover',
             gender: 'male',
-            icon: <FaMars />,
+            icon: <FaMars style={{ color: '#1e88e5' }} />,
             description: 'A passionate music enthusiast exploring different moods',
             color: '#FFD700'
         },
@@ -42,7 +42,7 @@ export default function DemoGuide({ onSelectDemo, onBack }) {
             email: 'demo.happy.vibes@example.com',
             name: 'Happy Vibes',
             gender: 'female',
-            icon: <FaVenus />,
+            icon: <FaVenus style={{ color: '#e91e63' }} />,
             description: 'Always looking for uplifting and energetic songs',
             color: '#FF1493'
         },
@@ -51,7 +51,7 @@ export default function DemoGuide({ onSelectDemo, onBack }) {
             email: 'demo.chill.mode@example.com',
             name: 'Chill Mode',
             gender: 'other',
-            icon: <FaGenderless style={{ color: '#000000' }} />,
+            icon: <FaGenderless style={{ color: '#FF6B35' }} />,
             description: 'Prefers relaxing music for peaceful moments',
             color: '#20B2AA'
         },
@@ -69,7 +69,7 @@ export default function DemoGuide({ onSelectDemo, onBack }) {
             email: 'demo.jazz.lover@example.com',
             name: 'Jazz Lover',
             gender: 'female',
-            icon: <FaUserCircle />,
+            icon: <FaVenus style={{ color: '#e91e63' }} />,
             description: 'Enjoys smooth jazz and sophisticated melodies',
             color: '#9370DB'
         },
