@@ -180,13 +180,13 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
     const getGenderAvatar = (gender) => {
         switch (gender) {
             case 'male':
-                return <FaMars style={{ color: '#00e5ff' }} />
+                return <FaMars style={{ color: '#1e88e5' }} />
             case 'female':
-                return <FaVenus style={{ color: '#ff1493' }} />
+                return <FaVenus style={{ color: '#e91e63' }} />
             case 'other':
-                return <FaUser style={{ color: '#7c4dff' }} /> // use classic silhouette for 'other'
+                return <FaGenderless style={{ color: '#000000' }} />
             default:
-                return <FaUser style={{ color: '#7c4dff' }} /> // default neutral avatar
+                return <FaGenderless style={{ color: '#000000' }} />
         }
     }
 
@@ -316,7 +316,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                 >
                     {/* Header */}
                     <div className="profile-header">
-                        <h2><FaUser style={{ color: '#7c4dff' }} /> Profile</h2>
+                        <h2><FaUser style={{ color: '#00c8ff' }} /> Profile</h2>
                         <div className="header-actions">
                             <motion.button
                                 className="close-btn-stylish"
@@ -417,8 +417,8 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                 className={`section-toggle account-toggle ${expandedSection === 'account' ? 'active' : ''}`}
                                 onClick={() => toggleSection('account')}
                             >
-                                <span className="toggle-icon"><FaUser style={{ color: '#7c4dff' }} /></span>
-                                <span className="toggle-title" style={{ color: '#7c4dff' }}>Account Information</span>
+                                <span className="toggle-icon"><FaUser style={{ color: '#00c8ff' }} /></span>
+                                <span className="toggle-title" style={{ color: '#00c8ff' }}>Account Information</span>
                                 <span className={`toggle-arrow ${expandedSection === 'account' ? 'open' : ''}`}>›</span>
                             </motion.button>
 
@@ -438,7 +438,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                             </div>
                                         )}
                                         <div className="info-row">
-                                            <span className="info-label"><FaUser style={{ color: '#7c4dff' }} /> Name:</span>
+                                            <span className="info-label"><FaUser style={{ color: '#00c8ff' }} /> Name:</span>
                                             {isEditingName ? (
                                                 <input
                                                     type="text"
@@ -577,7 +577,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                                     style={{
                                                         padding: '12px 16px',
                                                         background: 'linear-gradient(135deg, #FFD700, #00d9ff)',
-                                                        border: '1px solid rgba(124, 77, 255, 0.5)',
+                                                        border: '1px solid rgba(0, 200, 255, 0.5)',
                                                         borderRadius: '8px',
                                                         backgroundClip: 'text',
                                                         WebkitBackgroundClip: 'text',
@@ -742,7 +742,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                                 <span className="privacy-text">Authentication and profile endpoints communicate with the backend if configured</span>
                                             </div>
                                             <div className="privacy-item">
-                                                <span className="privacy-icon"><FaUser style={{ color: '#7c4dff' }} /></span>
+                                                <span className="privacy-icon"><FaUser style={{ color: '#00c8ff' }} /></span>
                                                 <span className="privacy-text">Only you can access your local profile data; remote data follows server policies</span>
                                             </div>
                                             <div className="privacy-item">
@@ -937,7 +937,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                         style={{
                                             width: '100%',
                                             padding: '12px',
-                                            background: 'linear-gradient(135deg, #00e5ff, #7c4dff)',
+                                            background: 'linear-gradient(135deg, #00e5ff, #00c8ff)',
                                             border: 'none',
                                             borderRadius: '8px',
                                             color: 'white',
@@ -1088,7 +1088,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                                 flex: 1,
                                                 padding: '12px',
                                                 background: 'linear-gradient(135deg, #00ff8478, #0088ff)',
-                                                border: '1px solid rgba(124, 77, 255, 0.5)',
+                                                border: '1px solid rgba(0, 200, 255, 0.5)',
                                                 borderRadius: '8px',
                                                 color: '#ffffff',
                                                 cursor: 'pointer',
@@ -1123,7 +1123,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                 transition={{ duration: 0.2 }}
                                 onClick={(e) => e.stopPropagation()}
                             >
-                                <h3 style={{ margin: '0 0 1rem', color: '#7c4dff' }}><FaCheck /> Verify Your Email</h3>
+                                <h3 style={{ margin: '0 0 1rem', color: '#00c8ff' }}><FaCheck /> Verify Your Email</h3>
 
                                 {emailVerificationError && (
                                     <motion.div
@@ -1158,7 +1158,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                         width: '100%',
                                         padding: '12px',
                                         background: 'rgba(255, 255, 255, 0.05)',
-                                        border: '1px solid rgba(124, 77, 255, 0.3)',
+                                        border: '1px solid rgba(0, 200, 255, 0.3)',
                                         borderRadius: '8px',
                                         color: '#fff',
                                         fontSize: '1.2rem',
@@ -1177,7 +1177,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                         style={{
                                             flex: 1,
                                             padding: '12px',
-                                            background: 'linear-gradient(135deg, #7c4dff 0%, #00e5ff 100%)',
+                                            background: 'linear-gradient(135deg, #00c8ff 0%, #00e5ff 100%)',
                                             border: 'none',
                                             borderRadius: '8px',
                                             color: '#fff',
@@ -1195,9 +1195,9 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                             flex: 1,
                                             padding: '12px',
                                             background: 'linear-gradient(135deg, #00ff8478, #0088ff)',
-                                            border: '1px solid rgba(124, 77, 255, 0.3)',
+                                            border: '1px solid rgba(0, 200, 255, 0.3)',
                                             borderRadius: '8px',
-                                            color: '#7c4dff',
+                                            color: '#00c8ff',
                                             cursor: 'pointer',
                                             fontWeight: '600'
                                         }}
