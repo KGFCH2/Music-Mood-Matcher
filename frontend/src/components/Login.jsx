@@ -5,7 +5,7 @@ import emailjs from '@emailjs/browser'
 import DemoGuide from './DemoGuide'
 import { secureStorage } from '../utils/secureStorage'
 import { hashPassword, validatePasswordStrength, getPasswordFeedback } from '../utils/passwordUtils'
-import { FaEnvelope, FaCheck, FaLock, FaRedo, FaClock, FaExclamationTriangle } from 'react-icons/fa'
+import { FaEnvelope, FaCheck, FaLock, FaRedo, FaClock, FaExclamationTriangle, FaTimes, FaStar, FaKey, FaMicrophone, FaEye, FaEyeSlash, FaUser, FaMars, FaVenus, FaGenderless, FaMusic, FaFilm, FaInfoCircle } from 'react-icons/fa'
 import './login.css'
 
 export default function Login({ onLoginSuccess }) {
@@ -34,6 +34,8 @@ export default function Login({ onLoginSuccess }) {
     const [showPassword, setShowPassword] = useState(false)
     const [showConfirmPassword, setShowConfirmPassword] = useState(false)
     const [showSignInPassword, setShowSignInPassword] = useState(false)
+    const [unverifiedUserChoice, setUnverifiedUserChoice] = useState(null)
+    const [unverifiedUserEmail, setUnverifiedUserEmail] = useState('')
 
     const DEMO_USERS = [
         { email: 'demo.music.lover@example.com', name: 'Music Lover', gender: 'male' },
@@ -281,7 +283,36 @@ export default function Login({ onLoginSuccess }) {
     }
 
     const generateVerificationCode = () => {
-        return Math.random().toString(36).substring(2, 8).toUpperCase()
+        return Math.random().toString(36).substr(2, 6).toUpperCase()
+    }
+
+    // Handle user choice for unverified email
+    const handleUnverifiedUserChoice = async (choice) => {
+        if (choice === 'verify') {
+            // User wants to enter verification code
+            const unverifiedUser = registeredUsers.find(u => u.email === unverifiedUserEmail)
+            if (unverifiedUser) {
+                setVerificationDialogEmail(unverifiedUserEmail)
+                setShowVerificationDialog(true)
+                setUnverifiedUserChoice(null)
+                setUnverifiedUserEmail('')
+                setError('')
+            }
+        } else if (choice === 'registerAgain') {
+            // User wants to register again - remove unverified user
+            const updatedUsers = registeredUsers.filter(u => u.email !== unverifiedUserEmail)
+            setRegisteredUsers(updatedUsers)
+            try {
+                await secureStorage.setRegisteredUsers(updatedUsers)
+            } catch (e) {
+                if (process.env.NODE_ENV === 'development') console.debug('Failed to remove unverified user', e)
+            }
+            setUnverifiedUserChoice(null)
+            setUnverifiedUserEmail('')
+            setError('You can now register again with this email.')
+            // Clear form to let user register fresh
+            setRegisterData({ email: '', userName: '', gender: 'other', password: '', confirmPassword: '' })
+        }
     }
 
     // Custom blocking choice dialog (returns true for Keep Existing, false for Use New Details)
@@ -420,48 +451,17 @@ export default function Login({ onLoginSuccess }) {
         // Check if email already registered (normalize stored emails too)
         const existing = registeredUsers.find(u => ((u.email || '').trim().toLowerCase()) === normalizedEmail)
         if (existing) {
-            console.debug('[Login] register conflict for email', registerData.email, 'existing user:', existing)
-            setExistingUser(existing)
-            setShowConflictDialog(true)
-            // visible fallback for cases where the dialog might be blocked by CSS/stacking
-            setError('This email is already registered. Choose "Keep Existing" or "Use New Details".')
-            // Fallback: show a custom choice dialog so user always sees a choice
-            try {
-                if (typeof window !== 'undefined') {
-                    const keep = await showConflictChoiceDialog()
-                    if (keep) {
-                        localStorage.setItem('musicMoodUser', JSON.stringify(existing))
-                        setShowConflictDialog(false)
-                        setExistingUser(null)
-                        onLoginSuccess(existing)
-                        return
-                    } else {
-                        if (!registerData.password.trim()) {
-                            setError('Please enter a new password to update your details')
-                            return
-                        }
-                        const hashedPassword = await hashPassword(registerData.password)
-                        const updatedUser = {
-                            ...existing,
-                            userName: registerData.userName,
-                            gender: registerData.gender,
-                            passwordHash: hashedPassword
-                        }
-                        const updatedUsers = registeredUsers.map(u =>
-                            ((u.email || '').trim().toLowerCase()) === ((registerData.email || '').trim().toLowerCase()) ? updatedUser : u
-                        )
-                        setRegisteredUsers(updatedUsers)
-                        await secureStorage.setRegisteredUsers(updatedUsers)
-                        secureStorage.setUserInfo(updatedUser)
-                        setShowConflictDialog(false)
-                        setExistingUser(null)
-                        onLoginSuccess(updatedUser)
-                        return
-                    }
-                }
-            } catch (e) {
-                // ignore fallback errors
+            // If email exists but not verified, ask user what they want to do
+            if (!existing.isVerified) {
+                setUnverifiedUserEmail(normalizedEmail)
+                setUnverifiedUserChoice('pending')
+                setError('Email already registered but not verified. You can enter your verification code or register again.')
+                return
             }
+
+            // If email is verified, tell user to sign in instead
+            console.debug('[Login] email already registered for verified user:', registerData.email)
+            setError('This email is already registered. Please sign in with your credentials or use a different email to register.')
             return
         }
 
@@ -661,6 +661,26 @@ export default function Login({ onLoginSuccess }) {
         }
     }
 
+    const handleCloseVerificationDialog = () => {
+        // Remove unverified user when closing verification dialog
+        const updatedUsers = registeredUsers.filter(u => u.email !== verificationDialogEmail)
+        setRegisteredUsers(updatedUsers)
+        try {
+            secureStorage.setRegisteredUsers(updatedUsers)
+        } catch (e) {
+            if (process.env.NODE_ENV === 'development') console.debug('Failed to remove unverified user', e)
+        }
+
+        // Clear verification dialog states
+        setShowVerificationDialog(false)
+        setVerificationDialogEmail('')
+        setVerificationInputCode('')
+        setVerificationError('')
+        setEmailSentSuccess(false)
+        setShowSuccessAnimation(false)
+        setError('Registration cancelled. Please register again to continue.')
+    }
+
     const handleVerifyEmail = async (e) => {
         e.preventDefault()
         setVerificationError('')
@@ -673,7 +693,8 @@ export default function Login({ onLoginSuccess }) {
         // Find the user by email
         const user = registeredUsers.find(u => u.email === verificationDialogEmail)
         if (!user) {
-            setVerificationError('User not found')
+            setVerificationError('User not found. Please register again.')
+            handleCloseVerificationDialog()
             return
         }
 
@@ -716,6 +737,11 @@ export default function Login({ onLoginSuccess }) {
         }
     }
 
+    // Prevent users from skipping verification - remove unverified user when dialog is closed
+    const handleBackFromVerification = () => {
+        handleCloseVerificationDialog()
+    }
+
     const handleResendCode = async () => {
         if (resendCooldown > 0) return
 
@@ -726,7 +752,7 @@ export default function Login({ onLoginSuccess }) {
         const user = registeredUsers.find(u => u.email === verificationDialogEmail)
         if (!user) {
             setVerificationError('User not found. Please register again.')
-            setIsResending(false)
+            handleCloseVerificationDialog()
             return
         }
 
@@ -862,7 +888,7 @@ export default function Login({ onLoginSuccess }) {
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
                             >
-                                <span className="tab-emoji">✨</span>
+                                <FaStar className="tab-emoji" style={{ color: '#FFD700', fontSize: '1.2rem' }} />
                                 <span className="tab-name">Register</span>
                             </motion.button>
                             <motion.button
@@ -880,7 +906,7 @@ export default function Login({ onLoginSuccess }) {
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
                             >
-                                <span className="tab-emoji">🔑</span>
+                                <FaKey className="tab-emoji" style={{ color: '#00d9ff', fontSize: '1.2rem' }} />
                                 <span className="tab-name">Sign In</span>
                             </motion.button>
                         </div>
@@ -907,8 +933,64 @@ export default function Login({ onLoginSuccess }) {
                                                 animate={{ opacity: 1, x: 0 }}
                                                 transition={{ duration: 0.3 }}
                                             >
-                                                <span className="error-icon">⚠️</span>
+                                                <span className="error-icon"><FaExclamationTriangle style={{ color: '#ff6b6b' }} /></span>
                                                 <span className="error-text">{error}</span>
+                                            </motion.div>
+                                        )}
+
+                                        {/* Unverified User Choice Buttons */}
+                                        {unverifiedUserChoice === 'pending' && (
+                                            <motion.div
+                                                className="unverified-choice-buttons"
+                                                initial={{ opacity: 0, y: 10 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                transition={{ duration: 0.3 }}
+                                                style={{
+                                                    display: 'flex',
+                                                    gap: '10px',
+                                                    marginTop: '12px',
+                                                    flexWrap: 'wrap',
+                                                    justifyContent: 'center'
+                                                }}
+                                            >
+                                                <motion.button
+                                                    type="button"
+                                                    onClick={() => handleUnverifiedUserChoice('verify')}
+                                                    whileHover={{ scale: 1.05 }}
+                                                    whileTap={{ scale: 0.95 }}
+                                                    style={{
+                                                        padding: '10px 16px',
+                                                        background: 'linear-gradient(135deg, #4caf50, #45a049)',
+                                                        border: 'none',
+                                                        borderRadius: '8px',
+                                                        color: '#fff',
+                                                        cursor: 'pointer',
+                                                        fontWeight: '600',
+                                                        fontSize: '0.85rem'
+                                                    }}
+                                                >
+                                                    <FaCheck style={{ marginRight: '6px' }} />
+                                                    Enter Code
+                                                </motion.button>
+                                                <motion.button
+                                                    type="button"
+                                                    onClick={() => handleUnverifiedUserChoice('registerAgain')}
+                                                    whileHover={{ scale: 1.05 }}
+                                                    whileTap={{ scale: 0.95 }}
+                                                    style={{
+                                                        padding: '10px 16px',
+                                                        background: 'linear-gradient(135deg, #ff9800, #f57c00)',
+                                                        border: 'none',
+                                                        borderRadius: '8px',
+                                                        color: '#fff',
+                                                        cursor: 'pointer',
+                                                        fontWeight: '600',
+                                                        fontSize: '0.85rem'
+                                                    }}
+                                                >
+                                                    <FaTimes style={{ marginRight: '6px' }} />
+                                                    Register Again
+                                                </motion.button>
                                             </motion.div>
                                         )}
 
@@ -920,7 +1002,7 @@ export default function Login({ onLoginSuccess }) {
                                             transition={{ delay: 0.1, duration: 0.4 }}
                                         >
                                             <label htmlFor="registerName">
-                                                <span className="label-icon">🎤</span>
+                                                <FaMicrophone className="label-icon" style={{ color: '#ff6b6b' }} />
                                                 <span className="label-text">Your Name</span>
                                                 {nameValidation.isValid === true && <span className="validation-icon valid">✓</span>}
                                                 {nameValidation.isValid === false && <span className="validation-icon invalid">✗</span>}
@@ -984,7 +1066,7 @@ export default function Login({ onLoginSuccess }) {
                                             transition={{ delay: 0.2, duration: 0.4 }}
                                         >
                                             <label htmlFor="registerPassword">
-                                                <span className="label-icon">🔒</span>
+                                                <FaLock className="label-icon" style={{ color: '#ff9800' }} />
                                                 <span className="label-text">Password</span>
                                                 {passwordValidation.isValid === true && <span className="validation-icon valid">✓</span>}
                                                 {passwordValidation.isValid === false && <span className="validation-icon invalid">✗</span>}
@@ -1009,7 +1091,7 @@ export default function Login({ onLoginSuccess }) {
                                                     whileHover={{ scale: 1.1 }}
                                                     whileTap={{ scale: 0.9 }}
                                                 >
-                                                    {showPassword ? '👁️' : '👁️‍🗨️'}
+                                                    {showPassword ? <FaEye /> : <FaEyeSlash />}
                                                 </motion.button>
                                             </div>
                                             {passwordValidation.message && (
@@ -1052,7 +1134,7 @@ export default function Login({ onLoginSuccess }) {
                                                     whileHover={{ scale: 1.1 }}
                                                     whileTap={{ scale: 0.9 }}
                                                 >
-                                                    {showConfirmPassword ? '👁️' : '👁️‍🗨️'}
+                                                    {showConfirmPassword ? <FaEye /> : <FaEyeSlash />}
                                                 </motion.button>
                                             </div>
                                             {confirmPasswordValidation.message && (
@@ -1070,7 +1152,7 @@ export default function Login({ onLoginSuccess }) {
                                             transition={{ delay: 0.3, duration: 0.4 }}
                                         >
                                             <label className="gender-label">
-                                                <span className="label-icon">✨</span>
+                                                <FaStar className="label-icon" style={{ color: '#9c27b0' }} />
                                                 <span className="label-text">Select Gender</span>
                                             </label>
                                             <div className="gender-options">
@@ -1089,7 +1171,7 @@ export default function Login({ onLoginSuccess }) {
                                                         animate={{ scale: registerData.gender === 'male' ? 1.3 : 1 }}
                                                         transition={{ duration: 0.2 }}
                                                     >
-                                                        👨
+                                                        <FaMars style={{ color: '#1e88e5', fontSize: '1.5rem' }} />
                                                     </motion.span>
                                                     <span className="gender-text">Male</span>
                                                 </motion.button>
@@ -1108,7 +1190,7 @@ export default function Login({ onLoginSuccess }) {
                                                         animate={{ scale: registerData.gender === 'female' ? 1.3 : 1 }}
                                                         transition={{ duration: 0.2 }}
                                                     >
-                                                        👩
+                                                        <FaVenus style={{ color: '#e91e63', fontSize: '1.5rem' }} />
                                                     </motion.span>
                                                     <span className="gender-text">Female</span>
                                                 </motion.button>
@@ -1127,7 +1209,7 @@ export default function Login({ onLoginSuccess }) {
                                                         animate={{ scale: registerData.gender === 'other' ? 1.3 : 1 }}
                                                         transition={{ duration: 0.2 }}
                                                     >
-                                                        👤
+                                                        <FaGenderless style={{ color: '#9c27b0', fontSize: '1.5rem' }} />
                                                     </motion.span>
                                                     <span className="gender-text">Other</span>
                                                 </motion.button>
@@ -1152,8 +1234,9 @@ export default function Login({ onLoginSuccess }) {
                                                 </>
                                             ) : (
                                                 <>
-                                                    <span className="btn-icon">🎶</span>
+                                                    <FaMusic className="btn-icon" style={{ marginRight: '0.5rem' }} />
                                                     <span className="btn-text">Start Your Journey</span>
+                                                    <FaMusic className="btn-icon" style={{ marginLeft: '0.5rem' }} />
                                                 </>
                                             )}
                                         </motion.button>
@@ -1173,8 +1256,9 @@ export default function Login({ onLoginSuccess }) {
                                             animate={{ opacity: 1, y: 0 }}
                                             transition={{ delay: 0.4, duration: 0.4 }}
                                         >
-                                            <span className="btn-icon">🎬</span>
-                                            <span className="btn-text">OR Try Demo</span>
+                                            <FaFilm className="btn-icon" style={{ marginRight: '0.5rem' }} />
+                                            <span className="btn-text">OR Try Demo </span>
+                                            <FaFilm className="btn-icon" style={{ marginLeft: '0.5rem' }} />
                                         </motion.button>
                                     </motion.form>
                                 )}
@@ -1198,7 +1282,7 @@ export default function Login({ onLoginSuccess }) {
                                                 animate={{ opacity: 1, x: 0 }}
                                                 transition={{ duration: 0.3 }}
                                             >
-                                                <span className="error-icon">⚠️</span>
+                                                <span className="error-icon"><FaExclamationTriangle style={{ color: '#ff6b6b' }} /></span>
                                                 <span className="error-text">{error}</span>
                                             </motion.div>
                                         )}
@@ -1233,7 +1317,7 @@ export default function Login({ onLoginSuccess }) {
                                             transition={{ delay: 0.2, duration: 0.4 }}
                                         >
                                             <label htmlFor="signinPassword">
-                                                <span className="label-icon">🔒</span>
+                                                <FaLock className="label-icon" style={{ color: '#ff9800' }} />
                                                 <span className="label-text">Password</span>
                                             </label>
                                             <div className="password-input-wrapper">
@@ -1254,7 +1338,7 @@ export default function Login({ onLoginSuccess }) {
                                                     whileHover={{ scale: 1.1 }}
                                                     whileTap={{ scale: 0.9 }}
                                                 >
-                                                    {showSignInPassword ? '👁️' : '👁️‍🗨️'}
+                                                    {showSignInPassword ? <FaEye /> : <FaEyeSlash />}
                                                 </motion.button>
                                             </div>
                                         </motion.div>
@@ -1265,8 +1349,9 @@ export default function Login({ onLoginSuccess }) {
                                             initial={{ opacity: 0 }}
                                             animate={{ opacity: 1 }}
                                             transition={{ delay: 0.3, duration: 0.4 }}
+                                            style={{ marginTop: '1rem' }}
                                         >
-                                            <span className="info-icon">ℹ️</span>
+                                            <FaInfoCircle className="info-icon" style={{ color: '#2196F3', marginRight: '0.5rem' }} />
                                             <span className="info-text">Enter your email and password to continue</span>
                                         </motion.p>
 
@@ -1288,7 +1373,7 @@ export default function Login({ onLoginSuccess }) {
                                                 </>
                                             ) : (
                                                 <>
-                                                    <span className="btn-icon">🔑</span>
+                                                    <FaKey className="btn-icon" style={{ marginRight: '0.5rem' }} />
                                                     <span className="btn-text">Welcome Back</span>
                                                 </>
                                             )}
@@ -1316,7 +1401,7 @@ export default function Login({ onLoginSuccess }) {
                                         transition={{ duration: 0.3 }}
                                     >
                                         <div className="dialog-header">
-                                            <span className="dialog-icon">⚠️</span>
+                                            <span className="dialog-icon"><FaExclamationTriangle style={{ color: '#ff9800', fontSize: '2rem' }} /></span>
                                             <h3>Email Already Registered</h3>
                                             <p>This email is already registered with different details. Please choose which information to keep:</p>
                                         </div>
@@ -1392,7 +1477,7 @@ export default function Login({ onLoginSuccess }) {
                                             whileHover={{ scale: 1.05 }}
                                             whileTap={{ scale: 0.95 }}
                                         >
-                                            <span className="btn-icon">❌</span>
+                                            <span className="btn-icon"><FaTimes style={{ color: '#ff6b6b' }} /></span>
                                             <span className="btn-text">Cancel</span>
                                         </motion.button>
                                     </motion.div>
@@ -1485,6 +1570,9 @@ export default function Login({ onLoginSuccess }) {
                                             <p>Code sent to <strong>{verificationDialogEmail}</strong></p>
                                             <p style={{ fontSize: '0.75rem', marginTop: '0.25rem', color: '#b0b0b0' }}>
                                                 <FaEnvelope /> Check inbox or spam folder • Verification required to continue
+                                            </p>
+                                            <p style={{ fontSize: '0.7rem', marginTop: '0.5rem', color: '#ff9999', fontWeight: '600' }}>
+                                                You must verify your email to complete registration
                                             </p>
                                         </div>
 
@@ -1628,4 +1716,5 @@ export default function Login({ onLoginSuccess }) {
 }
 Login.propTypes = {
     onLoginSuccess: PropTypes.func.isRequired
-}
+};
+
