@@ -270,8 +270,8 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
     }
 
     const handleDeleteAccount = () => {
-        if (deleteConfirmText.toUpperCase() !== 'DELETE') {
-            setVerificationError('Please type "DELETE" to confirm account deletion')
+        if (deleteConfirmText !== 'DELETE') {
+            setVerificationError('You have to exactly type "DELETE" to delete your account permanently')
             return
         }
 
