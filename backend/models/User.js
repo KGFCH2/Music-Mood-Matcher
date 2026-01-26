@@ -17,6 +17,8 @@ const userSchema = new mongoose.Schema({
     gender: { type: String, default: 'other' },
     isVerified: { type: Boolean, default: false },
     verificationCode: { type: String },
+    resetPasswordCode: { type: String },
+    resetPasswordExpires: { type: Date },
     registeredAt: { type: Date, default: Date.now },
     loginHistory: { type: [Date], default: [] },
     favorites: { type: [favoriteSchema], default: [] }
