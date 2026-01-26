@@ -1,103 +1,130 @@
-# Music Mood Matcher - Setup Guide
+# 🎵 Music Mood Matcher - Setup & Contribution Guide
 
-Summary:
+This document provides detailed instructions for setting up the Music Mood Matcher project, understanding its architecture, and contributing to its development.
 
-- 🔧 This repository contains a frontend React application (Vite) and an optional backend scaffold for API endpoints.
-- 📁 Large model files are not tracked to keep the repository lightweight; if you need them, place them in `frontend/public/models/`.
+## 🏗️ Project Overview
 
-Quick setup
+Music Mood Matcher is a full-stack web application that uses AI to detect user moods via webcam and recommends music accordingly. It features a React-based PWA frontend and a Node.js/Express backend with MongoDB.
 
-1) Frontend
+---
+
+## 🛠️ Prerequisites
+
+Before you begin, ensure you have the following installed:
+- **Node.js**: v18.0.0 or higher
+- **NPM**: v9.0.0 or higher
+- **MongoDB**: A running instance (local or Atlas)
+- **Git**: For version control
+
+---
+
+## ⚙️ Initial Setup
+
+### 1. Clone the Repository
+```bash
+git clone https://github.com/KGFCH2/Music-Mood-Matcher.git
+cd "Music Mood Matcher"
+```
+
+### 2. Backend Configuration
+The backend handles user authentication, mood history, and profile management.
 
 ```bash
-cd frontend
+cd backend
 npm install
-npm run dev
 ```
 
-#### Step 3b: Configure Environment
-**File:** `frontend/.env`
+**Environment Variables (`backend/.env`):**
+Create a `.env` file in the `backend/` directory:
 ```env
-VITE_EMAILJS_SERVICE_ID=your_service_id
-VITE_EMAILJS_TEMPLATE_ID=your_template_id
-VITE_EMAILJS_PUBLIC_KEY=your_public_key
+PORT=5000
+MONGO_URI=mongodb://localhost:27017/music-mood-matcher
+JWT_SECRET=your_super_secret_jwt_key
 ```
 
-**Status:** ✅ **Configured**
+**Start Backend:**
+```bash
+npm start
+# Server should run on http://localhost:5000
+```
 
-#### Step 3c: Start Frontend Dev Server
+### 3. Frontend Configuration
+The frontend is built with React and Vite, featuring on-device AI processing.
+
+```bash
+cd ../frontend
+npm install
+```
+
+**Environment Variables (`frontend/.env`):**
+Create a `.env` file in the `frontend/` directory:
+```env
+VITE_API_URL=http://localhost:5000/api
+VITE_EMAILJS_SERVICE_ID=your_emailjs_service_id
+VITE_EMAILJS_TEMPLATE_ID=your_emailjs_template_id
+VITE_EMAILJS_PUBLIC_KEY=your_emailjs_public_key
+```
+
+**Start Frontend:**
 ```bash
 npm run dev
-# Expected: Vite server running on http://localhost:5173
-```
-
-#### Step 3d: Verify Application
-In browser (`http://localhost:5173`):
-- Check that the app loads
-- Test login with demo credentials
-- Try mood detection (allow camera permissions)
-- Verify songs play in new tabs
-
----
-
-### **Phase 4: Frontend Features**
-
-#### Step 4a: Authentication Flow (localStorage)
-The frontend uses localStorage for user authentication. Current flow:
-
-```javascript
-// AuthContext stores user data in localStorage
-const login = (userData) => {
-  setUser(userData)
-  localStorage.setItem('musicMoodUser', JSON.stringify(userData))
-}
-```
-
-User data, favorites, and history are stored locally in the browser.
-
-#### Step 4b: Data Storage
-All data is stored in browser localStorage:
-
-**Auth Endpoints:**
-```
-POST   /api/auth/register       → Create new user
-POST   /api/auth/login          → Get JWT token
-GET    /api/auth/profile        → Get user profile (protected)
-```
-
-**User Endpoints (all require JWT):**
-```
-POST   /api/user/mood-history   → Save mood session
-GET    /api/user/mood-history   → Get mood history
-GET    /api/user/mood-stats     → Get mood analytics
-POST   /api/user/favorites      → Add favorite song
-DELETE /api/user/favorites/:id  → Remove favorite
-GET    /api/user/favorites      → Get all favorites
+# Application should be accessible at http://localhost:5173
 ```
 
 ---
 
-## ✅ Component Status
+## 🤖 AI Mood Detection
 
-### Frontend Components
+The application uses `face-api.js` for facial expression recognition.
+- **📁 Models**: Weight files are located in `frontend/public/models/`.
+- **📸 Detection**: Happens entirely in the browser for user privacy.
+- **🧠 Emotions**: Detects Happy, Sad, Energetic (Surprised), Romantic (Neutral/Happy), Chill (Neutral), and Angry.
 
-| Component | File | Status | Notes |
-|-----------|------|--------|-------|
-| **App** | `App.jsx` | ✅ Complete | Main app, lazy loads MoodWebcam |
-| **Login** | `Login.jsx` | ✅ Complete | 📧 Email-based authentication with demo accounts |
-| **MoodWebcam** | `MoodWebcam.jsx` | ✅ Complete | 🤖 Face detection with face-api.js |
-| **ProfileNav** | `ProfileNav.jsx` | ✅ Complete | 👤 User profile panel with editable name and gender, email verification flow, theme toggle, login history, logout and delete account actions |
-| **DemoGuide** | `DemoGuide.jsx` | ✅ Complete | 🎭 Demo mode selector |
-| **Loader** | `Loader.jsx` | ✅ Complete | ⏳ Intro animation |
-| **HomeTab** | `HomeTab.jsx` | ✅ Complete | 🎵 Basic mood selector |
-| **HistoryTab** | `HistoryTab.jsx` | ✅ Complete | 📊 Mood history display |
-| **FavoritesTab** | `FavoritesTab.jsx` | ✅ Complete | ❤️ Favorites list |
+---
 
-### Backend Services
+## 📱 PWA & Offline Support
 
-| Service | File | Status | Notes |
-|---------|------|--------|-------|
-| **Database** | `db.js` | ✅ Complete | 🗄️ MongoDB connection via Mongoose |
+Music Mood Matcher is a Progressive Web App.
+- **🔌 Service Worker**: Found at `frontend/public/sw.js`. It handles asset caching for offline play.
+- **📲 Installation**: Users can "Install" the app on Chrome (Android/Desktop) or Safari (iOS).
+
+---
+
+## 📊 Data Management
+
+- **🗄️ Database**: MongoDB stores user profiles, encrypted passwords, and mood history.
+- **🔐 State Management**: React `AuthContext` manages user sessions and authentication tokens.
+- **🛡️ Offline Storage**: `secureStorage.js` utility provides an additional layer of security for browser-based data.
+
+---
+
+## ✅ Deployment
+
+### 🌐 Backend (e.g., Render, Heroku)
+- Set environment variables on the hosting platform.
+- Ensure the MongoDB URI is accessible from the host.
+
+### 🚀 Frontend (e.g., Vercel, Netlify)
+- Set `VITE_API_URL` to your deployed backend URL.
+- Build command: `npm run build`
+- Output directory: `dist`
+
+---
+
+## 🤝 Contribution Guidelines
+
+1. **Feature Branches**: Always branch off `main` for new features or fixes.
+2. **Linting**: Run `npm run lint` in the frontend directory before committing.
+3. **Commit Messages**: Use clear, descriptive commit messages (e.g., `feat: add aurora effect to home`).
+4. **Pull Requests**: Provide a clear description of changes and any testing performed.
+
+---
+
+## 📞 Support
+
+For technical issues or feature requests, contact the development team at:
+- **Babin Bid**: babinbid05@gmail.com
+- **Debasmita Bose**: dbose272@gmail.com
 | **Auth Controller** | `authController.js` | ✅ Complete | 🔐 Register, login, profile |
 | **User Controller** | `userController.js` | ✅ Complete | 👤 Favorites, mood history, stats |
 | **Auth Middleware** | `middleware/auth.js` | ✅ Complete | 🛡️ JWT verification |
