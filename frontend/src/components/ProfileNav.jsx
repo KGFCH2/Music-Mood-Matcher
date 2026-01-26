@@ -261,7 +261,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
 
             // Show success message
             setTimeout(() => {
-                setEmailVerificationError('Email verified successfully! ✅')
+                setEmailVerificationError('Email verified successfully!')
                 setTimeout(() => setEmailVerificationError(''), 3000)
             }, 500)
         } else {
@@ -803,8 +803,8 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                             style={{
                                                 width: '100%',
                                                 padding: '12px',
-                                                background: 'rgba(255, 107, 107, 0.2)',
-                                                border: '1px solid rgba(255, 107, 107, 0.5)',
+                                                background: 'rgba(241, 79, 79, 0.05)',
+                                                border: '1px solid rgb(255, 255, 255)',
                                                 borderRadius: '8px',
                                                 color: '#ffffff',
                                                 cursor: 'pointer',
@@ -895,7 +895,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
 
                                     <div style={{ marginBottom: '1rem' }}>
                                         <label style={{ display: 'block', marginBottom: '8px', color: '#00e5ff', fontWeight: '600', fontSize: '0.9rem' }}>
-                                            🔐 Enter Verification Code
+                                            <FaLock /> Enter Verification Code
                                         </label>
                                         <input
                                             type="text"
@@ -1054,8 +1054,8 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                             style={{
                                                 flex: 1,
                                                 padding: '12px',
-                                                background: 'rgba(255, 107, 107, 0.3)',
-                                                border: '1px solid rgba(255, 107, 107, 0.5)',
+                                                background: 'rgba(214, 19, 68, 0.22)',
+                                                border: '1px solid rgba(255, 255, 255, 0.34)',
                                                 borderRadius: '8px',
                                                 color: '#ffffff',
                                                 cursor: 'pointer',
@@ -1111,7 +1111,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                 transition={{ duration: 0.2 }}
                                 onClick={(e) => e.stopPropagation()}
                             >
-                                <h3 style={{ margin: '0 0 1rem', color: '#7c4dff' }}>✅ Verify Your Email</h3>
+                                <h3 style={{ margin: '0 0 1rem', color: '#7c4dff' }}><FaCheck /> Verify Your Email</h3>
 
                                 {emailVerificationError && (
                                     <motion.div
@@ -1128,12 +1128,12 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                             fontSize: '0.9rem'
                                         }}
                                     >
-                                        <span>{emailVerificationError}</span>
+                                        <span>{emailVerificationError.includes('successfully') ? <FaCheck /> : <FaExclamationTriangle />} {emailVerificationError}</span>
                                     </motion.div>
                                 )}
 
                                 <p style={{ margin: '0 0 1rem', color: '#aaa', fontSize: '0.9rem' }}>
-                                    📧 A verification code has been sent to <strong>{user?.email}</strong>
+                                    <FaEnvelope /> A verification code has been sent to <strong>{user?.email}</strong>
                                 </p>
 
                                 <input
@@ -1173,7 +1173,7 @@ export default function ProfileNav({ user, onClose, onUpdateUser, onLogout, open
                                             fontWeight: '600'
                                         }}
                                     >
-                                        ✅ Verify
+                                        <FaCheck /> Verify
                                     </motion.button>
                                     <motion.button
                                         onClick={() => setShowEmailVerificationDialog(false)}
