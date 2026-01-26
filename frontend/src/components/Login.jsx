@@ -5,7 +5,7 @@ import emailjs from '@emailjs/browser'
 import DemoGuide from './DemoGuide'
 import { secureStorage } from '../utils/secureStorage'
 import { hashPassword, validatePasswordStrength, getPasswordFeedback } from '../utils/passwordUtils'
-import { FaEnvelope, FaCheck, FaLock, FaRedo, FaClock, FaExclamationTriangle, FaTimes, FaStar, FaKey, FaMicrophone, FaEye, FaEyeSlash, FaUser, FaMars, FaVenus, FaGenderless, FaMusic, FaFilm, FaInfoCircle, FaVenusMars } from 'react-icons/fa'
+import { FaEnvelope, FaCheck, FaLock, FaRedo, FaClock, FaExclamationTriangle, FaTimes, FaStar, FaKey, FaMicrophone, FaEye, FaEyeSlash, FaUser, FaMars, FaVenus, FaGenderless, FaMusic, FaFilm, FaInfoCircle, FaVenusMars, FaHeadphones, FaDrum, FaGuitar } from 'react-icons/fa'
 import './login.css'
 
 export default function Login({ onLoginSuccess }) {
@@ -36,6 +36,17 @@ export default function Login({ onLoginSuccess }) {
     const [showSignInPassword, setShowSignInPassword] = useState(false)
     const [unverifiedUserChoice, setUnverifiedUserChoice] = useState(null)
     const [unverifiedUserEmail, setUnverifiedUserEmail] = useState('')
+
+    // Forgot Password states
+    const [showForgotPassword, setShowForgotPassword] = useState(false)
+    const [forgotPasswordEmail, setForgotPasswordEmail] = useState('')
+    const [forgotPasswordStep, setForgotPasswordStep] = useState(1) // 1: Email, 2: Code & New Password
+    const [forgotPasswordCode, setForgotPasswordCode] = useState('')
+    const [verificationCodeInput, setVerificationCodeInput] = useState('')
+    const [newForgotPassword, setNewForgotPassword] = useState('')
+    const [confirmNewForgotPassword, setConfirmNewForgotPassword] = useState('')
+    const [forgotPasswordError, setForgotPasswordError] = useState('')
+    const [isForgotLoading, setIsForgotLoading] = useState(false)
 
     const DEMO_USERS = [
         { email: 'demo.music.lover@example.com', name: 'Music Lover', gender: 'male' },
@@ -672,6 +683,90 @@ export default function Login({ onLoginSuccess }) {
         }
     }
 
+    const handleForgotPasswordSubmit = async (e) => {
+        e.preventDefault()
+        setForgotPasswordError('')
+
+        if (!forgotPasswordEmail.trim()) {
+            setForgotPasswordError('Please enter your email address')
+            return
+        }
+
+        if (!validateEmail(forgotPasswordEmail)) {
+            setForgotPasswordError('Please enter a valid email address')
+            return
+        }
+
+        const user = registeredUsers.find(u => u.email === forgotPasswordEmail)
+        if (!user) {
+            setForgotPasswordError('No account found with this email. Please check the email or register.')
+            return
+        }
+
+        setIsForgotLoading(true)
+        const code = generateVerificationCode()
+        setForgotPasswordCode(code)
+
+        try {
+            const result = await sendVerificationEmail(forgotPasswordEmail, user.userName, code)
+
+            if (result.success) {
+                setForgotPasswordStep(2)
+            } else {
+                setForgotPasswordError(result.error || 'Failed to send reset code. Please try again.')
+            }
+        } catch (err) {
+            setForgotPasswordError('An expected error occurred. Please try again.')
+        } finally {
+            setIsForgotLoading(false)
+        }
+    }
+
+    const handleResetPasswordSubmit = async (e) => {
+        e.preventDefault()
+        setForgotPasswordError('')
+
+        if (verificationCodeInput.toUpperCase() !== forgotPasswordCode.toUpperCase()) {
+            setForgotPasswordError('Invalid verification code. Please check your email.')
+            return
+        }
+
+        if (newForgotPassword.length < 8) {
+            setForgotPasswordError('Password must be at least 8 characters long.')
+            return
+        }
+
+        if (newForgotPassword !== confirmNewForgotPassword) {
+            setForgotPasswordError('Passwords do not match.')
+            return
+        }
+
+        setIsForgotLoading(true)
+        try {
+            const newHash = await hashPassword(newForgotPassword)
+            const updatedUsers = registeredUsers.map(u =>
+                u.email === forgotPasswordEmail ? { ...u, passwordHash: newHash, isVerified: true } : u
+            )
+
+            setRegisteredUsers(updatedUsers)
+            await secureStorage.setRegisteredUsers(updatedUsers)
+
+            // Success!
+            setShowForgotPassword(false)
+            setForgotPasswordStep(1)
+            setForgotPasswordEmail('')
+            setVerificationCodeInput('')
+            setNewForgotPassword('')
+            setConfirmNewForgotPassword('')
+            setEmailSentSuccess(true)
+            setError('Password updated successfully! You can now sign in with your new password.')
+        } catch (err) {
+            setForgotPasswordError('Failed to update password. Please try again.')
+        } finally {
+            setIsForgotLoading(false)
+        }
+    }
+
     const handleCloseVerificationDialog = () => {
         // Remove unverified user when closing verification dialog
         const updatedUsers = registeredUsers.filter(u => u.email !== verificationDialogEmail)
@@ -855,12 +950,12 @@ export default function Login({ onLoginSuccess }) {
             ) : (
                 <div className="login-container">
                     <div className="login-background">
-                        <div className="musical-note note-1">♪</div>
-                        <div className="musical-note note-2">♫</div>
-                        <div className="musical-note note-3">🎵</div>
-                        <div className="musical-note note-4">♪</div>
-                        <div className="musical-note note-5">♫</div>
-                        <div className="musical-note note-6">🎶</div>
+                        <div className="musical-note note-1"><FaMusic /></div>
+                        <div className="musical-note note-2"><FaHeadphones /></div>
+                        <div className="musical-note note-3"><FaMicrophone /></div>
+                        <div className="musical-note note-4"><FaMusic /></div>
+                        <div className="musical-note note-5"><FaDrum /></div>
+                        <div className="musical-note note-6"><FaGuitar /></div>
                     </div>
 
                     <motion.div
@@ -877,7 +972,7 @@ export default function Login({ onLoginSuccess }) {
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ delay: 0.2, duration: 0.5 }}
                         >
-                            <div className="header-icon">🎵</div>
+                            <div className="header-icon"><FaMusic style={{ color: '#00c8ff' }} /></div>
                             <h1 style={{ background: 'linear-gradient(to right, #00c8ff, #fff700)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', fontWeight: 'bold', fontSize: '1.8rem' }}>Music Mood Matcher</h1>
                             <p className="header-subtitle">Find Your Perfect Song</p>
                         </motion.div>
@@ -1353,6 +1448,31 @@ export default function Login({ onLoginSuccess }) {
                                                     {showSignInPassword ? <FaEye /> : <FaEyeSlash />}
                                                 </motion.button>
                                             </div>
+                                            <div style={{ display: 'flex', justifyContent: 'center', marginTop: '0.5rem' }}>
+                                                <button
+                                                    type="button"
+                                                    className="forgot-password-link"
+                                                    onClick={() => {
+                                                        setShowForgotPassword(true)
+                                                        setForgotPasswordEmail(signInEmail)
+                                                        setForgotPasswordStep(1)
+                                                        setForgotPasswordError('')
+                                                    }}
+                                                    style={{
+                                                        background: 'none',
+                                                        border: 'none',
+                                                        color: '#2196F3',
+                                                        cursor: 'pointer',
+                                                        fontSize: '0.85rem',
+                                                        padding: 0,
+                                                        textDecoration: 'none',
+                                                        borderRadius: '12px',
+                                                        outline: 'none'
+                                                    }}
+                                                >
+                                                    Forgot Password?
+                                                </button>
+                                            </div>
                                         </motion.div>
 
                                         {/* Info Message */}
@@ -1365,6 +1485,7 @@ export default function Login({ onLoginSuccess }) {
                                         >
                                             <FaInfoCircle className="info-icon" style={{ color: '#2196F3', marginRight: '0.5rem' }} />
                                             <span className="info-text">Enter your email and password to continue</span>
+                                            <FaInfoCircle className="info-icon" style={{ color: '#2196F3', marginLeft: '0.5rem' }} />
                                         </motion.p>
 
                                         {/* Submit Button */}
@@ -1516,12 +1637,12 @@ export default function Login({ onLoginSuccess }) {
                         onClick={(e) => e.stopPropagation()}
                     >
                         <div className="floating-notes">
-                            <span className="floating-note">🎵</span>
-                            <span className="floating-note">🎶</span>
-                            <span className="floating-note">🎵</span>
-                            <span className="floating-note">🎶</span>
-                            <span className="floating-note">🎵</span>
-                            <span className="floating-note">🎶</span>
+                            <span className="floating-note"><FaMusic /></span>
+                            <span className="floating-note"><FaHeadphones /></span>
+                            <span className="floating-note"><FaMicrophone /></span>
+                            <span className="floating-note"><FaMusic /></span>
+                            <span className="floating-note"><FaDrum /></span>
+                            <span className="floating-note"><FaGuitar /></span>
                         </div>
 
                         <motion.div
@@ -1735,6 +1856,246 @@ export default function Login({ onLoginSuccess }) {
                                     )}
                                 </motion.button>
                             </form>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            {/* Forgot Password Dialog */}
+            <AnimatePresence>
+                {showForgotPassword && (
+                    <motion.div
+                        className="verification-dialog-overlay"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.3 }}
+                        style={{ zIndex: 1000 }}
+                    >
+                        <div className="floating-notes">
+                            <span className="floating-note"><FaMusic /></span>
+                            <span className="floating-note"><FaHeadphones /></span>
+                            <span className="floating-note"><FaMicrophone /></span>
+                            <span className="floating-note"><FaDrum /></span>
+                            <span className="floating-note"><FaGuitar /></span>
+                            <span className="floating-note"><FaMusic /></span>
+                        </div>
+
+                        <motion.div
+                            className="verification-dialog"
+                            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                            animate={{ opacity: 1, scale: 1, y: 0 }}
+                            exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                            transition={{ duration: 0.3 }}
+                            style={{
+                                width: '92%',
+                                maxWidth: '420px',
+                                padding: 'min(2.5rem, 8vw)',
+                                position: 'relative',
+                                background: 'rgba(5, 5, 10, 0.95)',
+                                backdropFilter: 'blur(30px)',
+                                border: '1px solid rgba(0, 200, 255, 0.4)',
+                                borderRadius: '24px',
+                                boxShadow: '0 0 30px rgba(0, 200, 255, 0.2), 0 20px 50px rgba(0,0,0,0.9)'
+                            }}
+                        >
+                            <motion.button
+                                type="button"
+                                className="close-dialog"
+                                onClick={() => setShowForgotPassword(false)}
+                                whileHover={{ scale: 1.1, rotate: 90, color: '#ff4b4b' }}
+                                whileTap={{ scale: 0.9 }}
+                                style={{
+                                    position: 'absolute',
+                                    top: '1rem',
+                                    right: '1rem',
+                                    background: 'none',
+                                    border: 'none',
+                                    color: 'rgba(255,255,255,0.5)',
+                                    cursor: 'pointer',
+                                    fontSize: '1.5rem',
+                                    transition: 'color 0.3s ease'
+                                }}
+                            >
+                                <FaTimes />
+                            </motion.button>
+
+                            <div className="dialog-header" style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
+                                <motion.div
+                                    initial={{ scale: 0 }}
+                                    animate={{ scale: 1 }}
+                                    transition={{ type: 'spring', damping: 12 }}
+                                    style={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        margin: '0 auto 1rem'
+                                    }}
+                                >
+                                    <FaLock style={{ color: '#ff9800', fontSize: '2.5rem' }} />
+                                </motion.div>
+                                <h3 style={{
+                                    color: 'white',
+                                    fontSize: '1.5rem',
+                                    fontWeight: 'bold',
+                                    margin: 0,
+                                    background: 'linear-gradient(to right, #ff9800, #ffc107)',
+                                    WebkitBackgroundClip: 'text',
+                                    WebkitTextFillColor: 'transparent'
+                                }}>Reset Password</h3>
+                                <p style={{ color: 'rgba(255,255,255,0.6)', marginTop: '0.5rem', fontSize: '0.95rem' }}>
+                                    {forgotPasswordStep === 1
+                                        ? "Enter your email to receive a verification code."
+                                        : "Enter the 6-digit code and your new password."}
+                                </p>
+                            </div>
+
+                            {forgotPasswordError && (
+                                <motion.div
+                                    className="error-message"
+                                    initial={{ opacity: 0, y: -10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    style={{
+                                        marginTop: '1rem',
+                                        marginBottom: '1rem',
+                                        background: 'rgba(255, 107, 107, 0.1)',
+                                        border: 'none',
+                                        borderRadius: '10px',
+                                        padding: '0.8rem',
+                                        color: '#ff6b6b',
+                                        fontSize: '0.9rem',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '0.5rem'
+                                    }}
+                                >
+                                    <FaExclamationTriangle /> {forgotPasswordError}
+                                </motion.div>
+                            )}
+
+                            {forgotPasswordStep === 1 ? (
+                                <form onSubmit={handleForgotPasswordSubmit} style={{ width: '100%' }}>
+                                    <div className="form-group">
+                                        <label style={{ color: 'rgba(255,255,255,0.8)', fontSize: '0.85rem', marginBottom: '0.5rem', display: 'block' }}>Email Address</label>
+                                        <div className="password-input-wrapper">
+                                            <input
+                                                type="email"
+                                                placeholder="your@email.com"
+                                                value={forgotPasswordEmail}
+                                                onChange={(e) => setForgotPasswordEmail(e.target.value)}
+                                                className="form-input"
+                                                style={{
+                                                    width: '100%',
+                                                    background: 'rgba(255,255,255,0.05)',
+                                                    border: 'none',
+                                                    borderBottom: '2px solid rgba(0, 200, 255, 0.7)',
+                                                    borderRadius: '12px'
+                                                }}
+                                                required
+                                            />
+                                        </div>
+                                    </div>
+                                    <motion.button
+                                        className="login-btn"
+                                        type="submit"
+                                        disabled={isForgotLoading}
+                                        whileHover={{ scale: 1.02 }}
+                                        whileTap={{ scale: 0.98 }}
+                                        style={{ width: '100%', marginTop: '1.5rem', padding: '0.8rem', color: '#000000', fontWeight: 'bold' }}
+                                    >
+                                        {isForgotLoading ? <span className="spinner"></span> : "Send Reset Code"}
+                                    </motion.button>
+                                </form>
+                            ) : (
+                                <form onSubmit={handleResetPasswordSubmit} style={{ width: '100%' }}>
+                                    <div className="form-group" style={{ marginBottom: '1rem' }}>
+                                        <label style={{ color: 'rgba(255,255,255,0.8)', fontSize: '0.85rem', marginBottom: '0.5rem', display: 'block' }}>Verification Code</label>
+                                        <input
+                                            type="text"
+                                            placeholder="Enter 6-digit code"
+                                            value={verificationCodeInput}
+                                            onChange={(e) => setVerificationCodeInput(e.target.value)}
+                                            className="form-input"
+                                            style={{
+                                                width: '100%',
+                                                textAlign: 'center',
+                                                letterSpacing: '4px',
+                                                fontSize: '1.2rem',
+                                                fontWeight: 'bold',
+                                                background: 'rgba(255,255,255,0.05)',
+                                                border: 'none',
+                                                borderBottom: '2px solid rgba(0, 200, 255, 0.7)',
+                                                borderRadius: '12px'
+                                            }}
+                                            required
+                                            maxLength={6}
+                                        />
+                                    </div>
+                                    <div className="form-group" style={{ marginBottom: '1rem' }}>
+                                        <label style={{ color: 'rgba(255,255,255,0.8)', fontSize: '0.85rem', marginBottom: '0.5rem', display: 'block' }}>New Password</label>
+                                        <input
+                                            type="password"
+                                            placeholder="At least 8 characters"
+                                            value={newForgotPassword}
+                                            onChange={(e) => setNewForgotPassword(e.target.value)}
+                                            className="form-input"
+                                            style={{
+                                                width: '100%',
+                                                background: 'rgba(255,255,255,0.05)',
+                                                border: 'none',
+                                                borderBottom: '2px solid rgba(0, 200, 255, 0.7)',
+                                                borderRadius: '12px'
+                                            }}
+                                            required
+                                        />
+                                    </div>
+                                    <div className="form-group">
+                                        <label style={{ color: 'rgba(255,255,255,0.8)', fontSize: '0.85rem', marginBottom: '0.5rem', display: 'block' }}>Confirm New Password</label>
+                                        <input
+                                            type="password"
+                                            placeholder="Repeat new password"
+                                            value={confirmNewForgotPassword}
+                                            onChange={(e) => setConfirmNewForgotPassword(e.target.value)}
+                                            className="form-input"
+                                            style={{
+                                                width: '100%',
+                                                background: 'rgba(255,255,255,0.05)',
+                                                border: 'none',
+                                                borderBottom: '2px solid rgba(0, 200, 255, 0.7)',
+                                                borderRadius: '12px'
+                                            }}
+                                            required
+                                        />
+                                    </div>
+                                    <motion.button
+                                        className="login-btn"
+                                        type="submit"
+                                        disabled={isForgotLoading}
+                                        whileHover={{ scale: 1.02 }}
+                                        whileTap={{ scale: 0.98 }}
+                                        style={{ width: '100%', marginTop: '1.5rem', padding: '0.8rem' }}
+                                    >
+                                        {isForgotLoading ? <span className="spinner"></span> : "Update Password"}
+                                    </motion.button>
+                                    <button
+                                        type="button"
+                                        onClick={() => setForgotPasswordStep(1)}
+                                        style={{
+                                            background: 'none',
+                                            border: 'none',
+                                            color: 'rgba(255,255,255,0.5)',
+                                            width: '100%',
+                                            marginTop: '1rem',
+                                            fontSize: '0.85rem',
+                                            cursor: 'pointer',
+                                            textDecoration: 'none',
+                                            borderRadius: '12px'
+                                        }}
+                                    >
+                                        Try a different email
+                                    </button>
+                                </form>
+                            )}
                         </motion.div>
                     </motion.div>
                 )}
