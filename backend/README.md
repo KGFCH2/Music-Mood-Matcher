@@ -72,6 +72,7 @@ backend/
 ## 🛡️ Security Features
 
 - ✅ **JWT Authentication:** Secure stateless session management.
-- ✅ **Password Hashing:** One-way salt + hash for user credentials.
+- ✅ **Password Hashing:** One-way salt + hash for user credentials (bcrypt).
+- ✅ **Secure Reset Flow:** Verification codes are hashed with bcrypt and never exposed in API responses.
 - ✅ **CORS Integration:** Controlled access from the frontend.
-- ✅ **Sanitized Responses:** No sensitive data (like password hashes) is ever sent to the client.
+- ✅ **Sanitized Responses:** No sensitive data (like password hashes or active reset codes) is ever sent to the client.
