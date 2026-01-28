@@ -76,8 +76,9 @@ frontend/
 
 ---
 
-## 🧪 Testing & Quality
+## 🛡️ Testing & Quality
 
+- **Security:** Hashed verification codes and secure storage for user sessions.
 - **Linting:** ESLint with React-refresh rules.
 - **Unit Testing:** Vitest for utility and component logic.
 - **Responsive:** Mobile-first design focusing on accessibility.
