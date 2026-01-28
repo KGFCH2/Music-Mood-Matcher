@@ -61,13 +61,18 @@ async function forgotPassword(req, res, next) {
 
         // Generate 6-digit code
         const code = Math.floor(100000 + Math.random() * 900000).toString()
-        user.resetPasswordCode = code
+
+        // Hash the code before storing (for security)
+        const codeHash = await bcrypt.hash(code, 10)
+
+        user.resetPasswordCode = codeHash
         user.resetPasswordExpires = Date.now() + 600000 // 10 minutes
         await user.save()
 
-        // NOTE: In a production app, the backend should send this code via email.
-        // Since we are using EmailJS on the frontend, we return the code to the client.
-        res.json({ message: 'Verification code generated', code, userName: user.userName })
+        // NOTE: The code is NOT returned to the client for security reasons.
+        // The code will be sent via email backend (email service integration).
+        // Client receives only a confirmation that email was sent.
+        res.json({ message: 'Verification code has been sent to your registered email. Please check your inbox.', userName: user.userName })
     } catch (err) { next(err) }
 }
 
@@ -78,11 +83,14 @@ async function resetPassword(req, res, next) {
 
         const user = await User.findOne({
             email,
-            resetPasswordCode: code,
             resetPasswordExpires: { $gt: Date.now() }
         })
 
         if (!user) return res.status(400).json({ message: 'Invalid or expired reset code' })
+
+        // Compare the provided code with the hashed code stored in DB
+        const isCodeValid = await bcrypt.compare(code, user.resetPasswordCode)
+        if (!isCodeValid) return res.status(400).json({ message: 'Invalid verification code' })
 
         // Hash new password
         user.password = await bcrypt.hash(newPassword, 10)
