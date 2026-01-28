@@ -94,6 +94,7 @@ Music Mood Matcher is a Progressive Web App.
 
 - **🗄️ Database**: MongoDB stores user profiles, encrypted passwords, and mood history.
 - **🔐 State Management**: React `AuthContext` manages user sessions and authentication tokens.
+- **🛡️ Secure Reset**: Password reset codes are hashed using bcrypt before storage, ensuring they are never exposed in logs or database leaks.
 - **🛡️ Offline Storage**: `secureStorage.js` utility provides an additional layer of security for browser-based data.
 
 ---
