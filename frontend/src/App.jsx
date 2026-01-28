@@ -66,7 +66,13 @@ const musicImages = [
   'https://img.freepik.com/free-photo/3d-music-related-scene_23-2151124956.jpg?t=st=1769270576~exp=1769274176~hmac=96882f278d6c39641178ddf8021c2bd86791a3173d99842e9ab53011ab3b17d6',
   'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60',
   'https://img.freepik.com/premium-photo/glowing-neon-lines-tunnel-3d-rendering_778569-3582.jpg?semt=ais_user_personalization&w=740&q=80',
-  'https://www.wipo.int/documents/102028/103632/creative+industries-blog-music-sampling-960.jpg'
+  'https://www.wipo.int/documents/102028/103632/creative+industries-blog-music-sampling-960.jpg',
+  'https://valleycultural.org/wp-content/uploads/2021/07/Music-scaled.jpg', 
+  'https://img.freepik.com/free-vector/musical-notes-frame-with-text-space_1017-32857.jpg?semt=ais_hybrid&w=740&q=80', 
+  'https://theschoolpost.in/wp-content/uploads/2025/07/675ec84d8fd4ab001d0c64f2.jpg', 
+  'https://img.freepik.com/premium-photo/gold-music-background-with-musical-notes-bokeh-lights_769928-2100.jpg', 
+  'https://img.freepik.com/premium-photo/music-notes-colorful-background_1236215-14599.jpg', 
+  'https://static.vecteezy.com/system/resources/thumbnails/047/918/672/small/music-abstract-with-headphones-horizontal-wallpaper-photo.jpg' 
 ]
 
 function App() {
