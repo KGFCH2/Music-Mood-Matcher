@@ -18,7 +18,7 @@ Your personal AI-powered DJ in a browser. 🎧 Music Mood Matcher uses cutting-e
 | 🤖 **AI Mood Detection** | Real-time facial expression analysis using `face-api.js` to detect 6 core emotions. |
 | 🎵 **Curated Library** | 150+ hand-picked tracks in **English, Hindi, and Bengali**. |
 | 📱 **Cross-Platform PWA** | Installable on mobile and desktop with offline support and caching. |
-| 🔒 **Secure Auth** | Full-stack authentication with JWT, bcrypt hashing, and secure session management. |
+| 🔒 **Secure Auth** | Full-stack authentication with JWT, bcrypt hashing, hashed verification codes, and secure session management. |
 | 📊 **Emotional Insights** | Visualized mood history and analytics to track your musical journey. |
 | 🎨 **Immersive UI** | Aurora text effects, glass-morphism, and smooth Framer Motion animations. |
 | 📧 **Password Recovery** | Integrated EmailJS support for secure verification code-based resets. |
